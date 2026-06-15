@@ -20,6 +20,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,8 +31,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # Note: Nous n'utilisons PAS la propriété "cache: npm" ici,
-          # ce qui empêche GitHub de chercher un fichier lockfile !
 
       - name: Install dependencies
         run: npm install
