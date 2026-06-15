@@ -74,7 +74,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
-    imagePlaceholder: "/tarte2.jpg"
+    imagePlaceholder: "/tartr2.jpg"
   },
   {
     id: 'cake3',
@@ -169,6 +169,12 @@ export default function App() {
   const [cakeText, setCakeText] = useState('');
   const [deliveryMethod, setDeliveryMethod] = useState<'Livraison' | 'Retrait la maison'>('Retrait la maison');
   const [clientRemark, setClientRemark] = useState('');
+  
+  // States for thank you popup
+  const [showThankYou, setShowThankYou] = useState(false);
+  const [thankYouClientName, setThankYouClientName] = useState('');
+  const [thankYouProductName, setThankYouProductName] = useState('');
+  const [whatsappUrl, setWhatsappUrl] = useState('');
   
   // Configuration read statically from MAISON_CONFIG above (edit there directly to reflect your pages!)
   const {
@@ -269,15 +275,17 @@ export default function App() {
       return;
     }
 
-    const isCakeOrGateau = selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux';
+    const isCake = selectedProduct.category === 'Cakes';
 
-    let text = `✨ *NOUVELLE COMMANDE - ${brandName.toUpperCase()}* ✨\n\n`;
+    let text = `Bonjour ! ✨🌸\n\n`;
+    text += `Je souhaite passer une commande chez *${brandName}* ! 💕\n\n`;
+    text += `*DÉTAILS DE MA COMMANDE :*\n`;
     text += `👤 *Client :* ${clientName}\n`;
-    text += `🧁 *Produit :* ${selectedProduct.name}\n`;
-    text += `📦 *Catégorie :* ${selectedProduct.category}\n\n`;
+    text += `🍰 *Sélection :* ${selectedProduct.name}\n`;
+    text += `🎀 *Catégorie :* ${selectedProduct.category}\n\n`;
 
-    if (isCakeOrGateau) {
-      text += `🎂 *Spécifications du Gâteau :*\n`;
+    if (isCake) {
+      text += `🎂 *Spécifications :*\n`;
       text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🌼' : 'Chocolat 🍫'}\n`;
       text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
       if (cakeText.trim()) {
@@ -286,21 +294,29 @@ export default function App() {
       text += `\n`;
     }
 
-    text += `🚚 *Mode de retrait :* ${deliveryMethod}\n`;
+    text += `🚗 *Mode de récupération :* ${deliveryMethod === 'Livraison' ? 'Livraison à domicile 🚗' : 'Retrait à la maison 🏡'}\n`;
     
     if (clientRemark.trim()) {
-      text += `📝 *Remarque spéciale :* ${clientRemark}\n`;
+      text += `💌 *Note spéciale :* ${clientRemark}\n`;
     }
 
-    text += `\n💌 _Envoyé depuis le menu interactif de ${brandName}_`;
+    text += `\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. ✨🌸`;
 
     const encodedText = encodeURIComponent(text);
     const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
     
-    // Open in window
+    // Save info for Thank You popup
+    setThankYouClientName(clientName);
+    setThankYouProductName(selectedProduct.name);
+    setWhatsappUrl(whatsappURL);
+    
+    // Open in window immediately
     window.open(whatsappURL, '_blank');
     
-    // Reset modal state
+    // Trigger the Thank You modal
+    setShowThankYou(true);
+    
+    // Reset original modal states
     setSelectedProduct(null);
     setClientName('');
     setFillings([]);
@@ -910,8 +926,8 @@ export default function App() {
                         />
                       </div>
 
-                      {/* Cake / Gâteaux Specific Selection */}
-                      {(selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux') && (
+                      {/* Cake Specific Selection */}
+                      {selectedProduct.category === 'Cakes' && (
                         <div className="space-y-3 bg-[#fff0f3] p-4 rounded-2xl border border-[#ffd1dc]">
                           <p className="font-bold text-[#7d3b45] font-serif uppercase tracking-wider text-[10px]">
                             Options de personnalisation du Gâteau
@@ -1032,6 +1048,79 @@ export default function App() {
                         <span>Envoyer la commande via WhatsApp</span>
                       </button>
                     </form>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
+
+            {/* THANK YOU POPUP MODAL (APPELÉ IMMÉDIATEMENT) */}
+            <AnimatePresence>
+              {showThankYou && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+                  <motion.div 
+                    className="bg-white rounded-3xl max-w-md w-full p-6 border border-[#ffccd5] shadow-2xl relative overflow-hidden"
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.92 }}
+                  >
+                    {/* Decorative elegant background elements */}
+                    <div className="absolute -right-10 -bottom-10 opacity-[0.08] text-[#b76e79] pointer-events-none select-none">
+                      <Sparkles className="w-40 h-40" />
+                    </div>
+
+                    {/* Close button */}
+                    <button 
+                      onClick={() => setShowThankYou(false)}
+                      className="absolute top-4 right-4 text-[#a38f8f] hover:text-[#5c4a4a] transition-colors p-1 cursor-pointer"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+
+                    {/* Content */}
+                    <div className="text-center space-y-4">
+                      {/* Animating sweet pink flower icon */}
+                      <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-pulse">
+                        <span className="text-4xl">🌸</span>
+                      </div>
+
+                      <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci Beaucoup, {thankYouClientName} ! ✨</h3>
+                      
+                      <p className="text-xs text-[#825c61] leading-relaxed">
+                        Votre demande personnalisée pour la création <span className="font-semibold text-[#b76e79]">« {thankYouProductName} »</span> a bien été générée avec le plus grand soin ! 💕
+                      </p>
+
+                      <div className="bg-[#fff5f7] border border-[#ffccd5] rounded-2xl p-4 text-xs text-[#825c61] space-y-2 text-left">
+                        <p className="font-semibold text-[#7d3b45] flex items-center space-x-1.5">
+                          <span>💌</span>
+                          <span>Notre Promesse de Maison :</span>
+                        </p>
+                        <p className="leading-normal font-serif italic text-[#7d5257]">
+                          "Dès réception de votre message récapitulatif sur WhatsApp, notre Maison prendra contact avec vous dans les plus brefs délais pour valider ensemble tous les détails artistiques de votre chef-d'œuvre gustatif."
+                        </p>
+                      </div>
+
+                      <p className="text-[10px] text-[#ae8c91] leading-normal px-2">
+                        Si l'application WhatsApp ne s'est pas ouverte automatiquement sur votre appareil, veuillez cliquer sur le bouton ci-dessous pour transmettre votre message.
+                      </p>
+
+                      <div className="flex flex-col space-y-2 pt-2">
+                        <a 
+                          href={whatsappUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-[#b76e79] hover:bg-[#a05a65] text-white py-3 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer"
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          <span>Ouvrir WhatsApp Manuellement</span>
+                        </a>
+                        <button 
+                          onClick={() => setShowThankYou(false)}
+                          className="w-full border border-[#ffccd5] hover:bg-pink-50 text-[#7a5c5f] py-2.5 px-6 rounded-full text-xs font-medium transition-all cursor-pointer"
+                        >
+                          Fermer
+                        </button>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
               )}
