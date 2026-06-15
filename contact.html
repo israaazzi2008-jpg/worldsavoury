@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World's Savoury - Nous Contacter</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Polices -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          vibes: ['"Great Vibes"', 'cursive'],
+          serif: ['"Cormorant Garamond"', 'serif'],
+          sans: ['"Inter"', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  body {
+    overflow-x: hidden;
+  }
+  /* CUPCAKES VOLANTS */
+  .cupcake {
+    position: fixed;
+    top: -40px;
+    font-size: 24px;
+    animation: fall 5s linear forwards;
+    pointer-events: none;
+    z-index: 10;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+</style>
+</head>
+<body class="bg-[#fff0f3] text-[#4a3538] font-sans min-h-screen flex flex-col justify-between relative">
+
+  <!-- EN-TÊTE -->
+  <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-[#ffd1dc] z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-3">
+        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#b76e79] shadow-sm">
+          <img src="logo.jpg" alt="Logo World's Savoury" class="w-full h-full object-cover rounded-full" onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400'">
+        </div>
+        <div>
+          <h2 class="font-vibes text-3xl sm:text-4xl text-[#b76e79] leading-none pt-2">World's Savoury</h2>
+          <p class="text-[9px] tracking-widest uppercase text-[#9e767c] font-mono">Pâtisserie</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex space-x-8 text-sm font-medium">
+        <a href="menu.html" class="text-[#7a5c5f] hover:text-[#b76e79] transition-colors">Notre Carte</a>
+        <a href="about.html" class="text-[#7a5c5f] hover:text-[#b76e79] transition-colors">À Propos</a>
+        <a href="contact.html" class="text-[#b76e79] font-bold border-b-2 border-[#b76e79] pb-1">Nous Contacter</a>
+      </nav>
+
+      <div class="flex md:hidden space-x-4 text-[#7a5c5f] text-xs font-serif uppercase tracking-wider">
+        <a href="menu.html" class="hover:text-[#b76e79]">Carte</a>
+        <a href="about.html" class="hover:text-[#b76e79] ml-2">À Propos</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENU CONTACT -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 flex-1 w-full flex flex-col justify-center space-y-6 relative z-20">
+    
+    <div class="text-center space-y-2 mb-4">
+      <h1 class="font-vibes text-5xl sm:text-6xl text-[#b76e79] pt-2">Suivez-nous &amp; Retrouvez-nous</h1>
+      <p class="font-serif text-[10px] sm:text-xs tracking-widest uppercase text-[#9e767c]">Suivez nos créations artistiques au quotidien</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full items-stretch">
+      
+      <!-- Social networks (left column) -->
+      <div class="bg-white/75 border border-[#ffccd5] rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm backdrop-blur-sm flex flex-col justify-center min-h-[350px]">
+        <h2 class="font-serif text-2xl font-bold text-[#4d3437] mb-2 text-left">Nos Réseaux Sociaux</h2>
+        
+        <div class="grid grid-cols-1 gap-4">
+          <!-- Instagram link -->
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
+          >
+            <div class="flex items-center space-x-4">
+              <div class="p-3 bg-white rounded-full text-[#b76e79] shadow-sm group-hover:scale-105 transition-transform">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <p class="font-bold text-[#4d3437] text-sm font-serif">Instagram</p>
+                <p class="text-xs text-[#825c61] font-light">@worlds.savoury</p>
+              </div>
+            </div>
+            <span class="text-[#b76e79] font-bold group-hover:translate-x-1 transition-transform">➔</span>
+          </a>
+
+          <!-- Facebook link -->
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
+          >
+            <div class="flex items-center space-x-4">
+              <div class="p-3 bg-white rounded-full text-[#b76e79] shadow-sm group-hover:scale-105 transition-transform">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <p class="font-bold text-[#4d3437] text-sm font-serif">Facebook</p>
+                <p class="text-xs text-[#825c61] font-light">World's Savoury Paris</p>
+              </div>
+            </div>
+            <span class="text-[#b76e79] font-bold group-hover:translate-x-1 transition-transform">➔</span>
+          </a>
+        </div>
+
+        <div class="pt-2 text-xs text-[#825c61] text-left leading-relaxed font-light">
+          Découvrez nos oeuvres de cake-design uniques, nos coulisses et nouveautés sucrées directement sur nos profils officiels !
+        </div>
+      </div>
+
+      <!-- Live Google Map Point (right column) -->
+      <div class="bg-white/75 border border-[#ffccd5] rounded-3xl p-4 shadow-sm backdrop-blur-sm overflow-hidden flex flex-col justify-between min-h-[350px]">
+        <div class="w-full h-full rounded-2xl overflow-hidden relative border border-[#ffccd5]">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.1420477443515!2d2.299583315674845!3d48.87456727928921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fc4ee881a7d%3A0xc07cf1fbd5508ca1!2s12%20Avenue%20des%20Champs-%C3%89lys%C3%A9es%2C%2075008%20Paris!5e0!3m2!1sfr!2sfr!4v1654000000000!5m2!1sfr!2sfr" 
+            width="100%" 
+            height="100%" 
+            style="border: 0; min-height: 300px;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Maison World's Savoury"
+          ></iframe>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-[#ffd1dc] py-6 text-center text-[#9b7379] text-xs font-serif tracking-widest relative z-30">
+    <p>© 2026 World's Savoury • L'orfèvrerie pâtissière pour vous plaire</p>
+    <p class="text-[10px] text-[#b76e79]/80 font-sans tracking-normal pt-2">Designed by <span class="font-semibold text-[#b76e79] font-bold">azzi israa</span></p>
+  </footer>
+
+  <script>
+    /* 🧁 EMITTING CUPCAKES */
+    function cupcake(){
+      let c = document.createElement("div");
+      c.className = "cupcake";
+      c.innerHTML = "🧁";
+      c.style.left = Math.random() * 95 + "vw";
+      const speed = 4 + Math.random() * 2;
+      c.style.animationDuration = speed + "s";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 6000);
+    }
+    setInterval(cupcake, 450);
+  </script>
+
+</body>
+</html>
