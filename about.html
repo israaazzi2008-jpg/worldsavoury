@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World's Savoury - À Propos</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Polices -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          vibes: ['"Great Vibes"', 'cursive'],
+          serif: ['"Cormorant Garamond"', 'serif'],
+          sans: ['"Inter"', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  body {
+    overflow-x: hidden;
+  }
+  /* CUPCAKES VOLANTS */
+  .cupcake {
+    position: fixed;
+    top: -40px;
+    font-size: 24px;
+    animation: fall 5s linear forwards;
+    pointer-events: none;
+    z-index: 10;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+</style>
+</head>
+<body class="bg-[#fff0f3] text-[#4a3538] font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- EN-TÊTE -->
+  <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-[#ffd1dc] z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-3">
+        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#b76e79] shadow-sm">
+          <img src="logo.jpg" alt="Logo World's Savoury" class="w-full h-full object-cover rounded-full" onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400'">
+        </div>
+        <div>
+          <h2 class="font-vibes text-3xl sm:text-4xl text-[#b76e79] leading-none pt-2">World's Savoury</h2>
+          <p class="text-[9px] tracking-widest uppercase text-[#9e767c] font-mono">Pâtisserie</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex space-x-8 text-sm font-medium">
+        <a href="menu.html" class="text-[#7a5c5f] hover:text-[#b76e79] transition-colors">Notre Carte</a>
+        <a href="about.html" class="text-[#b76e79] font-bold border-b-2 border-[#b76e79] pb-1">À Propos</a>
+        <a href="contact.html" class="text-[#7a5c5f] hover:text-[#b76e79] transition-colors">Nous Contacter</a>
+      </nav>
+
+      <div class="flex md:hidden space-x-4 text-[#7a5c5f] text-xs font-serif uppercase tracking-wider">
+        <a href="menu.html" class="hover:text-[#b76e79]">Carte</a>
+        <a href="contact.html" class="hover:text-[#b76e79] ml-2">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENU À PROPOS -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-12 flex-1 flex flex-col justify-center">
+    <div class="bg-white/75 border border-[#ffccd5] rounded-3xl p-6 sm:p-10 space-y-6 shadow-sm backdrop-blur-sm">
+      
+      <div class="text-center space-y-2">
+        <h1 class="font-vibes text-5xl text-[#b76e79] pt-2">Notre Douce Philosophie</h1>
+        <p class="font-serif text-[10px] tracking-widest uppercase text-[#9e767c]">L'authenticité et le sur-mesure absolu</p>
+      </div>
+
+      <div class="w-full bg-[#fffcfd] border border-amber-200/60 rounded-2xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-sm">
+        {/* Ringed luxurious logo container */}
+        <div class="relative w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-amber-400 via-rose-300 to-amber-500 shadow-md">
+          <div class="w-full h-full rounded-full overflow-hidden bg-white">
+            <img 
+              src="logo.jpg" 
+              alt="World's Savoury Signature Logo" 
+              class="w-full h-full object-cover"
+              onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400'"
+            />
+          </div>
+          <div class="absolute bottom-0 right-0 bg-amber-400 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs border border-white">✦</div>
+        </div>
+        
+        <div class="mt-4 text-xs font-serif uppercase text-[#9c7743] tracking-[0.2em] font-bold">Notre Signature d'Artisans de Prestige</div>
+        <p class="text-[11px] text-[#825c61] max-w-sm mx-auto italic mt-1 font-serif">
+          "Chaque pièce est sculptée de nos mains d'artisans, alliant noblesse des matières et orfèvrerie créative pour suspendre le temps."
+        </p>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-[#664b4f] leading-relaxed font-light">
+        <p>
+          Bienvenue au cœur du raffinement de <strong>World's Savoury</strong>. Notre créativité est née d'une vision unique : fusionner la délicatesse des produits les plus nobles de notre terroir à l'audace et à la haute technicité de la chocolaterie contemporaine.
+        </p>
+        <p>
+          Du façonnage délicat de nos gâteaux personnalisés aux finitions scintillantes de nos truffes et cupcakes phares, nous sélectionnons soigneusement chaque ingrédient. Les nuances fruitées de la framboise fraîche, l'onctuosité croustillante de la pistache concassée ou le caramel d'Isigny doré sont autant de notes avec lesquelles notre brigade joue pour composer votre symphonie sucrée idéale.
+        </p>
+        <p>
+          Nous refusons délibérément les listes d'ingrédients industriels et l'uniformisation des prix. Chez nous, chaque dessert est une pièce d'orfèvrerie personnalisée, créée à la commande pour refléter fidèlement le prestige et l'authenticité de vos célébrations.
+        </p>
+      </div>
+
+      <div class="border-t border-[#ffd1dc] pt-6 flex justify-between items-center text-[10px] text-[#a0747a] uppercase tracking-wider font-semibold font-serif">
+        <span>Beurres d'AOP</span>
+        <span>•</span>
+        <span>Cacao Équitable</span>
+        <span>•</span>
+        <span>Fabrication à la main</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-[#ffd1dc] py-6 text-center text-[#9b7379] text-xs font-serif tracking-widest relative z-30">
+    <p>© 2026 World's Savoury • Créateur céleste d'instants gourmands</p>
+    <p class="text-[10px] text-[#b76e79]/80 font-sans tracking-normal pt-2">Designed by <span class="font-semibold text-[#b76e79] font-bold">azzi israa</span></p>
+  </footer>
+
+  <script>
+    /* 🧁 EMITTING CUPCAKES */
+    function cupcake(){
+      let c = document.createElement("div");
+      c.className = "cupcake";
+      c.innerHTML = "🧁";
+      c.style.left = Math.random() * 95 + "vw";
+      const speed = 4 + Math.random() * 2;
+      c.style.animationDuration = speed + "s";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 6000);
+    }
+    setInterval(cupcake, 450);
+  </script>
+</body>
+</html>
