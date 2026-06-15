@@ -56,8 +56,8 @@ const resolveImgSrc = (path: string): string => {
   }
   // Strip any leading ./ or /
   const file = path.replace(/^\.?\//, '');
-  // Return resolved path from the server root
-  return '/' + file;
+  // Return resolved relative path so it loads correctly both in dev and under subfolders like GitHub Pages
+  return './' + file;
 };
 
 const MENU_ITEMS: MenuItem[] = [
@@ -671,7 +671,7 @@ export default function App() {
                           </div>
 
                           {/* Product Meta */}
-                          <div className="space-y-1.5Packed">
+                          <div className="space-y-1.5">
                             <div className="flex justify-between items-start">
                               <span className="text-[9px] font-mono tracking-widest uppercase text-pink-600 bg-pink-100 px-2 py-0.5 rounded-full">
                                 {prod.category}
