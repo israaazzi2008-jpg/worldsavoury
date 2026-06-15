@@ -51,58 +51,58 @@ const MAISON_CONFIG = {
 const MENU_ITEMS: MenuItem[] = [
   // --- CATEGORY : Cakes (Exactly 7 products) ---
   {
-    id: 'cake',
+    id: 'cake1',
     name: "Gâteau Cake de Crêve ",
     category: "Cakes",
     description: "35cm sur 28cm pour 30 personnes",
     imagePlaceholder: "./tarte1.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake2',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
     imagePlaceholder: "./tartr2.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake3',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12 pour 4 personnes",
     imagePlaceholder: "./tarte3.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake4',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 7 personnes",
     imagePlaceholder: "./tarte4.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake5',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 15 personnes",
     imagePlaceholder: "./tarte5.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake6',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 16cm pour 6 personnes",
-    imagePlaceholder: "./tarte6.lpg"
+    imagePlaceholder: "./tarte6.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake7',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
-    description: " diamèetre 12cm pour 3 personnes",
+    description: "diamètre 12cm pour 3 personnes",
     imagePlaceholder: "./tarte7.jpg"
   },
 
   // --- CATEGORY : Gâteaux (Exactly 1 product) ---
   {
-    id: 'gateau',
+    id: 'gateau1',
     name: "k3ik3at",
     category: "Gâteaux",
     description: "Emplacement pour votre description personnalisée de gâteau individuel ou d'entremets délicat. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
@@ -111,7 +111,7 @@ const MENU_ITEMS: MenuItem[] = [
 
   // --- CATEGORY : Cupcakes (Exactly 1 product) ---
   {
-    id: 'cupcake',
+    id: 'cupcake1',
     name: "Cupcake ",
     category: "Cupcakes",
     description: "Emplacement pour votre description personnalisée de cupcakes. Détaillez vos saveurs de génoise et de glaçage onctueux.",
@@ -120,7 +120,7 @@ const MENU_ITEMS: MenuItem[] = [
 
   // --- CATEGORY : Chocolat personnalisé (Exactly 1 product) ---
   {
-    id: 'chocolat',
+    id: 'chocolat1',
     name: "Chocolat Fin Personnalisé",
     category: "Chocolat personnalisé",
     description: "Emplacement pour vos tablettes gravées, écritures dorées ou chocolats monogrammes fins à personnaliser selon vos goûts.",
@@ -129,7 +129,7 @@ const MENU_ITEMS: MenuItem[] = [
 
   // --- CATEGORY : Fleur au chocolat (Exactly 1 product) ---
   {
-    id: 'fleur',
+    id: 'fleur1',
     name: " Fleur en Chocolat",
     category: "Fleur au chocolat",
     description: "Emplacement pour vos roses ou bouquets sculptés entièrement à la main en chocolat fin. C'est le cadeau ou le centre de table idéal.",
@@ -633,16 +633,28 @@ export default function App() {
                           
                           {/* Image Placeholder Frame mimicking high end bakery photo */}
                           <div className="w-full h-44 rounded-xl overflow-hidden bg-[#fffbfb] relative border border-[#ffccd5] flex flex-col items-center justify-center text-center p-4">
+                            {/* Real Image loaded from your directory */}
+                            <img
+                              src={prod.imagePlaceholder}
+                              alt={prod.name}
+                              className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-105"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                // Gracefully hide the img container if the image doesn't exist yet
+                                (e.target as HTMLImageElement).style.display = "none";
+                              }}
+                            />
+                            {/* Fallback layout shown when image is missing or loading */}
                             <span className="text-4xl text-center group-hover:scale-110 transition-transform duration-300">
                               {prod.category === 'Cakes' || prod.category === 'Gâteaux' ? '🎂' : 
                                prod.category === 'Cupcakes' ? '🧁' : 
                                prod.category === 'Chocolat personnalisé' ? '🍫' : '🌹'}
                             </span>
                             <div className="mt-3 text-[10px] uppercase tracking-wide text-[#b76e79] font-medium">
-                              Place à l'image du produit
+                              Image: {prod.imagePlaceholder.replace(/^\.\//, '')}
                             </div>
                             <div className="text-[9px] text-[#9b757a] italic mt-1 font-serif">
-                              {prod.imagePlaceholder}
+                              {prod.name}
                             </div>
                           </div>
 
@@ -755,7 +767,7 @@ export default function App() {
                       <div className="grid grid-cols-1 gap-4">
                         {/* Instagram Link Button */}
                         <a 
-                          href={https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4} 
+                          href={instaLink} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
@@ -776,7 +788,7 @@ export default function App() {
 
                         {/* Facebook Link Button */}
                         <a 
-                          href={https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr} 
+                          href={fbLink} 
                           target="_blank"  
                           rel="noopener noreferrer"
                           className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
