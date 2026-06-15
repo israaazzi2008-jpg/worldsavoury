@@ -730,7 +730,7 @@ export default function App() {
                       <div className="grid grid-cols-1 gap-4">
                         {/* Instagram Link Button */}
                         <a 
-                          href="https://instagram.com" 
+                          href="https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
@@ -751,7 +751,7 @@ export default function App() {
 
                         {/* Facebook Link Button */}
                         <a 
-                          href="https://facebook.com" 
+                          href="https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
@@ -780,14 +780,14 @@ export default function App() {
                     <div className="bg-white/75 border border-[#ffccd5] rounded-3xl p-4 shadow-sm backdrop-blur-xs overflow-hidden flex flex-col justify-between min-h-[350px]">
                       <div className="w-full h-full rounded-2xl overflow-hidden relative border border-[#ffccd5]">
                         <iframe 
-                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.1420477443515!2d2.299583315674845!3d48.87456727928921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fc4ee881a7d%3A0xc07cf1fbd5508ca1!2s12%20Avenue%20des%20Champs-%C3%89lys%C3%A9es%2C%2075008%20Paris!5e0!3m2!1sfr!2sfr!4v1654000000000!5m2!1sfr!2sfr" 
+                          src="https://share.google/Db0AfpQq43n0VyLFz" 
                           width="100%" 
                           height="100%" 
                           style={{ border: 0, minHeight: "300px" }} 
                           allowFullScreen={false} 
                           loading="lazy" 
                           referrerPolicy="no-referrer-when-downgrade"
-                          title="World's Savoury de Paris"
+                          title="World's Savoury Beni Saf "
                         />
                       </div>
                     </div>
