@@ -1,4 +1,3 @@
-
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
@@ -13,12 +12,11 @@ export default defineConfig(() => {
   return {
     // Cette ligne est cruciale pour corriger la page blanche sur GitHub Pages
     // Assure-toi que le nom correspond exactement au nom de ton dépôt GitHub
-    base: '/worldsaoury/', 
-    
+    base: '/worldsaoury/',
     plugins: [
       react(), 
       tailwindcss(),
-      // Plugin personnalisé pour copier tes images de la racine vers dist/
+      // Custom plugin to copy root-level images into dist/ output on build
       {
         name: 'copy-root-images',
         closeBundle() {
@@ -36,14 +34,14 @@ export default defineConfig(() => {
                 const srcPath = path.join(rootDir, file);
                 const destPath = path.join(distDir, file);
                 fs.copyFileSync(srcPath, destPath);
-                console.log([copy-root-images] Copied ${file} to dist/);
+                console.log(`[copy-root-images] Copied ${file} to dist/`);
               }
             });
           } catch (err) {
             console.error('[copy-root-images] Error copying root files:', err);
           }
         },
-        // Configuration du serveur de développement pour servir tes images
+        // Configure dev server to serve root-level images on requests
         configureServer(server) {
           server.middlewares.use((req, res, next) => {
             const url = req.url || '';
