@@ -18,7 +18,10 @@ import {
   Info,
   Menu as MenuIcon,
   ChevronRight,
-  Send
+  Send,
+  Settings,
+  Trash2,
+  Edit
 } from 'lucide-react';
 
 // French types for items
@@ -30,95 +33,107 @@ interface MenuItem {
   imagePlaceholder: string; // Describes the image theme
 }
 
+// =========================================================================
+// 🌟 VOS INFORMATIONS DE CONFIGURATION DE VOTRE MAISON (MODIFIEZ CETTE ZONE !) 🌟
+// Modifiez ces valeurs de texte directement ci-dessous pour que vos liens,
+// votre logo, votre numéro whatsapp et vos réseaux apparaissent sur le site !
+// =========================================================================
+const MAISON_CONFIG = {
+  brandName: "World's Savoury",                      // Le nom de votre maison d'art culinaire
+  brandLogo: "logo.jpg",                             // Lien d'image ou nom de fichier pour le logo (ex: "https://...jpg" ou "logo.jpg" dans public/)
+  whatsappNumber: "+213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
+  fbLink: "https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr", // Le lien web complet vers votre page Facebook
+  fbHandle: "World's Savoury Beni Saf",                 // Le nom instagram/facebook affiché de votre entreprise
+  instaLink: "https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4", // Le lien web complet vers votre compte Instagram
+  instaHandle: "@worlds.savoury"                      // Le nom ou pseudonyme d'Instagram affiché
+};
+
 const MENU_ITEMS: MenuItem[] = [
-  // Cakes
+  // --- CATEGORY : Cakes (Exactly 7 products) ---
   {
-    id: 'c1',
-    name: "Le Gâteau Signature Royal",
+    id: 'cake',
+    name: "Gâteau Cake de Crêve ",
     category: "Cakes",
-    description: "Un gâteau de fête majestueux décoré de feuilles d'or et de crème onctueuse. Entièrement personnalisable pour vos plus beaux événements.",
-    imagePlaceholder: "Gâteau de mariage élégant décoré de roses pastel"
+    description: "35cm sur 28cm pour 30 personnes",
+    imagePlaceholder: "./tarte1.jpg"
   },
   {
-    id: 'c2',
-    name: "Le Cake Rustique aux Agrumes",
+    id: 'cake',
+    name: "Gâteau Cake de Rêve ",
     category: "Cakes",
-    description: "Un gâteau traditionnel moelleux, infusé de zestes d'agrumes biologiques confits et d'un sirop secret à la fleur d'oranger.",
-    imagePlaceholder: "Cake marbré doré aux fruits confits"
+    description: "24cm sur 24cm pour 12 personnes",
+    imagePlaceholder: "./tartr2.jpg"
   },
   {
-    id: 'c3',
-    name: "L'Impérial Caractère Chocolat",
+    id: 'cake',
+    name: "Gâteau Cake de Rêve ",
     category: "Cakes",
-    description: "Une pièce maîtresse étagée pour tous les amoureux de cacao fin, alliant légèreté aérienne et intensité aromatique.",
-    imagePlaceholder: "Gâteau gourmand au chocolat noir brillant"
+    description: "diamètre 12 pour 4 personnes",
+    imagePlaceholder: "./tarte3.jpg"
   },
-  // Gâteaux
   {
-    id: 'g1',
-    name: "L'Élixir Framboise & Vanille",
+    id: 'cake',
+    name: "Gâteau Cake de Rêve ",
+    category: "Cakes",
+    description: "diamètre 15cm pour 7 personnes",
+    imagePlaceholder: "./tarte4.jpg"
+  },
+  {
+    id: 'cake',
+    name: "Gâteau Cake de Rêve ",
+    category: "Cakes",
+    description: "diamètre 15cm pour 15 personnes",
+    imagePlaceholder: "./tarte5.jpg"
+  },
+  {
+    id: 'cake',
+    name: "Gâteau Cake de Rêve ",
+    category: "Cakes",
+    description: "diamètre 16cm pour 6 personnes",
+    imagePlaceholder: "./tarte6.lpg"
+  },
+  {
+    id: 'cake',
+    name: "Gâteau Cake de Rêve ",
+    category: "Cakes",
+    description: " diamèetre 12cm pour 3 personnes",
+    imagePlaceholder: "./tarte7.jpg"
+  },
+
+  // --- CATEGORY : Gâteaux (Exactly 1 product) ---
+  {
+    id: 'gateau',
+    name: "k3ik3at",
     category: "Gâteaux",
-    description: "Biscuit fondant surmonté d'un délicat coulis de framboises sauvages fraîches et d'une mousseline parfumée à la vanille bourbon.",
-    imagePlaceholder: "Gâteau individuel à la framboise brillante"
+    description: "Emplacement pour votre description personnalisée de gâteau individuel ou d'entremets délicat. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
+    imagePlaceholder: "./1.jpg"
   },
+
+  // --- CATEGORY : Cupcakes (Exactly 1 product) ---
   {
-    id: 'g2',
-    name: "Symphonie Caramel Beurre Salé",
-    category: "Gâteaux",
-    description: "Une dacquoise croustillante aux noisettes, drapée d'un caramel d'Isigny onctueux de notre enfance et d'une touche de fleur de sel.",
-    imagePlaceholder: "Entremets moderne beige avec glaçage caramel"
-  },
-  // Cupcakes
-  {
-    id: 'cp1',
-    name: "Cupcake Nuage Framboise",
+    id: 'cupcake',
+    name: "Cupcake ",
     category: "Cupcakes",
-    description: "Cœur fondant fruits des bois, coiffé d'un dôme de crème au cream cheese veloutée et d'une framboise fraîche.",
-    imagePlaceholder: "Cupcake rose décoré de perles de sucre"
+    description: "Emplacement pour votre description personnalisée de cupcakes. Détaillez vos saveurs de génoise et de glaçage onctueux.",
+    imagePlaceholder: "./cup.jpg"
   },
+
+  // --- CATEGORY : Chocolat personnalisé (Exactly 1 product) ---
   {
-    id: 'cp2',
-    name: "Cupcake Trésor de Pistache",
-    category: "Cupcakes",
-    description: "Moelleux à la pistache d'Iran grillée, frosting aérien et éclats croustillants de pistaches pralinées.",
-    imagePlaceholder: "Cupcake pistache aux éclats croquants"
-  },
-  {
-    id: 'cp3',
-    name: "Cupcake Spiced Cacao Doré",
-    category: "Cupcakes",
-    description: "Un gâteau cacao intense rehaussé de notes de cannelle de Ceylan avec éclats croustillants saupoudrés d'ambre de sucre.",
-    imagePlaceholder: "Cupcake chocolat avec pépites d'or comestibles"
-  },
-  // Chocolat personnalisé
-  {
-    id: 'ch1',
-    name: "Tablette Monogramme d'Amour",
+    id: 'chocolat',
+    name: "Chocolat Fin Personnalisé",
     category: "Chocolat personnalisé",
-    description: "Chocolat grand cru (noir, lait ou blanc) personnalisé avec vos initiales gravées et de jolis motifs artisanaux dorés.",
-    imagePlaceholder: "Tablette de chocolat fine avec moulures personnalisées"
+    description: "Emplacement pour vos tablettes gravées, écritures dorées ou chocolats monogrammes fins à personnaliser selon vos goûts.",
+    imagePlaceholder: "./prs.jpg"
   },
+
+  // --- CATEGORY : Fleur au chocolat (Exactly 1 product) ---
   {
-    id: 'ch2',
-    name: "Écrin Mystérieux Lettres Douces",
-    category: "Chocolat personnalisé",
-    description: "Un assortiment de cubes chocolatés fins formant le message attentionné de votre choix pour surprendre vos proches.",
-    imagePlaceholder: "Boîte de chocolats carrés formant de doux mots"
-  },
-  // Fleurs au chocolat
-  {
-    id: 'f1',
-    name: "Le Bouquet Rose de Velours",
+    id: 'fleur',
+    name: " Fleur en Chocolat",
     category: "Fleur au chocolat",
-    description: "Roses éternelles entièrement façonnées à la main par notre maître chocolatier en chocolat de couverture rose framboise.",
-    imagePlaceholder: "Bouquet élégant sculpté en roses en chocolat"
-  },
-  {
-    id: 'f2',
-    name: "Pétales d'Or Sablés Fleur",
-    category: "Fleur au chocolat",
-    description: "Une fleur sculptée combinant la finesse du chocolat blanc caramélisé croustillant et des éclats de sablés traditionnels.",
-    imagePlaceholder: "Fleur chocolatée complexe aux teintes vanille ambrée"
+    description: "Emplacement pour vos roses ou bouquets sculptés entièrement à la main en chocolat fin. C'est le cadeau ou le centre de table idéal.",
+    imagePlaceholder: "./flr.jpg"
   }
 ];
 
@@ -143,8 +158,16 @@ export default function App() {
   const [deliveryMethod, setDeliveryMethod] = useState<'Livraison' | 'Retrait la maison'>('Retrait la maison');
   const [clientRemark, setClientRemark] = useState('');
   
-  // Customizable whatsapp number (leaving standard customizable layout)
-  const [whatsappNumber, setWhatsappNumber] = useState('+33600000000'); // Standard replaceable layout
+  // Configuration read statically from MAISON_CONFIG above (edit there directly to reflect your pages!)
+  const {
+    brandName,
+    brandLogo,
+    whatsappNumber,
+    fbLink,
+    fbHandle,
+    instaLink,
+    instaHandle
+  } = MAISON_CONFIG;
 
   // List of available fillings
   const AVAILABLE_FILLINGS = [
@@ -236,7 +259,7 @@ export default function App() {
 
     const isCakeOrGateau = selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux';
 
-    let text = `✨ *NOUVELLE COMMANDE - WORLD'S SAVOURY* ✨\n\n`;
+    let text = `✨ *NOUVELLE COMMANDE - ${brandName.toUpperCase()}* ✨\n\n`;
     text += `👤 *Client :* ${clientName}\n`;
     text += `🧁 *Produit :* ${selectedProduct.name}\n`;
     text += `📦 *Catégorie :* ${selectedProduct.category}\n\n`;
@@ -257,7 +280,7 @@ export default function App() {
       text += `📝 *Remarque spéciale :* ${clientRemark}\n`;
     }
 
-    text += `\n💌 _Envoyé depuis le menu interactif de World's Savoury_`;
+    text += `\n💌 _Envoyé depuis le menu interactif de ${brandName}_`;
 
     const encodedText = encodeURIComponent(text);
     const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
@@ -273,7 +296,7 @@ export default function App() {
     setClientRemark('');
   };
 
-  // Filter products
+  // Filter products directly from static MENU_ITEMS
   const filteredProducts = MENU_ITEMS.filter(prod => {
     const matchesCategory = selectedCategory === 'all' || prod.category === selectedCategory;
     const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -343,8 +366,8 @@ export default function App() {
                 <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg bg-white relative">
                   <img
                     id="intro-brand-logo"
-                    src="logo.jpg"
-                    alt="Logo World's Savoury"
+                    src={brandLogo}
+                    alt={`Logo ${brandName}`}
                     className="w-full h-full object-cover rounded-full"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
@@ -360,7 +383,7 @@ export default function App() {
               {/* Title Calligraphy font matching "Great Vibes" perfectly */}
               <div>
                 <h1 className="font-vibes text-5xl sm:text-7.5xl text-[#b76e79] drop-shadow-sm select-none leading-none pt-2">
-                  World's Savoury
+                  {brandName}
                 </h1>
                 <p className="font-serif text-[11px] sm:text-xs tracking-[0.25em] uppercase text-[#a0747a] mt-2">
                   L'Art de la Haute Pâtisserie &amp; Chocolaterie
@@ -404,7 +427,7 @@ export default function App() {
                 >
                   <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#b76e79] shadow-sm transform group-hover:scale-105 transition-all duration-300">
                     <img 
-                      src="logo.jpg" 
+                      src={brandLogo} 
                       alt="Mini Logo" 
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
@@ -415,35 +438,37 @@ export default function App() {
                   </div>
                   <div>
                     <h2 className="font-vibes text-3xl sm:text-4xl text-[#b76e79] select-none leading-none pt-1">
-                      World's Savoury
+                      {brandName}
                     </h2>
                     <p className="text-[9px] tracking-widest uppercase text-[#9e767c] font-mono">Pâtisserie</p>
                   </div>
                 </div>
 
                 {/* Main Nav Items */}
-                <nav className="hidden md:flex space-x-8 text-sm font-medium">
-                  {[
-                    { id: 'menu', label: 'Notre Carte' },
-                    { id: 'about', label: 'À Propos' },
-                    { id: 'contact', label: 'Nous Contacter' }
-                  ].map(tab => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setCurrentTab(tab.id as any)}
-                      className={`relative py-2 tracking-wider transition-colors duration-200 ${
-                        currentTab === tab.id 
-                          ? 'text-[#b76e79] font-bold' 
-                          : 'text-[#7a5c5f] hover:text-[#b76e79]'
-                      }`}
-                    >
-                      {tab.label}
-                      {currentTab === tab.id && (
-                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#b76e79] rounded-full" />
-                      )}
-                    </button>
-                  ))}
-                </nav>
+                <div className="hidden md:flex items-center space-x-8">
+                  <nav className="flex space-x-8 text-sm font-medium">
+                    {[
+                      { id: 'menu', label: 'Notre Carte' },
+                      { id: 'about', label: 'À Propos' },
+                      { id: 'contact', label: 'Nous Contacter' }
+                    ].map(tab => (
+                      <button
+                        key={tab.id}
+                        onClick={() => setCurrentTab(tab.id as any)}
+                        className={`relative py-2 tracking-wider transition-colors duration-200 ${
+                          currentTab === tab.id 
+                            ? 'text-[#b76e79] font-bold' 
+                            : 'text-[#7a5c5f] hover:text-[#b76e79]'
+                        }`}
+                      >
+                        {tab.label}
+                        {currentTab === tab.id && (
+                          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#b76e79] rounded-full" />
+                        )}
+                      </button>
+                    ))}
+                  </nav>
+                </div>
 
                 {/* Mobile Floating Action Nav */}
                 <div className="flex md:hidden space-x-2">
@@ -665,7 +690,7 @@ export default function App() {
               {currentTab === 'about' && (
                 <div className="max-w-3xl mx-auto bg-white/80 border border-[#e5c5ca] rounded-3xl p-6 sm:p-10 space-y-6 shadow-md backdrop-blur-md animate-fadeIn ring-1 ring-amber-100/50">
                   <div className="text-center space-y-2">
-                    <h1 className="font-vibes text-5xl text-[#b76e79] pt-2">L'Histoire de World's Savoury</h1>
+                    <h1 className="font-vibes text-5xl text-[#b76e79] pt-2">L'Histoire de {brandName}</h1>
                     <p className="font-serif text-[10px] tracking-widest uppercase text-[#9e767c]">Artisanal, Naturel &amp; Raffiné</p>
                   </div>
 
@@ -674,8 +699,8 @@ export default function App() {
                     <div className="relative w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-amber-400 via-rose-300 to-amber-500 shadow-md">
                       <div className="w-full h-full rounded-full overflow-hidden bg-white">
                         <img 
-                          src="logo.jpg" 
-                          alt="World's Savoury Signature Logo" 
+                          src={brandLogo} 
+                          alt={`${brandName} Signature Logo`} 
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400";
@@ -693,7 +718,7 @@ export default function App() {
 
                   <div className="space-y-4 text-xs sm:text-sm text-[#664b4f] leading-relaxed font-light">
                     <p>
-                      Bienvenue au cœur du raffinement de **World's Savoury**. Notre entreprise est née d'une vision simple : transformer des produits nobles de notre terroir en chefs-d'œuvre de joaillerie pâtissière. Spécialisés dans les gâteaux d'exception, les chocolats monogrammes et les fleurs en chocolat sculptées à la main, nous faisons de chaque bouchée une expérience sensorielle inoubliable.
+                      Bienvenue au cœur du raffinement de **{brandName}**. Notre entreprise est née d'une vision simple : transformer des produits nobles de notre terroir en chefs-d'œuvre de joaillerie pâtissière. Spécialisés dans les gâteaux d'exception, les chocolats monogrammes et les fleurs en chocolat sculptées à la main, nous faisons de chaque bouchée une expérience sensorielle inoubliable.
                     </p>
                     <p>
                       Nos desserts n'ont pas de prix pré-définis car nous croyons au sur-mesure absolu. Chaque commande est une pièce d'art unique, ciselée selon vos souhaits. De la douceur parfumée de nos cupcakes aux décors floraux sculptants de nos assortiments en cacao, nous allions les saveurs subtiles de la pistache, de la framboise fraîche, ou de la ganache fondante à une technique d'une précision chirurgicale.
@@ -730,7 +755,7 @@ export default function App() {
                       <div className="grid grid-cols-1 gap-4">
                         {/* Instagram Link Button */}
                         <a 
-                          href="https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4" 
+                          href={https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
@@ -743,7 +768,7 @@ export default function App() {
                             </div>
                             <div className="text-left">
                               <p className="font-bold text-[#4d3437] text-sm">Instagram</p>
-                              <p className="text-xs text-[#825c61] font-light">@worlds.savoury</p>
+                              <p className="text-xs text-[#825c61] font-light">{instaHandle}</p>
                             </div>
                           </div>
                           <span className="text-[#b76e79] font-bold group-hover:translate-x-1 transition-transform">➔</span>
@@ -751,8 +776,8 @@ export default function App() {
 
                         {/* Facebook Link Button */}
                         <a 
-                          href="https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr" 
-                          target="_blank" 
+                          href={https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr} 
+                          target="_blank"  
                           rel="noopener noreferrer"
                           className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
                         >
@@ -764,7 +789,7 @@ export default function App() {
                             </div>
                             <div className="text-left">
                               <p className="font-bold text-[#4d3437] text-sm">Facebook</p>
-                              <p className="text-xs text-[#825c61] font-light">World's Savoury Paris</p>
+                              <p className="text-xs text-[#825c61] font-light">{fbHandle}</p>
                             </div>
                           </div>
                           <span className="text-[#b76e79] font-bold group-hover:translate-x-1 transition-transform">➔</span>
@@ -787,7 +812,7 @@ export default function App() {
                           allowFullScreen={false} 
                           loading="lazy" 
                           referrerPolicy="no-referrer-when-downgrade"
-                          title="World's Savoury Beni Saf "
+                          title="World's Savoury Beni Saf"
                         />
                       </div>
                     </div>
@@ -973,10 +998,12 @@ export default function App() {
               )}
             </AnimatePresence>
 
+
+
             {/* AESTHETIC REUSABLE ROSE BANNER FOOTER */}
             <footer className="mt-12 bg-[#fff5f7] border-t border-[#ffd1dc] py-8 text-center text-[#9b7379] text-xs font-serif tracking-widest">
               <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-                <p>© 2026 World's Savoury • L'excellence et le plaisir sur-mesure</p>
+                <p>© 2026 {brandName} • L'excellence et le plaisir sur-mesure</p>
                 <div className="flex flex-col items-center sm:items-end space-y-2">
                   <div className="flex space-x-4">
                     <a href="#" onClick={(e) => { e.preventDefault(); setCurrentTab('landing'); }} className="hover:text-[#b76e79] transition-colors leading-none">Revoir l'introduction</a>
