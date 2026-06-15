@@ -48,6 +48,18 @@ const MAISON_CONFIG = {
   instaHandle: "@worlds.savoury"                      // Le nom ou pseudonyme d'Instagram affiché
 };
 
+// Helper function to resolve static images correctly in Vite, handling absolute or relative paths
+const resolveImgSrc = (path: string): string => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+    return path;
+  }
+  // Strip any leading ./ or /
+  const file = path.replace(/^\.?\//, '');
+  // Return resolved path from the server root
+  return '/' + file;
+};
+
 const MENU_ITEMS: MenuItem[] = [
   // --- CATEGORY : Cakes (Exactly 7 products) ---
   {
@@ -55,49 +67,49 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Gâteau Cake de Crêve ",
     category: "Cakes",
     description: "35cm sur 28cm pour 30 personnes",
-    imagePlaceholder: "./tarte1.jpg"
+    imagePlaceholder: "tarte1.jpg"
   },
   {
     id: 'cake2',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
-    imagePlaceholder: "./tartr2.jpg"
+    imagePlaceholder: "tartr2.jpg"
   },
   {
     id: 'cake3',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12 pour 4 personnes",
-    imagePlaceholder: "./tarte3.jpg"
+    imagePlaceholder: "tarte3.jpg"
   },
   {
     id: 'cake4',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 7 personnes",
-    imagePlaceholder: "./tarte4.jpg"
+    imagePlaceholder: "tarte4.jpg"
   },
   {
     id: 'cake5',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 15 personnes",
-    imagePlaceholder: "./tarte5.jpg"
+    imagePlaceholder: "tarte5.jpg"
   },
   {
     id: 'cake6',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 16cm pour 6 personnes",
-    imagePlaceholder: "./tarte6.jpg"
+    imagePlaceholder: "tarte6.jpg"
   },
   {
     id: 'cake7',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12cm pour 3 personnes",
-    imagePlaceholder: "./tarte7.jpg"
+    imagePlaceholder: "tarte7.jpg"
   },
 
   // --- CATEGORY : Gâteaux (Exactly 1 product) ---
@@ -106,7 +118,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "k3ik3at",
     category: "Gâteaux",
     description: "Emplacement pour votre description personnalisée de gâteau individuel ou d'entremets délicat. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
-    imagePlaceholder: "./1.jpg"
+    imagePlaceholder: "1.jpg"
   },
 
   // --- CATEGORY : Cupcakes (Exactly 1 product) ---
@@ -115,7 +127,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Cupcake ",
     category: "Cupcakes",
     description: "Emplacement pour votre description personnalisée de cupcakes. Détaillez vos saveurs de génoise et de glaçage onctueux.",
-    imagePlaceholder: "./cup.jpg"
+    imagePlaceholder: "cup.jpg"
   },
 
   // --- CATEGORY : Chocolat personnalisé (Exactly 1 product) ---
@@ -124,7 +136,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Chocolat Fin Personnalisé",
     category: "Chocolat personnalisé",
     description: "Emplacement pour vos tablettes gravées, écritures dorées ou chocolats monogrammes fins à personnaliser selon vos goûts.",
-    imagePlaceholder: "./prs.jpg"
+    imagePlaceholder: "prs.jpg"
   },
 
   // --- CATEGORY : Fleur au chocolat (Exactly 1 product) ---
@@ -133,7 +145,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: " Fleur en Chocolat",
     category: "Fleur au chocolat",
     description: "Emplacement pour vos roses ou bouquets sculptés entièrement à la main en chocolat fin. C'est le cadeau ou le centre de table idéal.",
-    imagePlaceholder: "./flr.jpg"
+    imagePlaceholder: "flr.jpg"
   }
 ];
 
@@ -366,7 +378,7 @@ export default function App() {
                 <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg bg-white relative">
                   <img
                     id="intro-brand-logo"
-                    src={brandLogo}
+                    src={resolveImgSrc(brandLogo)}
                     alt={`Logo ${brandName}`}
                     className="w-full h-full object-cover rounded-full"
                     referrerPolicy="no-referrer"
@@ -427,7 +439,7 @@ export default function App() {
                 >
                   <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#b76e79] shadow-sm transform group-hover:scale-105 transition-all duration-300">
                     <img 
-                      src={brandLogo} 
+                      src={resolveImgSrc(brandLogo)} 
                       alt="Mini Logo" 
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
@@ -635,7 +647,7 @@ export default function App() {
                           <div className="w-full h-44 rounded-xl overflow-hidden bg-[#fffbfb] relative border border-[#ffccd5] flex flex-col items-center justify-center text-center p-4">
                             {/* Real Image loaded from your directory */}
                             <img
-                              src={prod.imagePlaceholder}
+                              src={resolveImgSrc(prod.imagePlaceholder)}
                               alt={prod.name}
                               className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-105"
                               referrerPolicy="no-referrer"
@@ -651,7 +663,7 @@ export default function App() {
                                prod.category === 'Chocolat personnalisé' ? '🍫' : '🌹'}
                             </span>
                             <div className="mt-3 text-[10px] uppercase tracking-wide text-[#b76e79] font-medium">
-                              Image: {prod.imagePlaceholder.replace(/^\.\//, '')}
+                              Image: {prod.imagePlaceholder}
                             </div>
                             <div className="text-[9px] text-[#9b757a] italic mt-1 font-serif">
                               {prod.name}
@@ -711,7 +723,7 @@ export default function App() {
                     <div className="relative w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-amber-400 via-rose-300 to-amber-500 shadow-md">
                       <div className="w-full h-full rounded-full overflow-hidden bg-white">
                         <img 
-                          src={brandLogo} 
+                          src={resolveImgSrc(brandLogo)} 
                           alt={`${brandName} Signature Logo`} 
                           className="w-full h-full object-cover"
                           onError={(e) => {
