@@ -74,7 +74,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
-    imagePlaceholder: "/tart22.jpg"
+    imagePlaceholder: "/tarte2.jpg"
   },
   {
     id: 'cake3',
