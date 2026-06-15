@@ -826,19 +826,34 @@ export default function App() {
                     </div>
 
                     {/* Right block: Live Google Map Point */}
-                    <div className="bg-white/75 border border-[#ffccd5] rounded-3xl p-4 shadow-sm backdrop-blur-xs overflow-hidden flex flex-col justify-between min-h-[350px]">
-                      <div className="w-full h-full rounded-2xl overflow-hidden relative border border-[#ffccd5]">
+                    <div className="bg-white/75 border border-[#ffccd5] rounded-3xl p-5 shadow-sm backdrop-blur-xs flex flex-col justify-between min-h-[380px] space-y-4">
+                      <div className="text-left">
+                        <h2 className="font-serif text-2xl font-bold text-[#4d3437] mb-1">Notre Emplacement</h2>
+                        <p className="text-xs text-[#825c61]">Retrouvez notre atelier d'art culinaire à Béni Saf</p>
+                      </div>
+
+                      <div className="flex-1 rounded-2xl overflow-hidden relative border border-[#ffccd5] min-h-[220px]">
                         <iframe 
-                          src="https://share.google/Db0AfpQq43n0VyLFz" 
+                          src="https://maps.google.com/maps?q=Beni%20Saf%2C%20Algeria&t=&z=14&ie=UTF8&iwloc=&output=embed" 
                           width="100%" 
                           height="100%" 
-                          style={{ border: 0, minHeight: "300px" }} 
+                          style={{ border: 0, minHeight: "220px" }} 
                           allowFullScreen={false} 
                           loading="lazy" 
                           referrerPolicy="no-referrer-when-downgrade"
                           title="World's Savoury Beni Saf"
                         />
                       </div>
+
+                      <a 
+                        href="https://share.google/Db0AfpQq43n0VyLFz"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center space-x-2 py-3 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 font-bold text-xs text-[#b76e79] shadow-sm hover:shadow"
+                      >
+                        <MapPin className="w-4 h-4 text-[#b76e79] animate-pulse" />
+                        <span>Ouvrir dans Google Maps</span>
+                      </a>
                     </div>
 
                   </div>
