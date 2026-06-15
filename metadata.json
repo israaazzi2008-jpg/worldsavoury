@@ -1,0 +1,6 @@
+{
+  "name": "World's Savoury",
+  "description": "An elegant, animated landing page with falling cupcakes, rising sparkles, and an animated heart outline for World's Savoury bakery and catering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
