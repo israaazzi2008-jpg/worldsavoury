@@ -1,0 +1,995 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  ShoppingBag, 
+  Heart, 
+  Sparkles, 
+  Plus, 
+  X, 
+  Calendar, 
+  Utensils, 
+  ChefHat, 
+  ArrowRight, 
+  Search, 
+  CheckCircle2,
+  Phone,
+  MapPin,
+  Clock,
+  Info,
+  Menu as MenuIcon,
+  ChevronRight,
+  Send
+} from 'lucide-react';
+
+// French types for items
+interface MenuItem {
+  id: string;
+  name: string;
+  category: 'Cakes' | 'Gâteaux' | 'Cupcakes' | 'Chocolat personnalisé' | 'Fleur au chocolat';
+  description: string;
+  imagePlaceholder: string; // Describes the image theme
+}
+
+const MENU_ITEMS: MenuItem[] = [
+  // Cakes
+  {
+    id: 'c1',
+    name: "Le Gâteau Signature Royal",
+    category: "Cakes",
+    description: "Un gâteau de fête majestueux décoré de feuilles d'or et de crème onctueuse. Entièrement personnalisable pour vos plus beaux événements.",
+    imagePlaceholder: "Gâteau de mariage élégant décoré de roses pastel"
+  },
+  {
+    id: 'c2',
+    name: "Le Cake Rustique aux Agrumes",
+    category: "Cakes",
+    description: "Un gâteau traditionnel moelleux, infusé de zestes d'agrumes biologiques confits et d'un sirop secret à la fleur d'oranger.",
+    imagePlaceholder: "Cake marbré doré aux fruits confits"
+  },
+  {
+    id: 'c3',
+    name: "L'Impérial Caractère Chocolat",
+    category: "Cakes",
+    description: "Une pièce maîtresse étagée pour tous les amoureux de cacao fin, alliant légèreté aérienne et intensité aromatique.",
+    imagePlaceholder: "Gâteau gourmand au chocolat noir brillant"
+  },
+  // Gâteaux
+  {
+    id: 'g1',
+    name: "L'Élixir Framboise & Vanille",
+    category: "Gâteaux",
+    description: "Biscuit fondant surmonté d'un délicat coulis de framboises sauvages fraîches et d'une mousseline parfumée à la vanille bourbon.",
+    imagePlaceholder: "Gâteau individuel à la framboise brillante"
+  },
+  {
+    id: 'g2',
+    name: "Symphonie Caramel Beurre Salé",
+    category: "Gâteaux",
+    description: "Une dacquoise croustillante aux noisettes, drapée d'un caramel d'Isigny onctueux de notre enfance et d'une touche de fleur de sel.",
+    imagePlaceholder: "Entremets moderne beige avec glaçage caramel"
+  },
+  // Cupcakes
+  {
+    id: 'cp1',
+    name: "Cupcake Nuage Framboise",
+    category: "Cupcakes",
+    description: "Cœur fondant fruits des bois, coiffé d'un dôme de crème au cream cheese veloutée et d'une framboise fraîche.",
+    imagePlaceholder: "Cupcake rose décoré de perles de sucre"
+  },
+  {
+    id: 'cp2',
+    name: "Cupcake Trésor de Pistache",
+    category: "Cupcakes",
+    description: "Moelleux à la pistache d'Iran grillée, frosting aérien et éclats croustillants de pistaches pralinées.",
+    imagePlaceholder: "Cupcake pistache aux éclats croquants"
+  },
+  {
+    id: 'cp3',
+    name: "Cupcake Spiced Cacao Doré",
+    category: "Cupcakes",
+    description: "Un gâteau cacao intense rehaussé de notes de cannelle de Ceylan avec éclats croustillants saupoudrés d'ambre de sucre.",
+    imagePlaceholder: "Cupcake chocolat avec pépites d'or comestibles"
+  },
+  // Chocolat personnalisé
+  {
+    id: 'ch1',
+    name: "Tablette Monogramme d'Amour",
+    category: "Chocolat personnalisé",
+    description: "Chocolat grand cru (noir, lait ou blanc) personnalisé avec vos initiales gravées et de jolis motifs artisanaux dorés.",
+    imagePlaceholder: "Tablette de chocolat fine avec moulures personnalisées"
+  },
+  {
+    id: 'ch2',
+    name: "Écrin Mystérieux Lettres Douces",
+    category: "Chocolat personnalisé",
+    description: "Un assortiment de cubes chocolatés fins formant le message attentionné de votre choix pour surprendre vos proches.",
+    imagePlaceholder: "Boîte de chocolats carrés formant de doux mots"
+  },
+  // Fleurs au chocolat
+  {
+    id: 'f1',
+    name: "Le Bouquet Rose de Velours",
+    category: "Fleur au chocolat",
+    description: "Roses éternelles entièrement façonnées à la main par notre maître chocolatier en chocolat de couverture rose framboise.",
+    imagePlaceholder: "Bouquet élégant sculpté en roses en chocolat"
+  },
+  {
+    id: 'f2',
+    name: "Pétales d'Or Sablés Fleur",
+    category: "Fleur au chocolat",
+    description: "Une fleur sculptée combinant la finesse du chocolat blanc caramélisé croustillant et des éclats de sablés traditionnels.",
+    imagePlaceholder: "Fleur chocolatée complexe aux teintes vanille ambrée"
+  }
+];
+
+export default function App() {
+  const [currentTab, setCurrentTab] = useState<'landing' | 'menu' | 'about' | 'contact'>('landing');
+  const [transitioning, setTransitioning] = useState(false);
+  
+  // Custom states for interactive cupcakes & sparkles in intro screen
+  const [cupcakes, setCupcakes] = useState<{ id: number; left: number; speed: number; rot: number }[]>([]);
+  const [sparkles, setSparkles] = useState<{ id: number; left: number; size: number }[]>([]);
+
+  // Menu, filters and search
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  // Custom interactive order modal states
+  const [selectedProduct, setSelectedProduct] = useState<MenuItem | null>(null);
+  const [clientName, setClientName] = useState('');
+  const [spongeChoice, setSpongeChoice] = useState<'vanille' | 'chocolat'>('vanille');
+  const [fillings, setFillings] = useState<string[]>([]);
+  const [cakeText, setCakeText] = useState('');
+  const [deliveryMethod, setDeliveryMethod] = useState<'Livraison' | 'Retrait la maison'>('Retrait la maison');
+  const [clientRemark, setClientRemark] = useState('');
+  
+  // Customizable whatsapp number (leaving standard customizable layout)
+  const [whatsappNumber, setWhatsappNumber] = useState('+33600000000'); // Standard replaceable layout
+
+  // List of available fillings
+  const AVAILABLE_FILLINGS = [
+    { id: 'ganache_cho', label: 'Ganache Chocolat' },
+    { id: 'banane', label: 'Banane' },
+    { id: 'caramel', label: 'Caramel' },
+    { id: 'noix', label: 'Noix' },
+    { id: 'fraise', label: 'Fraise' },
+    { id: 'creme_vanille', label: 'Crème Vanille' },
+    { id: 'pistache', label: 'Pistache' }
+  ];
+
+  // Continuous global falling animation background loops
+  useEffect(() => {
+    let cupcakeCounter = 0;
+    let sparkleCounter = 0;
+
+    const cInterval = setInterval(() => {
+      const item = {
+        id: cupcakeCounter++,
+        left: Math.random() * 95,
+        speed: 4 + Math.random() * 2,
+        rot: Math.random() * 360
+      };
+      setCupcakes(prev => [...prev, item]);
+      setTimeout(() => {
+        setCupcakes(prev => prev.filter(c => c.id !== item.id));
+      }, 6000);
+    }, 450);
+
+    const sInterval = setInterval(() => {
+      const item = {
+        id: sparkleCounter++,
+        left: Math.random() * 95,
+        size: 4 + Math.random() * 4
+      };
+      setSparkles(prev => [...prev, item]);
+      setTimeout(() => {
+        setSparkles(prev => prev.filter(s => s.id !== item.id));
+      }, 3500);
+    }, 220);
+
+    return () => {
+      clearInterval(cInterval);
+      clearInterval(sInterval);
+    };
+  }, []);
+
+  // Independent auto-redirect loop for landing page
+  useEffect(() => {
+    if (currentTab !== 'landing') return;
+
+    const autoRedirect = setTimeout(() => {
+      setTransitioning(true);
+      setTimeout(() => {
+        setCurrentTab('menu');
+        setTransitioning(false);
+      }, 800);
+    }, 2200);
+
+    return () => {
+      clearTimeout(autoRedirect);
+    };
+  }, [currentTab]);
+
+  const triggerSkip = () => {
+    if (transitioning) return;
+    setTransitioning(true);
+    setTimeout(() => {
+      setCurrentTab('menu');
+      setTransitioning(false);
+    }, 600);
+  };
+
+  const toggleFilling = (label: string) => {
+    setFillings(prev => 
+      prev.includes(label) ? prev.filter(f => f !== label) : [...prev, label]
+    );
+  };
+
+  // Construct the Whatsapp order text
+  const sendOrderToWhatsapp = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedProduct) return;
+    if (!clientName.trim()) {
+      alert("S'il vous plaît, saisissez votre nom complet.");
+      return;
+    }
+
+    const isCakeOrGateau = selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux';
+
+    let text = `✨ *NOUVELLE COMMANDE - WORLD'S SAVOURY* ✨\n\n`;
+    text += `👤 *Client :* ${clientName}\n`;
+    text += `🧁 *Produit :* ${selectedProduct.name}\n`;
+    text += `📦 *Catégorie :* ${selectedProduct.category}\n\n`;
+
+    if (isCakeOrGateau) {
+      text += `🎂 *Spécifications du Gâteau :*\n`;
+      text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🌼' : 'Chocolat 🍫'}\n`;
+      text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
+      if (cakeText.trim()) {
+        text += `• *Inscription sur le gâteau :* "${cakeText}"\n`;
+      }
+      text += `\n`;
+    }
+
+    text += `🚚 *Mode de retrait :* ${deliveryMethod}\n`;
+    
+    if (clientRemark.trim()) {
+      text += `📝 *Remarque spéciale :* ${clientRemark}\n`;
+    }
+
+    text += `\n💌 _Envoyé depuis le menu interactif de World's Savoury_`;
+
+    const encodedText = encodeURIComponent(text);
+    const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
+    
+    // Open in window
+    window.open(whatsappURL, '_blank');
+    
+    // Reset modal state
+    setSelectedProduct(null);
+    setClientName('');
+    setFillings([]);
+    setCakeText('');
+    setClientRemark('');
+  };
+
+  // Filter products
+  const filteredProducts = MENU_ITEMS.filter(prod => {
+    const matchesCategory = selectedCategory === 'all' || prod.category === selectedCategory;
+    const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          prod.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  return (
+    <div className="bg-gradient-to-b from-[#fff5f6] via-[#fffbfb] to-[#fff0f3] text-[#4a3538] font-sans min-h-screen flex flex-col relative selection:bg-[#fff0f3] selection:text-[#7d3b45] overflow-x-hidden">
+      
+      {/* BACKGROUND HEARTS FLOATING SUBTLY IN BG FOR ROMANTIC BABY PINK EXPERIENCE */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25 z-0">
+        <div className="absolute top-[10%] left-[5%] text-amber-400 text-3xl animate-pulse">✦</div>
+        <div className="absolute top-[40%] right-[8%] text-[#cfa873] text-4xl animate-bounce duration-1000">✧</div>
+        <div className="absolute bottom-[10%] left-[12%] text-amber-200 text-4xl animate-pulse">✦</div>
+        <div className="absolute top-[75%] right-[15%] text-[#d4af37]/60 text-2xl">✧</div>
+      </div>
+
+      {/* CONTINUOUS FALLING CUPCAKES & SPARKLES IN BACKGROUND */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {cupcakes.map(cup => (
+          <div
+            key={cup.id}
+            className="absolute top-[-40px] text-xs sm:text-sm text-amber-400/80 pointer-events-none select-none animate-fall"
+            style={{
+              left: `${cup.left}%`,
+              animationDuration: `${cup.speed + 1}s`,
+              transform: `rotate(${cup.rot}deg)`
+            }}
+          >
+            ✧
+          </div>
+        ))}
+
+        {sparkles.map(sp => (
+          <div
+            key={sp.id}
+            className="absolute bottom-[20px] bg-[#ffd1dc] rounded-full pointer-events-none select-none animate-floatSparkle"
+            style={{
+              left: `${sp.left}%`,
+              width: `${sp.size}px`,
+              height: `${sp.size}px`,
+              animationDuration: '3s'
+            }}
+          />
+        ))}
+      </div>
+
+      <AnimatePresence mode="wait">
+        
+        {/* =============== 1. INTRO / LANDING VIEW =============== */}
+        {currentTab === 'landing' && (
+          <motion.div
+            key="landing"
+            className="fixed inset-0 bg-gradient-to-br from-[#ffffff] via-[#fffbfa] to-[#fff0f3] flex flex-col justify-center items-center text-center cursor-pointer overflow-hidden z-50 px-4"
+            title="Cliquez n'importe où pour passer de suite au menu"
+            onClick={triggerSkip}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: transitioning ? 0 : 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="max-w-md w-full flex flex-col items-center gap-6 select-none z-10">
+              
+              {/* Corrected Rounded Logo directly mirroring user preference */}
+              <div className="relative w-44 h-44 sm:w-52 h-52 animate-logoIn">
+                <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg bg-white relative">
+                  <img
+                    id="intro-brand-logo"
+                    src="logo.jpg"
+                    alt="Logo World's Savoury"
+                    className="w-full h-full object-cover rounded-full"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400";
+                    }}
+                  />
+                </div>
+                {/* Visual sparkles around logo */}
+                <div className="absolute -top-3 -right-3 text-2xl animate-spin text-amber-400">✨</div>
+                <div className="absolute -bottom-2 -left-2 text-2xl animate-pulse text-amber-500">✦</div>
+              </div>
+
+              {/* Title Calligraphy font matching "Great Vibes" perfectly */}
+              <div>
+                <h1 className="font-vibes text-5xl sm:text-7.5xl text-[#b76e79] drop-shadow-sm select-none leading-none pt-2">
+                  World's Savoury
+                </h1>
+                <p className="font-serif text-[11px] sm:text-xs tracking-[0.25em] uppercase text-[#a0747a] mt-2">
+                  L'Art de la Haute Pâtisserie &amp; Chocolaterie
+                </p>
+              </div>
+
+              {/* CUTE DRAWN VECTOR HEART WITH HEARTBEAT EFFECT */}
+              <svg 
+                className="w-24 h-24 sm:w-32 h-32 fill-none stroke-[#b76e79] stroke-[12] stroke-linecap-round stroke-linejoin-round animate-drawHeartAndPulse drop-shadow-md mt-2" 
+                viewBox="0 0 512 512"
+              >
+                <path d="M256 460
+                  C180 420, 90 340, 110 240
+                  C125 170, 190 150, 230 180
+                  C245 195, 250 210, 256 220
+                  C262 210, 267 195, 282 180
+                  C322 150, 387 170, 402 240
+                  C422 340, 332 420, 256 460Z" 
+                />
+              </svg>
+
+              <div className="text-[11px] font-mono tracking-widest text-[#b76e79]/80 uppercase mt-4 animate-pulse">
+                Accès au Menu en cours • Cliquer pour passer
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* =============== 2. ACTIVE SITE INTERFACES =============== */}
+        {currentTab !== 'landing' && (
+          <div className="flex-1 flex flex-col z-10">
+            
+            {/* STICKY LUXURY NAVIGATION */}
+            <header className="sticky top-0 bg-[#fff5f7]/95 backdrop-blur-md border-b border-[#ffd1dc] z-40 transition-all duration-300">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+                
+                {/* Logo & Calligraphy Signature */}
+                <div 
+                  className="flex items-center space-x-3 cursor-pointer group"
+                  onClick={() => setCurrentTab('landing')}
+                >
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#b76e79] shadow-sm transform group-hover:scale-105 transition-all duration-300">
+                    <img 
+                      src="logo.jpg" 
+                      alt="Mini Logo" 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400";
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <h2 className="font-vibes text-3xl sm:text-4xl text-[#b76e79] select-none leading-none pt-1">
+                      World's Savoury
+                    </h2>
+                    <p className="text-[9px] tracking-widest uppercase text-[#9e767c] font-mono">Pâtisserie</p>
+                  </div>
+                </div>
+
+                {/* Main Nav Items */}
+                <nav className="hidden md:flex space-x-8 text-sm font-medium">
+                  {[
+                    { id: 'menu', label: 'Notre Carte' },
+                    { id: 'about', label: 'À Propos' },
+                    { id: 'contact', label: 'Nous Contacter' }
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setCurrentTab(tab.id as any)}
+                      className={`relative py-2 tracking-wider transition-colors duration-200 ${
+                        currentTab === tab.id 
+                          ? 'text-[#b76e79] font-bold' 
+                          : 'text-[#7a5c5f] hover:text-[#b76e79]'
+                      }`}
+                    >
+                      {tab.label}
+                      {currentTab === tab.id && (
+                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#b76e79] rounded-full" />
+                      )}
+                    </button>
+                  ))}
+                </nav>
+
+                {/* Mobile Floating Action Nav */}
+                <div className="flex md:hidden space-x-2">
+                  <button 
+                    onClick={() => setCurrentTab('menu')}
+                    className={`p-2 rounded-full ${currentTab === 'menu' ? 'bg-[#ffccd5] text-[#b76e79]' : 'text-[#7a5c5f]'}`}
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={() => setCurrentTab('about')}
+                    className={`p-2 rounded-full ${currentTab === 'about' ? 'bg-[#ffccd5] text-[#b76e79]' : 'text-[#7a5c5f]'}`}
+                  >
+                    <Info className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={() => setCurrentTab('contact')}
+                    className={`p-2 rounded-full ${currentTab === 'contact' ? 'bg-[#ffccd5] text-[#b76e79]' : 'text-[#7a5c5f]'}`}
+                  >
+                    <Phone className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </header>
+
+            {/* MAIN ROUTER CONTAINER */}
+            <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              
+              {/* ================= PAGE: OUR INTERACTIVE MENU ================= */}
+              {currentTab === 'menu' && (
+                <div className="space-y-8 animate-fadeIn">
+                  
+                  {/* Luxury Welcome banner */}
+                  <div className="bg-white/80 border border-[#e5c5ca] rounded-3xl p-8 sm:p-10 text-center space-y-5 shadow-sm backdrop-blur-md relative overflow-hidden ring-1 ring-amber-200/50">
+                    {/* Golden luxury ambient background glows */}
+                    <div className="absolute top-0 left-1/4 w-32 h-32 bg-amber-100/40 rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-rose-100/40 rounded-full blur-3xl pointer-events-none" />
+
+                    {/* Elegant luxurious background flower vector */}
+                    <div className="absolute right-[-35px] bottom-[-35px] opacity-[0.16] text-[#b76e79] pointer-events-none select-none z-0">
+                      <svg className="w-48 h-48 sm:w-64 sm:h-64 fill-none stroke-current stroke-[1]" viewBox="0 0 100 100">
+                        <g transform="translate(50, 50)">
+                          {/* Inner details / Pistils */}
+                          <circle cx="0" cy="0" r="6" className="stroke-current" strokeWidth="0.8" />
+                          <circle cx="0" cy="0" r="2" className="fill-[#b76e79]" />
+                          
+                          {/* 5 beautifully shaped peony/rose petals with organic round curves */}
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(72)" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(144)" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(216)" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(288)" className="stroke-current" strokeWidth="0.8" />
+
+                          {/* Accent round backing lines */}
+                          <g transform="rotate(36) scale(0.8)" className="opacity-80">
+                            <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" className="stroke-current" strokeWidth="0.6" />
+                            <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(72)" className="stroke-current" strokeWidth="0.6" />
+                            <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(144)" className="stroke-current" strokeWidth="0.6" />
+                            <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(216)" className="stroke-current" strokeWidth="0.6" />
+                            <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(288)" className="stroke-current" strokeWidth="0.6" />
+                          </g>
+
+                          {/* Radiative pollen lines */}
+                          <line x1="0" y1="0" x2="0" y2="-15" className="stroke-current" strokeWidth="0.6" strokeDasharray="1 2" />
+                          <line x1="0" y1="0" x2="14" y2="-5" className="stroke-current" strokeWidth="0.6" strokeDasharray="1 2" />
+                          <line x1="0" y1="0" x2="9" y2="12" className="stroke-current" strokeWidth="0.6" strokeDasharray="1 2" />
+                          <line x1="0" y1="0" x2="-9" y2="12" className="stroke-current" strokeWidth="0.6" strokeDasharray="1 2" />
+                          <line x1="0" y1="0" x2="-14" y2="-5" className="stroke-current" strokeWidth="0.6" strokeDasharray="1 2" />
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="absolute left-[-25px] top-[-25px] opacity-[0.10] text-[#b76e79] pointer-events-none select-none z-0">
+                      <svg className="w-40 h-40 fill-none stroke-current stroke-[1]" viewBox="0 0 100 100">
+                        <g transform="translate(50, 50) rotate(15) scale(0.9)">
+                          <circle cx="0" cy="0" r="5" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(72)" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(144)" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(216)" className="stroke-current" strokeWidth="0.8" />
+                          <path d="M0,0 C-15,-20 -25,-38 0,-45 C25,-38 15,-20 0,0" transform="rotate(288)" className="stroke-current" strokeWidth="0.8" />
+                        </g>
+                      </svg>
+                    </div>
+
+                    <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-50 to-[#fff0f3] border border-amber-300/60 px-4 py-1.5 rounded-full text-[10px] text-[#9c7743] font-serif uppercase tracking-[0.2em] font-semibold relative z-10">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                      <span>Haute Couture Pâtissière • Créatrice d'Émotions</span>
+                    </div>
+
+                    <h1 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-[#4d3437] max-w-2xl mx-auto leading-tight relative z-10">
+                      Nos Créations de Rêve
+                    </h1>
+
+                    {/* Sophisticated divider line with gold-toned stars */}
+                    <div className="flex items-center justify-center space-x-3 max-w-xs mx-auto py-1 relative z-10">
+                      <div className="h-[1px] bg-gradient-to-r from-transparent to-[#e8c3cb] flex-1" />
+                      <span className="text-xs text-amber-500/80 tracking-widest leading-none">✦ ✦ ✦</span>
+                      <div className="h-[1px] bg-gradient-to-l from-transparent to-[#e8c3cb] flex-1" />
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-[#735155] max-w-xl mx-auto leading-relaxed font-light font-serif italic relative z-10">
+                      "Chaque création de notre Maison est une pièce d'art éphémère ciselée sur-mesure. Sélectionnez un joyau pâtissier ci-dessous pour personnaliser vos génoises, garnitures et écritures uniques avant de transmettre votre récapitulatif directement à notre Maison."
+                    </p>
+ 
+                    {/* Search Field */}
+                    <div className="max-w-md mx-auto relative pt-4">
+                      <Search className="w-4 h-4 text-[#bc9ea2] absolute left-4.5 top-7 font-semibold" />
+                      <input 
+                        type="text"
+                        placeholder="Rechercher par saveur, ingrédient ou nom..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full bg-white/95 border border-[#e8c3cb] text-xs sm:text-sm py-3 pl-11 pr-11 rounded-full focus:outline-none focus:ring-1 focus:ring-amber-400 focus:border-amber-400 font-serif tracking-wider transition-all placeholder:text-[#bcb2b4] shadow-sm"
+                      />
+                      {searchQuery && (
+                        <button 
+                          onClick={() => setSearchQuery('')}
+                          className="absolute right-3.5 top-4.5 p-1 text-[#ae8c91] hover:text-[#7d3b45]"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* French Category Tabs */}
+                  <div className="flex space-x-2 overflow-x-auto pb-3 border-b border-[#ffd1dc] scrollbar-thin">
+                    {[
+                      { id: 'all', label: 'Toutes les douceurs' },
+                      { id: 'Cakes', label: 'Cakes' },
+                      { id: 'Gâteaux', label: 'Gâteaux' },
+                      { id: 'Cupcakes', label: 'Cupcakes' },
+                      { id: 'Chocolat personnalisé', label: 'Chocolat personnalisé' },
+                      { id: 'Fleur au chocolat', label: 'Fleurs au chocolat' }
+                    ].map(cat => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.id)}
+                        className={`px-4 py-2 rounded-full text-xs font-medium tracking-wider whitespace-nowrap uppercase transition-all duration-300 ${
+                          selectedCategory === cat.id
+                            ? 'bg-[#b76e79] text-white shadow-md'
+                            : 'bg-white/80 text-[#7a5c5f] border border-[#ffeed1] hover:bg-[#ffeef2]'
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Products Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredProducts.map(prod => (
+                      <div
+                        key={prod.id}
+                        onClick={() => {
+                          setSelectedProduct(prod);
+                          setFillings([]);
+                        }}
+                        className="bg-white/80 rounded-2xl border border-[#ffccd5] p-5 flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:border-[#b76e79] cursor-pointer group"
+                      >
+                        <div className="space-y-4">
+                          
+                          {/* Image Placeholder Frame mimicking high end bakery photo */}
+                          <div className="w-full h-44 rounded-xl overflow-hidden bg-[#fffbfb] relative border border-[#ffccd5] flex flex-col items-center justify-center text-center p-4">
+                            <span className="text-4xl text-center group-hover:scale-110 transition-transform duration-300">
+                              {prod.category === 'Cakes' || prod.category === 'Gâteaux' ? '🎂' : 
+                               prod.category === 'Cupcakes' ? '🧁' : 
+                               prod.category === 'Chocolat personnalisé' ? '🍫' : '🌹'}
+                            </span>
+                            <div className="mt-3 text-[10px] uppercase tracking-wide text-[#b76e79] font-medium">
+                              Place à l'image du produit
+                            </div>
+                            <div className="text-[9px] text-[#9b757a] italic mt-1 font-serif">
+                              {prod.imagePlaceholder}
+                            </div>
+                          </div>
+
+                          {/* Product Meta */}
+                          <div className="space-y-1.5Packed">
+                            <div className="flex justify-between items-start">
+                              <span className="text-[9px] font-mono tracking-widest uppercase text-pink-600 bg-pink-100 px-2 py-0.5 rounded-full">
+                                {prod.category}
+                              </span>
+                            </div>
+                            <h3 className="text-base font-serif font-bold text-[#4d3437] group-hover:text-[#b76e79] transition-colors">
+                              {prod.name}
+                            </h3>
+                            <p className="text-xs text-[#825c61] leading-relaxed">
+                              {prod.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Order Prompt */}
+                        <div className="mt-4 pt-3 border-t border-[#ffeef2] flex items-center justify-between text-[#b76e79] font-medium text-xs group-hover:translate-x-1 transition-transform">
+                          <span>Sagesse &amp; Personnaliser</span>
+                          <ArrowRight className="w-4 h-4 text-[#b76e79]" />
+                        </div>
+                      </div>
+                    ))}
+
+                    {filteredProducts.length === 0 && (
+                      <div className="col-span-full py-12 text-center text-[#9b757a] font-serif">
+                        <p className="text-base">Aucune délicatesse trouvée selon votre recherche.</p>
+                        <button 
+                          onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }}
+                          className="text-xs uppercase text-pink-600 underline mt-2"
+                        >
+                          Réinitialiser les filtres
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              )}
+
+              {/* ================= PAGE: ABOUT US / "À PROPOS" ================= */}
+              {currentTab === 'about' && (
+                <div className="max-w-3xl mx-auto bg-white/80 border border-[#e5c5ca] rounded-3xl p-6 sm:p-10 space-y-6 shadow-md backdrop-blur-md animate-fadeIn ring-1 ring-amber-100/50">
+                  <div className="text-center space-y-2">
+                    <h1 className="font-vibes text-5xl text-[#b76e79] pt-2">L'Histoire de World's Savoury</h1>
+                    <p className="font-serif text-[10px] tracking-widest uppercase text-[#9e767c]">Artisanal, Naturel &amp; Raffiné</p>
+                  </div>
+
+                  <div className="w-full bg-[#fffcfd] border border-amber-200/60 rounded-2xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-sm">
+                    {/* Ringed luxurious logo container */}
+                    <div className="relative w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-amber-400 via-rose-300 to-amber-500 shadow-md">
+                      <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                        <img 
+                          src="logo.jpg" 
+                          alt="World's Savoury Signature Logo" 
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400";
+                          }}
+                        />
+                      </div>
+                      <div className="absolute bottom-0 right-0 bg-amber-400 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs border border-white">✦</div>
+                    </div>
+                    
+                    <div className="mt-4 text-xs font-serif uppercase text-[#9c7743] tracking-[0.2em] font-bold">Notre Signature d'Artisans de Prestige</div>
+                    <p className="text-[11px] text-[#825c61] max-w-sm mx-auto italic mt-1 font-serif">
+                      "Chaque pièce est sculptée de nos mains d'artisans, alliant noblesse des matières et orfèvrerie créative pour suspendre le temps."
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 text-xs sm:text-sm text-[#664b4f] leading-relaxed font-light">
+                    <p>
+                      Bienvenue au cœur du raffinement de **World's Savoury**. Notre entreprise est née d'une vision simple : transformer des produits nobles de notre terroir en chefs-d'œuvre de joaillerie pâtissière. Spécialisés dans les gâteaux d'exception, les chocolats monogrammes et les fleurs en chocolat sculptées à la main, nous faisons de chaque bouchée une expérience sensorielle inoubliable.
+                    </p>
+                    <p>
+                      Nos desserts n'ont pas de prix pré-définis car nous croyons au sur-mesure absolu. Chaque commande est une pièce d'art unique, ciselée selon vos souhaits. De la douceur parfumée de nos cupcakes aux décors floraux sculptants de nos assortiments en cacao, nous allions les saveurs subtiles de la pistache, de la framboise fraîche, ou de la ganache fondante à une technique d'une précision chirurgicale.
+                    </p>
+                    <p>
+                      Merci de nous accorder votre confiance pour embellir vos fêtes de famille, fiançailles, mariages ou de simples instantanés gourmands.
+                    </p>
+                  </div>
+
+                  <div className="border-t border-[#ffd1dc] pt-6 flex justify-between items-center text-xs text-[#a0747a]">
+                    <span>Ingrédients 100% Bio</span>
+                    <span>•</span>
+                    <span>Beurre d'Appellation</span>
+                    <span>•</span>
+                    <span>Fabrication Artisanale</span>
+                  </div>
+                </div>
+              )}
+
+              {/* ================= PAGE: CONTACT US ================= */}
+              {currentTab === 'contact' && (
+                <div className="max-w-4xl mx-auto space-y-8 animate-fadeIn text-center">
+                  <div className="space-y-2">
+                    <h1 className="font-vibes text-5xl text-[#b76e79] pt-2">Suivez-nous &amp; Retrouvez-nous</h1>
+                    <p className="font-serif text-[10px] tracking-widest uppercase text-[#9e767c]">Suivez nos créations au quotidien</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                    
+                    {/* Left block: Social links (Facebook & Instagram only) */}
+                    <div className="bg-white/75 border border-[#ffccd5] rounded-3xl p-8 shadow-sm backdrop-blur-xs flex flex-col justify-center space-y-8 min-h-[350px]">
+                      <h2 className="font-serif text-2xl font-bold text-[#4d3437] mb-2 text-left">Nos Réseaux Sociaux</h2>
+                      
+                      <div className="grid grid-cols-1 gap-4">
+                        {/* Instagram Link Button */}
+                        <a 
+                          href="https://instagram.com" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
+                        >
+                          <div className="flex items-center space-x-4">
+                            <div className="p-3 bg-white rounded-full text-pink-600 shadow-xs group-hover:scale-105 transition-transform">
+                              <svg className="w-6 h-6 fill-current text-[#b76e79]" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                              </svg>
+                            </div>
+                            <div className="text-left">
+                              <p className="font-bold text-[#4d3437] text-sm">Instagram</p>
+                              <p className="text-xs text-[#825c61] font-light">@worlds.savoury</p>
+                            </div>
+                          </div>
+                          <span className="text-[#b76e79] font-bold group-hover:translate-x-1 transition-transform">➔</span>
+                        </a>
+
+                        {/* Facebook Link Button */}
+                        <a 
+                          href="https://facebook.com" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-5 bg-gradient-to-r from-[#ffeef2] to-[#fff5f7] hover:from-[#ffccd5] hover:to-[#ffd1dc] border border-[#ffccd5] rounded-2xl transition-all duration-300 group shadow-sm hover:shadow"
+                        >
+                          <div className="flex items-center space-x-4">
+                            <div className="p-3 bg-white rounded-full text-pink-600 shadow-xs group-hover:scale-105 transition-transform">
+                              <svg className="w-6 h-6 fill-current text-[#b76e79]" viewBox="0 0 24 24">
+                                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                              </svg>
+                            </div>
+                            <div className="text-left">
+                              <p className="font-bold text-[#4d3437] text-sm">Facebook</p>
+                              <p className="text-xs text-[#825c61] font-light">World's Savoury Paris</p>
+                            </div>
+                          </div>
+                          <span className="text-[#b76e79] font-bold group-hover:translate-x-1 transition-transform">➔</span>
+                        </a>
+                      </div>
+
+                      <div className="pt-2 text-xs text-[#825c61] text-left leading-relaxed">
+                        Retrouvez nos plus prestigieuses confections de gâteaux, notre atelier et nos coulisses artistiques directement en ligne !
+                      </div>
+                    </div>
+
+                    {/* Right block: Live Google Map Point */}
+                    <div className="bg-white/75 border border-[#ffccd5] rounded-3xl p-4 shadow-sm backdrop-blur-xs overflow-hidden flex flex-col justify-between min-h-[350px]">
+                      <div className="w-full h-full rounded-2xl overflow-hidden relative border border-[#ffccd5]">
+                        <iframe 
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.1420477443515!2d2.299583315674845!3d48.87456727928921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fc4ee881a7d%3A0xc07cf1fbd5508ca1!2s12%20Avenue%20des%20Champs-%C3%89lys%C3%A9es%2C%2075008%20Paris!5e0!3m2!1sfr!2sfr!4v1654000000000!5m2!1sfr!2sfr" 
+                          width="100%" 
+                          height="100%" 
+                          style={{ border: 0, minHeight: "300px" }} 
+                          allowFullScreen={false} 
+                          loading="lazy" 
+                          referrerPolicy="no-referrer-when-downgrade"
+                          title="World's Savoury de Paris"
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              )}
+
+            </main>
+
+            {/* SEAMLESS DIALOG FOR CUSTOM ORDERING (WHATSAPP MODAL POPUP) */}
+            <AnimatePresence>
+              {selectedProduct && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+                  <motion.div 
+                    className="bg-white rounded-3xl max-w-lg w-full p-6 border border-[#ffccd5] shadow-2xl relative overflow-y-auto max-h-[90vh]"
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.92 }}
+                  >
+                    {/* Close button */}
+                    <button 
+                      onClick={() => setSelectedProduct(null)}
+                      className="absolute top-4 right-4 text-[#a38f8f] hover:text-[#5c4a4a] transition-colors p-1"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+
+                    {/* Header */}
+                    <div className="text-center space-y-1.5 mb-5 select-none">
+                      <span className="text-4xl">
+                        {selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux' ? '🎂' : 
+                         selectedProduct.category === 'Cupcakes' ? '🧁' : 
+                         selectedProduct.category === 'Chocolat personnalisé' ? '🍫' : '🌹'}
+                      </span>
+                      <h3 className="font-serif text-2xl font-bold text-[#4d3437]">{selectedProduct.name}</h3>
+                      <p className="text-[10px] font-mono tracking-widest uppercase text-[#b76e79]">{selectedProduct.category}</p>
+                      <p className="text-[11px] text-[#825c61] max-w-sm mx-auto italic mt-1 leading-normal">
+                        {selectedProduct.description}
+                      </p>
+                    </div>
+
+                    {/* Interactive Custom Order Form */}
+                    <form onSubmit={sendOrderToWhatsapp} className="space-y-4 text-xs">
+                      
+                      {/* Name entry (Required) */}
+                      <div>
+                        <label className="block font-medium text-[#7d5257] mb-1">Votre Nom &amp; Prénom *</label>
+                        <input 
+                          type="text" 
+                          required 
+                          value={clientName}
+                          onChange={(e) => setClientName(e.target.value)}
+                          placeholder="Marie Lambert" 
+                          className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 text-xs focus:outline-none focus:ring-1 focus:ring-[#b76e79] focus:border-[#b76e79]"
+                        />
+                      </div>
+
+                      {/* Cake / Gâteaux Specific Selection */}
+                      {(selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux') && (
+                        <div className="space-y-3 bg-[#fff0f3] p-4 rounded-2xl border border-[#ffd1dc]">
+                          <p className="font-bold text-[#7d3b45] font-serif uppercase tracking-wider text-[10px]">
+                            Options de personnalisation du Gâteau
+                          </p>
+
+                          {/* Genoise selection (Radio buttons) */}
+                          <div>
+                            <label className="block text-[#704d51] mb-1.5 font-medium">1. Choisissez votre Génoise :</label>
+                            <div className="flex space-x-4">
+                              <label className="flex items-center space-x-2 cursor-pointer bg-white py-1.5 px-3 rounded-lg border border-[#ffccd5] text-[#4d3437]">
+                                <input 
+                                  type="radio" 
+                                  name="sponge" 
+                                  checked={spongeChoice === 'vanille'}
+                                  onChange={() => setSpongeChoice('vanille')}
+                                  className="accent-pink-600" 
+                                />
+                                <span>Génoise Vanille 🌼</span>
+                              </label>
+                              <label className="flex items-center space-x-2 cursor-pointer bg-white py-1.5 px-3 rounded-lg border border-[#ffccd5] text-[#4d3437]">
+                                <input 
+                                  type="radio" 
+                                  name="sponge" 
+                                  checked={spongeChoice === 'chocolat'}
+                                  onChange={() => setSpongeChoice('chocolat')}
+                                  className="accent-pink-600" 
+                                />
+                                <span>Génoise Chocolat 🍫</span>
+                              </label>
+                            </div>
+                          </div>
+
+                          {/* Fillings Selection (Multiple choice Checkboxes as requested) */}
+                          <div>
+                            <label className="block text-[#704d51] mb-1.5 font-medium">
+                              2. Choisissez votre garniture intérieure (plusieurs choix possibles) :
+                            </label>
+                            <div className="grid grid-cols-2 gap-2">
+                              {AVAILABLE_FILLINGS.map(fill => (
+                                <label 
+                                  key={fill.id} 
+                                  className="flex items-center space-x-2 bg-white py-2 px-3 rounded-lg border border-[#ffccd5] cursor-pointer hover:bg-pink-50 transition-colors"
+                                >
+                                  <input 
+                                    type="checkbox" 
+                                    checked={fillings.includes(fill.label)}
+                                    onChange={() => toggleFilling(fill.label)}
+                                    className="rounded border-[#ffccd5] text-pink-600 focus:ring-pink-500 accent-pink-600"
+                                  />
+                                  <span className="text-xs text-[#4d3437]">{fill.label}</span>
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Writing check/text over cake */}
+                          <div>
+                            <label className="block text-[#704d51] mb-1 font-medium">
+                              3. Inscription ou remarque à écrire sur le gâteau :
+                            </label>
+                            <input 
+                              type="text" 
+                              value={cakeText}
+                              onChange={(e) => setCakeText(e.target.value)}
+                              placeholder="Ex: 'Joyeux Anniversaire Lucie'" 
+                              className="w-full bg-white border border-[#ffccd5] rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-[#b76e79]"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Delivery choice (Applies to all) */}
+                      <div>
+                        <label className="block font-medium text-[#7d5257] mb-1">Mode de Récupération *</label>
+                        <div className="flex space-x-4">
+                          <label className="flex items-center space-x-2 cursor-pointer bg-[#fffbfb] py-2 px-4 rounded-xl border border-[#ffccd5] text-[#4d3437] flex-1">
+                            <input 
+                              type="radio" 
+                              name="delivery" 
+                              checked={deliveryMethod === 'Livraison'}
+                              onChange={() => setDeliveryMethod('Livraison')}
+                              className="accent-pink-600" 
+                            />
+                            <span>🚗 Livraison à domicile</span>
+                          </label>
+                          <label className="flex items-center space-x-2 cursor-pointer bg-[#fffbfb] py-2 px-4 rounded-xl border border-[#ffccd5] text-[#4d3437] flex-1">
+                            <input 
+                              type="radio" 
+                              name="delivery" 
+                              checked={deliveryMethod === 'Retrait la maison'}
+                              onChange={() => setDeliveryMethod('Retrait la maison')}
+                              className="accent-pink-600" 
+                            />
+                            <span>🏡 Retrait à la maison</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Remark / Message details */}
+                      <div>
+                        <label className="block font-medium text-[#7d5257] mb-1">
+                          Remarque spéciale, spécification ou texte de carte :
+                        </label>
+                        <textarea 
+                          value={clientRemark}
+                          onChange={(e) => setClientRemark(e.target.value)}
+                          placeholder="Spécifiez des allergies, vos préférences d'emballage cadeau, ou d'autres souhaits..." 
+                          className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 h-16 focus:outline-none focus:ring-1 focus:ring-[#b76e79] resize-none"
+                        />
+                      </div>
+
+                      {/* Submit */}
+                      <button 
+                        type="submit"
+                        className="w-full bg-[#b76e79] hover:bg-[#a05a65] text-white py-3 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer pt-3 pb-3"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Envoyer la commande via WhatsApp</span>
+                      </button>
+                    </form>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
+
+            {/* AESTHETIC REUSABLE ROSE BANNER FOOTER */}
+            <footer className="mt-12 bg-[#fff5f7] border-t border-[#ffd1dc] py-8 text-center text-[#9b7379] text-xs font-serif tracking-widest">
+              <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <p>© 2026 World's Savoury • L'excellence et le plaisir sur-mesure</p>
+                <div className="flex flex-col items-center sm:items-end space-y-2">
+                  <div className="flex space-x-4">
+                    <a href="#" onClick={(e) => { e.preventDefault(); setCurrentTab('landing'); }} className="hover:text-[#b76e79] transition-colors leading-none">Revoir l'introduction</a>
+                    <span>•</span>
+                    <a href="#" onClick={(e) => { e.preventDefault(); setCurrentTab('contact'); }} className="hover:text-[#b76e79] transition-colors leading-none">Commander un événement</a>
+                  </div>
+                  <p className="text-[10px] text-[#b76e79]/80 font-sans tracking-normal pt-1">Designed by <span className="font-semibold">azzi israa</span></p>
+                </div>
+              </div>
+            </footer>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
