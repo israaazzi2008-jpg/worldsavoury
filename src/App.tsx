@@ -67,49 +67,49 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Gâteau Cake de Crêve ",
     category: "Cakes",
     description: "35cm sur 28cm pour 30 personnes",
-    imagePlaceholder: "tarte1.jpg"
+    imagePlaceholder: "/tarte1.jpg"
   },
   {
     id: 'cake2',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
-    imagePlaceholder: "tartr2.jpg"
+    imagePlaceholder: "/tart22.jpg"
   },
   {
     id: 'cake3',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12 pour 4 personnes",
-    imagePlaceholder: "tarte3.jpg"
+    imagePlaceholder: "/tarte3.jpg"
   },
   {
     id: 'cake4',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 7 personnes",
-    imagePlaceholder: "tarte4.jpg"
+    imagePlaceholder: "/tarte4.jpg"
   },
   {
     id: 'cake5',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 15 personnes",
-    imagePlaceholder: "tarte5.jpg"
+    imagePlaceholder: "/tarte5.jpg"
   },
   {
     id: 'cake6',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 16cm pour 6 personnes",
-    imagePlaceholder: "tarte6.jpg"
+    imagePlaceholder: "/tarte6.jpg"
   },
   {
     id: 'cake7',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12cm pour 3 personnes",
-    imagePlaceholder: "tarte7.jpg"
+    imagePlaceholder: "/tarte7.jpg"
   },
 
   // --- CATEGORY : Gâteaux (Exactly 1 product) ---
@@ -118,7 +118,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "k3ik3at",
     category: "Gâteaux",
     description: "Emplacement pour votre description personnalisée de gâteau individuel ou d'entremets délicat. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
-    imagePlaceholder: "1.jpg"
+    imagePlaceholder: "/1.jpg"
   },
 
   // --- CATEGORY : Cupcakes (Exactly 1 product) ---
@@ -127,7 +127,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Cupcake ",
     category: "Cupcakes",
     description: "Emplacement pour votre description personnalisée de cupcakes. Détaillez vos saveurs de génoise et de glaçage onctueux.",
-    imagePlaceholder: "cup.jpg"
+    imagePlaceholder: "/cup.jpg"
   },
 
   // --- CATEGORY : Chocolat personnalisé (Exactly 1 product) ---
@@ -136,7 +136,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Chocolat Fin Personnalisé",
     category: "Chocolat personnalisé",
     description: "Emplacement pour vos tablettes gravées, écritures dorées ou chocolats monogrammes fins à personnaliser selon vos goûts.",
-    imagePlaceholder: "prs.jpg"
+    imagePlaceholder: "/prs.jpg"
   },
 
   // --- CATEGORY : Fleur au chocolat (Exactly 1 product) ---
@@ -145,7 +145,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: " Fleur en Chocolat",
     category: "Fleur au chocolat",
     description: "Emplacement pour vos roses ou bouquets sculptés entièrement à la main en chocolat fin. C'est le cadeau ou le centre de table idéal.",
-    imagePlaceholder: "flr.jpg"
+    imagePlaceholder: "/flr.jpg"
   }
 ];
 
