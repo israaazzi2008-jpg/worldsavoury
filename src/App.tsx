@@ -41,7 +41,7 @@ interface MenuItem {
 const MAISON_CONFIG = {
   brandName: "World's Savoury",                      // Le nom de votre maison d'art culinaire
   brandLogo: "/logo.jpg",                             // Lien d'image ou nom de fichier pour le logo (ex: "https://...jpg" ou "logo.jpg" dans public/)
-  whatsappNumber: "+213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
+  whatsappNumber: "213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
   fbLink: "https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr", // Le lien web complet vers votre page Facebook
   fbHandle: "World's Savoury Beni Saf",                 // Le nom instagram/facebook affiché de votre entreprise
   instaLink: "https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4", // Le lien web complet vers votre compte Instagram
@@ -479,11 +479,8 @@ export default function App() {
     setShowThankYou(true);
     setSelectedProduct(null);
     
-    // Set a timeout of exactly 1.8 seconds (1800ms) before attempting automatic redirection to WhatsApp
-    setTimeout(() => {
-      window.location.href = whatsappURL;
-      setShowThankYou(false);
-    }, 1800);
+    // Redirect SYNCHRONOUSLY inside the trusted user event handler to bypass the Facebook WebView gesture lock
+    window.location.href = whatsappURL;
     
     // Reset original modal inputs
     setClientName('');
@@ -1224,13 +1221,26 @@ export default function App() {
             {/* THANK YOU POPUP MODAL (APPELÉ IMMÉDIATEMENT) */}
             <AnimatePresence>
               {showThankYou && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+                <div 
+                  className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 cursor-pointer"
+                  onClick={() => setShowThankYou(false)}
+                >
                   <motion.div 
-                    className="bg-white rounded-3xl max-w-sm w-full p-8 border border-[#ffccd5] shadow-2xl relative overflow-hidden text-center"
+                    className="bg-white rounded-3xl max-w-sm w-full p-8 border border-[#ffccd5] shadow-2xl relative overflow-hidden text-center cursor-default"
                     initial={{ opacity: 0, scale: 0.92 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.92 }}
+                    onClick={(e) => e.stopPropagation()}
                   >
+                    {/* Small close action at corner */}
+                    <button 
+                      onClick={() => setShowThankYou(false)}
+                      className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer p-1"
+                      id="close-thankyou-top-btn"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+
                     {/* Decorative elegant background elements */}
                     <div className="absolute -right-10 -bottom-10 opacity-[0.05] text-[#b76e79] pointer-events-none select-none">
                       <Sparkles className="w-32 h-32" />
@@ -1250,7 +1260,7 @@ export default function App() {
                           Votre récapitulatif pour <strong>{thankYouProductName}</strong> est prêt !
                         </p>
                         <p className="text-[11px] font-serif text-pink-600 animate-pulse font-semibold">
-                          Redirection vers WhatsApp en cours...
+                          Redirection vers WhatsApp...
                         </p>
                       </div>
                     </div>
