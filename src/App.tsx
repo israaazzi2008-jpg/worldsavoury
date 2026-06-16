@@ -483,17 +483,22 @@ export default function App() {
     setThankYouProductName(selectedProduct.name);
     setWhatsappUrl(whatsappURL);
     
-    // Trigger the Thank You modal immediately, and close the order modal
+    // Trigger the Thank You modal immediately to provide instant feedback
     setShowThankYou(true);
-    setSelectedProduct(null);
 
-    // Reset original modal inputs shortly in background
+    // DELAY unmounting of the Order Modal so the browser has a full second 
+    // to naturally complete the click navigation with the DOM element fully intact.
+    setTimeout(() => {
+      setSelectedProduct(null);
+    }, 1000);
+
+    // Reset original modal inputs shortly in background after the order is completed
     setTimeout(() => {
       setClientName('');
       setFillings([]);
       setCakeText('');
       setClientRemark('');
-    }, 400);
+    }, 1200);
   };
 
   // Filter products directly from static MENU_ITEMS
@@ -1232,7 +1237,7 @@ export default function App() {
             <AnimatePresence>
               {showThankYou && (
                 <div 
-                  className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 cursor-pointer"
+                  className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-[60] p-4 cursor-pointer"
                   onClick={() => setShowThankYou(false)}
                 >
                   <motion.div 
@@ -1268,19 +1273,6 @@ export default function App() {
                       <div className="space-y-3">
                         <p className="text-xs text-[#825c61] leading-relaxed">
                           Votre récapitulatif de commande pour <strong>{thankYouProductName}</strong> est prêt à être envoyé.
-                        </p>
-
-                        {/* Action Button that works perfectly, especially on Instagram/Facebook in-app browsers */}
-                        <a
-                          href={whatsappUrl}
-                          className="w-full bg-[#25d366] hover:bg-[#1ebd53] text-white py-3 px-5 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer mt-4"
-                        >
-                          <Send className="w-3.5 h-3.5" />
-                          <span>Envoyer sur WhatsApp</span>
-                        </a>
-
-                        <p className="text-[10px] text-[#9b757a] italic mt-2 leading-snug">
-                          * Votre application WhatsApp va s'ouvrir. Si ce n'est pas le cas (notamment sur l'application Instagram ou Facebook), cliquez sur le bouton vert ci-dessus pour envoyer votre commande.
                         </p>
                       </div>
                     </div>
@@ -1325,4 +1317,5 @@ export default function App() {
     </div>
   );
 }
+
 
