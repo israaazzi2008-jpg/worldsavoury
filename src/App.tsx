@@ -427,14 +427,9 @@ export default function App() {
     );
   };
 
-  // Construct the Whatsapp order text
-  const sendOrderToWhatsapp = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedProduct) return;
-    if (!clientName.trim()) {
-      alert("S'il vous plaît, saisissez votre nom complet.");
-      return;
-    }
+  // Construct the Whatsapp order text dynamically for a pure user-initiated link feel
+  const getComputedWhatsappUrl = () => {
+    if (!selectedProduct) return '';
 
     const isCake = selectedProduct.category === 'Cakes';
 
@@ -467,26 +462,35 @@ export default function App() {
     const encodedText = encodeURIComponent(text);
     const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
     
-    // Universal WhatsApp web link format that works correctly on all systems, including Facebook in-app browser WebView
-    const whatsappURL = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
-    
+    return `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
+  };
+
+  const handleOrderSubmit = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!selectedProduct) {
+      e.preventDefault();
+      return;
+    }
+    if (!clientName.trim()) {
+      e.preventDefault();
+      alert("S'il vous plaît, saisissez votre nom complet.");
+      return;
+    }
+
     // Save info for Thank You popup
     setThankYouClientName(clientName);
     setThankYouProductName(selectedProduct.name);
-    setWhatsappUrl(whatsappURL);
     
     // Trigger the Thank You modal immediately, and close the order modal
     setShowThankYou(true);
     setSelectedProduct(null);
-    
-    // Redirect SYNCHRONOUSLY inside the trusted user event handler to bypass the Facebook WebView gesture lock
-    window.location.href = whatsappURL;
-    
-    // Reset original modal inputs
-    setClientName('');
-    setFillings([]);
-    setCakeText('');
-    setClientRemark('');
+
+    // Reset original modal inputs shortly in background
+    setTimeout(() => {
+      setClientName('');
+      setFillings([]);
+      setCakeText('');
+      setClientRemark('');
+    }, 400);
   };
 
   // Filter products directly from static MENU_ITEMS
@@ -1076,7 +1080,7 @@ export default function App() {
                     </div>
 
                     {/* Interactive Custom Order Form */}
-                    <form onSubmit={sendOrderToWhatsapp} className="space-y-4 text-xs">
+                    <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-xs">
                       
                       {/* Name entry (Required) - text-base sur mobile pour empêcher le zoom */}
                       <div>
@@ -1205,13 +1209,14 @@ export default function App() {
                       </div>
 
                       {/* Submit */}
-                      <button 
-                        type="submit"
-                        className="w-full bg-[#b76e79] hover:bg-[#a05a65] text-white py-3 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer pt-3 pb-3"
+                      <a 
+                        href={clientName.trim() ? getComputedWhatsappUrl() : undefined}
+                        onClick={handleOrderSubmit}
+                        className="w-full bg-[#b76e79] hover:bg-[#a05a65] text-white py-3 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer text-center pt-3 pb-3"
                       >
                         <Send className="w-3.5 h-3.5" />
                         <span>Envoyer la commande via WhatsApp</span>
-                      </button>
+                      </a>
                     </form>
                   </motion.div>
                 </div>
