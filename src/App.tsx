@@ -142,31 +142,31 @@ const MENU_ITEMS: MenuItem[] = [
     imagePlaceholder: "/4.jpg"
   },
   {
-    id: 'gateau5',
-    name: "Paris-Brest Impérial",
+    id: 'gateau',
+    name: "hlilat farcè",
     category: "Gâteaux",
-    description: "Couronne de pâte à choux parsemée d'amandes effilées avec son praliné maison.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/5.jpg"
   },
   {
-    id: 'gateau6',
-    name: "Opéra Royal",
+    id: 'gateau',
+    name: "bniwen au chocolat",
     category: "Gâteaux",
-    description: "Succession raffinée de biscuit Joconde imbibé de café et de ganache chocolat.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/6.jpg"
   },
   {
-    id: 'gateau7',
-    name: "Saint-Honoré Signature",
+    id: 'gateau',
+    name: "Sigar",
     category: "Gâteaux",
-    description: "Une base de feuilletage garnie de petits choux caramélisés et crème chiboust.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/7.jpg"
   },
   {
-    id: 'gateau8',
-    name: "Religieuse au Chocolat",
+    id: 'gateau',
+    name: "baklawa algèrienne",
     category: "Gâteaux",
-    description: "Deux choux superposés, remplis de crème chocolat et glacés avec soin.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/8.jpg"
   },
   {
