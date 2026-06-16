@@ -74,7 +74,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
-    imagePlaceholder: "/tartr2.jpg"
+    imagePlaceholder: "/tarte2.jpg"
   },
   {
     id: 'cake',
@@ -198,31 +198,31 @@ const MENU_ITEMS: MenuItem[] = [
     imagePlaceholder: "/12.jpg"
   },
   {
-    id: 'gateau13',
-    name: "Forêt-Noire d'Exception",
+    id: 'gateau',
+    name: "jenjlaniya",
     category: "Gâteaux",
-    description: "Biscuit chocolaté imbibé, génoise légère, crème chantilly et cerises parfumées.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/13.jpg"
   },
   {
-    id: 'gateau14',
-    name: "Fraisier Palace",
+    id: 'gateau',
+    name: "sabli mariage",
     category: "Gâteaux",
-    description: "Fraises fraîches sélectionnées, mousseline onctueuse et biscuit génoise d'or.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/14.jpg"
   },
   {
-    id: 'gateau15',
-    name: "Macaronade Prestige",
+    id: 'gateau',
+    name: "les dattes fourès",
     category: "Gâteaux",
-    description: "Grand macaron fondant garni de crème mousseline parfumée.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/15.jpg"
   },
   {
-    id: 'gateau16',
-    name: "Moka Souvenir d'Enfance",
+    id: 'gateau',
+    name: "amondino bèbè",
     category: "Gâteaux",
-    description: "Biscuit imbibé de café fort et délicatement recouvert de crème au beurre aromatisée.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/16.jpg"
   },
   {
