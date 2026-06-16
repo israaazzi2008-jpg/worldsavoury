@@ -431,8 +431,8 @@ export default function App() {
 
     const isCake = selectedProduct.category === 'Cakes';
 
-    let text = `Bonjour ! ❤️\n\n`;
-    text += `Je souhaite passer une commande chez *${brandName}* ! ⭐\n\n`;
+    let text = `Bonjour ! 💖\n\n`;
+    text += `Je souhaite passer une commande chez *${brandName}* ! 🌟\n\n`;
     text += `*DÉTAILS DE MA COMMANDE :*\n`;
     text += `• *Client :* ${clientName}\n`;
     text += `• *Sélection :* ${selectedProduct.name}\n`;
@@ -441,7 +441,7 @@ export default function App() {
     if (isCake) {
       text += `*Spécifications :*\n`;
       text += `• *Dimension & Parts :* ${selectedProduct.description}\n`;
-      text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🌼' : 'Chocolat 🍫'}\n`;
+      text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🌸' : 'Chocolat 🍫'}\n`;
       text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
       if (cakeText.trim()) {
         text += `• *Inscription sur le gâteau :* "${cakeText}"\n`;
@@ -455,7 +455,7 @@ export default function App() {
       text += `• *Note spéciale :* ${clientRemark}\n`;
     }
 
-    text += `\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. ❤️`;
+    text += `\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. 💖`;
 
     const encodedText = encodeURIComponent(text);
     const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
@@ -1237,7 +1237,7 @@ export default function App() {
                     <div className="space-y-4 py-2">
                       {/* Animating sweet pink heart icon */}
                       <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-bounce">
-                        <span className="text-4xl">❤️</span>
+                        <span className="text-4xl">💖</span>
                       </div>
 
                       <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci, {thankYouClientName} !</h3>
