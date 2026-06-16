@@ -60,6 +60,13 @@ const resolveImgSrc = (path: string): string => {
   return './' + file;
 };
 
+// Detect if the user is visiting from the Facebook in-app browser (WebView), which blocks custom protocols like whatsapp://
+const isFacebookBrowser = (): boolean => {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || navigator.vendor || (window as any).opera || '';
+  return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+};
+
 const MENU_ITEMS: MenuItem[] = [
   // --- CATEGORY : Cakes (Exactly 7 products) ---
   {
@@ -459,7 +466,14 @@ export default function App() {
 
     const encodedText = encodeURIComponent(text);
     const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
-    const whatsappURL = `whatsapp://send?phone=${cleanNumber}&text=${encodedText}`;
+    
+    // Choose the best URL format based on the browser:
+    // - Facebook's in-app browser blocks custom protocols like "whatsapp://" (ERR_UNKNOWN_URL_SCHEME), so we use standard "https://wa.me/"
+    // - Other browsers (like Instagram, Safari, Chrome) allow "whatsapp://" to instantly deep-link natively
+    const isFb = isFacebookBrowser();
+    const whatsappURL = isFb
+      ? `https://wa.me/${cleanNumber}?text=${encodedText}`
+      : `whatsapp://send?phone=${cleanNumber}&text=${encodedText}`;
     
     // Save info for Thank You popup
     setThankYouClientName(clientName);
@@ -470,11 +484,11 @@ export default function App() {
     setShowThankYou(true);
     setSelectedProduct(null);
     
-    // Set a timeout of 1.8 seconds before forcing page redirection to WhatsApp
+    // Set a timeout of 1.5 seconds before attempting automatic redirection to WhatsApp
     setTimeout(() => {
       window.location.href = whatsappURL;
-      setShowThankYou(false);
-    }, 1800);
+      // Keep Thank You modal open so they can manually click the green WhatsApp action button if the auto-redirect was blocked
+    }, 1500);
     
     // Reset original modal inputs
     setClientName('');
@@ -1217,7 +1231,7 @@ export default function App() {
               {showThankYou && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
                   <motion.div 
-                    className="bg-white rounded-3xl max-w-sm w-full p-8 border border-[#ffccd5] shadow-2xl relative overflow-hidden text-center"
+                    className="bg-white rounded-3xl max-w-sm w-full p-8 border border-[#ffccd5] shadow-2xl relative overflow-hidden text-center space-y-6"
                     initial={{ opacity: 0, scale: 0.92 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.92 }}
@@ -1228,7 +1242,7 @@ export default function App() {
                     </div>
 
                     {/* Content */}
-                    <div className="space-y-4 py-4">
+                    <div className="space-y-4">
                       {/* Animating sweet pink heart icon */}
                       <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-bounce">
                         <span className="text-4xl">{"\uD83D\uDC96"}</span>
@@ -1236,9 +1250,36 @@ export default function App() {
 
                       <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci, {thankYouClientName} !</h3>
                       
-                      <p className="text-xs text-[#825c61] tracking-wider uppercase font-mono animate-pulse">
-                        Redirection vers WhatsApp...
-                      </p>
+                      <div className="space-y-2">
+                        <p className="text-xs text-[#825c61]">
+                          Votre récapitulatif pour <strong>{thankYouProductName}</strong> est prêt !
+                        </p>
+                        <p className="text-[11px] font-serif text-pink-600 animate-pulse font-semibold">
+                          Redirection vers WhatsApp en cours...
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="space-y-2 relative z-10 pt-2">
+                      <a 
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center space-x-2 w-full py-3 px-4 rounded-full bg-[#25D366] hover:bg-[#128C7E] text-white shadow-md hover:shadow-lg transition-all text-xs font-bold uppercase tracking-wider"
+                      >
+                        <svg className="w-4 h-4 fill-current mr-1" viewBox="0 0 24 24">
+                          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.1 1.45 4.3 1.45 5.51 0 9.99-4.47 9.99-9.97 0-2.64-1.03-5.12-2.9-6.98C16.14 1.78 13.65.75 11 .75 5.5.75 1 5.23 1 10.73c0 1.73.45 3.4 1.32 4.83l-.99 3.63 3.73-.97zM18.1 14.8c-.33-.16-1.95-.96-2.25-1.07-.3-.1-.52-.16-.74.16-.22.33-.86 1.07-1.05 1.28-.2.22-.39.25-.72.09-1.03-.52-1.73-.92-2.42-1.5-1-.87-1.66-1.94-1.86-2.26-.2-.33-.02-.51.15-.67.15-.15.33-.38.49-.57.16-.2.22-.33.33-.55.11-.22.05-.41-.03-.57-.08-.16-.74-1.78-1.01-2.44-.27-.64-.54-.56-.74-.57l-.63-.01c-.22 0-.58.08-.88.41-.3.33-1.15 1.12-1.15 2.73s1.17 3.16 1.33 3.38c.16.22 2.3 3.52 5.58 4.94.78.34 1.39.54 1.86.69.78.25 1.5.21 2.06.13.63-.09 1.95-.8 2.22-1.53.27-.73.27-1.36.19-1.49-.07-.13-.27-.21-.6-.38z"/>
+                        </svg>
+                        <span>Ouvrir WhatsApp manuellement</span>
+                      </a>
+                      
+                      <button 
+                        onClick={() => setShowThankYou(false)}
+                        className="w-full py-2.5 px-4 rounded-full bg-slate-100 hover:bg-slate-200 text-[#4d3437] transition-all text-xs font-semibold"
+                      >
+                        Fermer &amp; Continuer mes achats
+                      </button>
                     </div>
                   </motion.div>
                 </div>
