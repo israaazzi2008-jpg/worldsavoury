@@ -63,49 +63,49 @@ const resolveImgSrc = (path: string): string => {
 const MENU_ITEMS: MenuItem[] = [
   // --- CATEGORY : Cakes (Exactly 7 products) ---
   {
-    id: 'cake1',
+    id: 'cake',
     name: "Gâteau Cake de Crêve ",
     category: "Cakes",
     description: "35cm sur 28cm pour 30 personnes",
     imagePlaceholder: "/tarte1.jpg"
   },
   {
-    id: 'cake2',
+    id: 'cake',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
     imagePlaceholder: "/tartr2.jpg"
   },
   {
-    id: 'cake3',
+    id: 'cake',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12 pour 4 personnes",
     imagePlaceholder: "/tarte3.jpg"
   },
   {
-    id: 'cake4',
+    id: 'cake',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 7 personnes",
     imagePlaceholder: "/tarte4.jpg"
   },
   {
-    id: 'cake5',
+    id: 'cake',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 15 personnes",
     imagePlaceholder: "/tarte5.jpg"
   },
   {
-    id: 'cake6',
+    id: 'cake',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 16cm pour 6 personnes",
     imagePlaceholder: "/tarte6.jpg"
   },
   {
-    id: 'cake7',
+    id: 'cake',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12cm pour 3 personnes",
@@ -170,31 +170,31 @@ const MENU_ITEMS: MenuItem[] = [
     imagePlaceholder: "/8.jpg"
   },
   {
-    id: 'gateau9',
-    name: "Baba Douceur",
+    id: 'gateau',
+    name: "gateau sec",
     category: "Gâteaux",
-    description: "Savarin moelleux arrosé d'un délicat sirop parfumé et décoré de chantilly.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/9.jpg"
   },
   {
-    id: 'gateau10',
-    name: "Tarte Citron Meringuée",
+    id: 'gateau',
+    name: "sabli au chocolat",
     category: "Gâteaux",
-    description: "Crème de citron acidulée logée dans un fond de tarte sucrée surmonté de meringue.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/10.jpg"
   },
   {
-    id: 'gateau11',
-    name: "Flan Pâtissier Tradition",
+    id: 'gateau',
+    name: "thouma",
     category: "Gâteaux",
-    description: "Un flan généreux et onctueux parfumé à la vanille bourbon.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/11.jpg"
   },
   {
-    id: 'gateau12',
-    name: "Charlotte Fine",
+    id: 'gateau',
+    name: "amondino de soutnance",
     category: "Gâteaux",
-    description: "Biscuit cuillère entourant une mousse légère aux fruits exquis.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/12.jpg"
   },
   {
