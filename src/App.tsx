@@ -466,15 +466,16 @@ export default function App() {
   };
 
   const handleOrderSubmit = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     if (!selectedProduct) {
-      e.preventDefault();
       return;
     }
     if (!clientName.trim()) {
-      e.preventDefault();
       alert("S'il vous plaît, saisissez votre nom complet.");
       return;
     }
+
+    const whatsappURL = getComputedWhatsappUrl();
 
     // Save info for Thank You popup
     setThankYouClientName(clientName);
@@ -483,6 +484,11 @@ export default function App() {
     // Trigger the Thank You modal immediately, and close the order modal
     setShowThankYou(true);
     setSelectedProduct(null);
+
+    // Redirect to WhatsApp after exactly 1.8 seconds (1800ms) to allow the Thank You modal to show
+    setTimeout(() => {
+      window.location.href = whatsappURL;
+    }, 1800);
 
     // Reset original modal inputs shortly in background
     setTimeout(() => {
@@ -1310,3 +1316,4 @@ export default function App() {
     </div>
   );
 }
+
