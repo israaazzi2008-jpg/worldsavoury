@@ -63,49 +63,49 @@ const resolveImgSrc = (path: string): string => {
 const MENU_ITEMS: MenuItem[] = [
   // --- CATEGORY : Cakes (Exactly 7 products) ---
   {
-    id: 'cake',
+    id: 'cake1',
     name: "Gâteau Cake de Crêve ",
     category: "Cakes",
     description: "35cm sur 28cm pour 30 personnes",
     imagePlaceholder: "/tarte1.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake2',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
     imagePlaceholder: "/tarte2.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake3',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12 pour 4 personnes",
     imagePlaceholder: "/tarte3.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake4',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 7 personnes",
     imagePlaceholder: "/tarte4.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake5',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 15cm pour 15 personnes",
     imagePlaceholder: "/tarte5.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake6',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 16cm pour 6 personnes",
     imagePlaceholder: "/tarte6.jpg"
   },
   {
-    id: 'cake',
+    id: 'cake7',
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "diamètre 12cm pour 3 personnes",
@@ -114,167 +114,166 @@ const MENU_ITEMS: MenuItem[] = [
 
   // --- CATEGORY : Gâteaux (Exactly 25 products for you to customize) ---
   {
-    id: 'gateau',
+    id: 'gateau1',
     name: "k3ik3at",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
     imagePlaceholder: "/1.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau2',
     name: "baklava turkish",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/2.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau3',
     name: "sabli caramel",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/3.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau4',
     name: "amondino",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/4.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau5',
     name: "hlilat farcè",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/5.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau6',
     name: "bniwen au chocolat",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/6.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau7',
     name: "Sigar",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/7.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau8',
     name: "baklawa algèrienne",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/8.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau9',
     name: "gateau sec",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/9.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau10',
     name: "sabli au chocolat",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/10.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau11',
     name: "thouma",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/11.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau12',
     name: "amondino de soutnance",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/12.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau13',
     name: "jenjlaniya",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/13.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau14',
     name: "sabli mariage",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/14.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau15',
     name: "les dattes fourès",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/15.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau16',
     name: "amondino bèbè",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/16.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau17',
     name: "sabli omra",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/17.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau18',
     name: "gateau noix de coco",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/18.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau19',
     name: " les tartelette au caramel ",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/19.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau20',
     name: "sabli simple",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/20.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau21',
     name: "mchewek",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/21.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau22',
     name: "torno",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/22.jpg"
   },
   {
-    id: 'gateau',
+    id: 'gateau23',
     name: "tartelette au citron",
     category: "Gâteaux",
     description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/23.jpg"
   },
-  
 
   // --- CATEGORY : Cupcakes (Exactly 1 product) ---
   {
@@ -760,7 +759,7 @@ export default function App() {
                       "Chaque création de notre Maison est une pièce d'art éphémère ciselée sur-mesure. Sélectionnez un joyau pâtissier ci-dessous pour personnaliser vos génoises, garnitures et écritures uniques avant de transmettre votre récapitulatif directement à notre Maison."
                     </p>
  
-                    {/* Search Field */}
+                    {/* Search Field (Ajusté text-base pour empêcher le zoom mobile) */}
                     <div className="max-w-md mx-auto relative pt-4">
                       <Search className="w-4 h-4 text-[#bc9ea2] absolute left-4.5 top-7 font-semibold" />
                       <input 
@@ -768,7 +767,7 @@ export default function App() {
                         placeholder="Rechercher par saveur, ingrédient ou nom..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-white/95 border border-[#e8c3cb] text-xs sm:text-sm py-3 pl-11 pr-11 rounded-full focus:outline-none focus:ring-1 focus:ring-amber-400 focus:border-amber-400 font-serif tracking-wider transition-all placeholder:text-[#bcb2b4] shadow-sm"
+                        className="w-full bg-white/95 border border-[#e8c3cb] text-base sm:text-sm py-3 pl-11 pr-11 rounded-full focus:outline-none focus:ring-1 focus:ring-amber-400 focus:border-amber-400 font-serif tracking-wider transition-all placeholder:text-[#bcb2b4] shadow-sm"
                       />
                       {searchQuery && (
                         <button 
@@ -1072,7 +1071,7 @@ export default function App() {
                     {/* Interactive Custom Order Form */}
                     <form onSubmit={sendOrderToWhatsapp} className="space-y-4 text-xs">
                       
-                      {/* Name entry (Required) */}
+                      {/* Name entry (Required) - text-base sur mobile pour empêcher le zoom */}
                       <div>
                         <label className="block font-medium text-[#7d5257] mb-1">Votre Nom &amp; Prénom *</label>
                         <input 
@@ -1081,7 +1080,7 @@ export default function App() {
                           value={clientName}
                           onChange={(e) => setClientName(e.target.value)}
                           placeholder="Marie Lambert" 
-                          className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 text-xs focus:outline-none focus:ring-1 focus:ring-[#b76e79] focus:border-[#b76e79]"
+                          className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 text-base sm:text-xs focus:outline-none focus:ring-1 focus:ring-[#b76e79] focus:border-[#b76e79]"
                         />
                       </div>
 
@@ -1142,7 +1141,7 @@ export default function App() {
                             </div>
                           </div>
 
-                          {/* Writing check/text over cake */}
+                          {/* Writing check/text over cake - text-base sur mobile pour empêcher le zoom */}
                           <div>
                             <label className="block text-[#704d51] mb-1 font-medium">
                               3. Inscription ou remarque à écrire sur le gâteau :
@@ -1152,7 +1151,7 @@ export default function App() {
                               value={cakeText}
                               onChange={(e) => setCakeText(e.target.value)}
                               placeholder="Ex: 'Joyeux Anniversaire Lucie'" 
-                              className="w-full bg-white border border-[#ffccd5] rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-[#b76e79]"
+                              className="w-full bg-white border border-[#ffccd5] rounded-lg p-2 text-base sm:text-xs focus:outline-none focus:ring-1 focus:ring-[#b76e79]"
                             />
                           </div>
                         </div>
@@ -1185,7 +1184,7 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* Remark / Message details */}
+                      {/* Remark / Message details - text-base sur mobile pour empêcher le zoom */}
                       <div>
                         <label className="block font-medium text-[#7d5257] mb-1">
                           Remarque spéciale, spécification ou texte de carte :
@@ -1194,7 +1193,7 @@ export default function App() {
                           value={clientRemark}
                           onChange={(e) => setClientRemark(e.target.value)}
                           placeholder="Spécifiez des allergies, vos préférences d'emballage cadeau, ou d'autres souhaits..." 
-                          className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 h-16 focus:outline-none focus:ring-1 focus:ring-[#b76e79] resize-none"
+                          className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 h-16 text-base sm:text-xs focus:outline-none focus:ring-1 focus:ring-[#b76e79] resize-none"
                         />
                       </div>
 
