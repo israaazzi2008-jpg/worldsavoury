@@ -226,31 +226,31 @@ const MENU_ITEMS: MenuItem[] = [
     imagePlaceholder: "/16.jpg"
   },
   {
-    id: 'gateau17',
-    name: "Succès Noisette d'Or",
+    id: 'gateau',
+    name: "sabli omra",
     category: "Gâteaux",
-    description: "Biscuit dacquoise craquant et fondant marié à une crème pralinée.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/17.jpg"
   },
   {
-    id: 'gateau18',
-    name: "Pavlova Nuage Rosé",
+    id: 'gateau',
+    name: "gateau noix de coco",
     category: "Gâteaux",
-    description: "Meringue croquante au cœur moelleux recouverte de fruits rouges de saison.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/18.jpg"
   },
   {
-    id: 'gateau19',
-    name: "Paris-Brest Praliné",
+    id: 'gateau',
+    name: " les tartelette au caramel ",
     category: "Gâteaux",
-    description: "Pâte à choux légère et crème mousseline parfumée au praliné croustillant.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/19.jpg"
   },
   {
-    id: 'gateau20',
-    name: "Chouquette Gourmande",
+    id: 'gateau',
+    name: "sabli simple",
     category: "Gâteaux",
-    description: "Petits choux parsemés de grains de sucre et garnis d'une mousseline légère.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/20.jpg"
   },
   {
