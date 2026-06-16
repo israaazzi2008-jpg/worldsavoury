@@ -74,7 +74,7 @@ const MENU_ITEMS: MenuItem[] = [
     name: "Gâteau Cake de Rêve ",
     category: "Cakes",
     description: "24cm sur 24cm pour 12 personnes",
-    imagePlaceholder: "/tarte2.jpg"
+    imagePlaceholder: "/tartr2.jpg"
   },
   {
     id: 'cake3',
@@ -112,13 +112,181 @@ const MENU_ITEMS: MenuItem[] = [
     imagePlaceholder: "/tarte7.jpg"
   },
 
-  // --- CATEGORY : Gâteaux (Exactly 1 product) ---
+  // --- CATEGORY : Gâteaux (Exactly 25 products for you to customize) ---
   {
-    id: 'gateau1',
+    id: 'gateau',
     name: "k3ik3at",
     category: "Gâteaux",
     description: "Emplacement pour votre description personnalisée de gâteau individuel ou d'entremets délicat. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
     imagePlaceholder: "/1.jpg"
+  },
+  {
+    id: 'gateau',
+    name: "baklava turkish",
+    category: "Gâteaux",
+    description: "Décoration personnalisée de votre choix",
+    imagePlaceholder: "/2.jpg"
+  },
+  {
+    id: 'gateau',
+    name: "sabli caramel",
+    category: "Gâteaux",
+    description: "Décoration personnalisée de votre choix",
+    imagePlaceholder: "/3.jpg"
+  },
+  {
+    id: 'gateau',
+    name: "amondino",
+    category: "Gâteaux",
+    description: "Décoration personnalisée de votre choix",
+    imagePlaceholder: "/4.jpg"
+  },
+  {
+    id: 'gateau5',
+    name: "Paris-Brest Impérial",
+    category: "Gâteaux",
+    description: "Couronne de pâte à choux parsemée d'amandes effilées avec son praliné maison.",
+    imagePlaceholder: "/5.jpg"
+  },
+  {
+    id: 'gateau6',
+    name: "Opéra Royal",
+    category: "Gâteaux",
+    description: "Succession raffinée de biscuit Joconde imbibé de café et de ganache chocolat.",
+    imagePlaceholder: "/6.jpg"
+  },
+  {
+    id: 'gateau7',
+    name: "Saint-Honoré Signature",
+    category: "Gâteaux",
+    description: "Une base de feuilletage garnie de petits choux caramélisés et crème chiboust.",
+    imagePlaceholder: "/7.jpg"
+  },
+  {
+    id: 'gateau8',
+    name: "Religieuse au Chocolat",
+    category: "Gâteaux",
+    description: "Deux choux superposés, remplis de crème chocolat et glacés avec soin.",
+    imagePlaceholder: "/8.jpg"
+  },
+  {
+    id: 'gateau9',
+    name: "Baba Douceur",
+    category: "Gâteaux",
+    description: "Savarin moelleux arrosé d'un délicat sirop parfumé et décoré de chantilly.",
+    imagePlaceholder: "/9.jpg"
+  },
+  {
+    id: 'gateau10',
+    name: "Tarte Citron Meringuée",
+    category: "Gâteaux",
+    description: "Crème de citron acidulée logée dans un fond de tarte sucrée surmonté de meringue.",
+    imagePlaceholder: "/10.jpg"
+  },
+  {
+    id: 'gateau11',
+    name: "Flan Pâtissier Tradition",
+    category: "Gâteaux",
+    description: "Un flan généreux et onctueux parfumé à la vanille bourbon.",
+    imagePlaceholder: "/11.jpg"
+  },
+  {
+    id: 'gateau12',
+    name: "Charlotte Fine",
+    category: "Gâteaux",
+    description: "Biscuit cuillère entourant une mousse légère aux fruits exquis.",
+    imagePlaceholder: "/12.jpg"
+  },
+  {
+    id: 'gateau13',
+    name: "Forêt-Noire d'Exception",
+    category: "Gâteaux",
+    description: "Biscuit chocolaté imbibé, génoise légère, crème chantilly et cerises parfumées.",
+    imagePlaceholder: "/13.jpg"
+  },
+  {
+    id: 'gateau14',
+    name: "Fraisier Palace",
+    category: "Gâteaux",
+    description: "Fraises fraîches sélectionnées, mousseline onctueuse et biscuit génoise d'or.",
+    imagePlaceholder: "/14.jpg"
+  },
+  {
+    id: 'gateau15',
+    name: "Macaronade Prestige",
+    category: "Gâteaux",
+    description: "Grand macaron fondant garni de crème mousseline parfumée.",
+    imagePlaceholder: "/15.jpg"
+  },
+  {
+    id: 'gateau16',
+    name: "Moka Souvenir d'Enfance",
+    category: "Gâteaux",
+    description: "Biscuit imbibé de café fort et délicatement recouvert de crème au beurre aromatisée.",
+    imagePlaceholder: "/16.jpg"
+  },
+  {
+    id: 'gateau17',
+    name: "Succès Noisette d'Or",
+    category: "Gâteaux",
+    description: "Biscuit dacquoise craquant et fondant marié à une crème pralinée.",
+    imagePlaceholder: "/17.jpg"
+  },
+  {
+    id: 'gateau18',
+    name: "Pavlova Nuage Rosé",
+    category: "Gâteaux",
+    description: "Meringue croquante au cœur moelleux recouverte de fruits rouges de saison.",
+    imagePlaceholder: "/18.jpg"
+  },
+  {
+    id: 'gateau19',
+    name: "Paris-Brest Praliné",
+    category: "Gâteaux",
+    description: "Pâte à choux légère et crème mousseline parfumée au praliné croustillant.",
+    imagePlaceholder: "/19.jpg"
+  },
+  {
+    id: 'gateau20',
+    name: "Chouquette Gourmande",
+    category: "Gâteaux",
+    description: "Petits choux parsemés de grains de sucre et garnis d'une mousseline légère.",
+    imagePlaceholder: "/20.jpg"
+  },
+  {
+    id: 'gateau21',
+    name: "Entremets Vanille & Noix Pecan",
+    category: "Gâteaux",
+    description: "Alliance de mousse vanillée de Madagascar et de noix de pécan caramélisées.",
+    imagePlaceholder: "/21.jpg"
+  },
+  {
+    id: 'gateau22',
+    name: "Trianon Pur Chocolat",
+    category: "Gâteaux",
+    description: "Biscuit dacquoise, croustillant praliné et mousse au chocolat noir intense.",
+    imagePlaceholder: "/22.jpg"
+  },
+  {
+    id: 'gateau23',
+    name: "Dôme Passion & Fruits",
+    category: "Gâteaux",
+    description: "Mousse exotique légère abritant un cœur crémeux de mangue acidulée.",
+    imagePlaceholder: "/23.jpg"
+  },
+  {
+    id: 'gateau24',
+    name: "Tarte Intense Chocolat",
+    category: "Gâteaux",
+    description: "Ganache soyeuse et intense de chocolat d'origine coulée dans une pâte sablée.",
+    imagePlaceholder: "/24.jpg"
+  },
+  {
+    id: 'gateau25',
+    name: "Merveilleux Meringue Légère",
+    category: "Gâteaux",
+    description: "Meringue enrobée de crème fouettée chocolatée et de copeaux de chocolat noir.",
+    imagePlaceholder: "/25.jpg"
   },
 
   // --- CATEGORY : Cupcakes (Exactly 1 product) ---
@@ -277,38 +445,32 @@ export default function App() {
 
     const isCake = selectedProduct.category === 'Cakes';
 
-    let text = `Bonjour ! 😊\n\n`;
+    let text = `Bonjour ! ❤️\n\n`;
+    text += `Je souhaite passer une commande chez *${brandName}* ! ⭐\n\n`;
+    text += `*DÉTAILS DE MA COMMANDE :*\n`;
+    text += `• *Client :* ${clientName}\n`;
+    text += `• *Sélection :* ${selectedProduct.name}\n`;
+    text += `• *Catégorie :* ${selectedProduct.category}\n\n`;
 
-text += `Je souhaite passer une commande chez *${brandName}* ! 🎂\n\n`;
+    if (isCake) {
+      text += `*Spécifications :*\n`;
+      text += `• *Dimension & Parts :* ${selectedProduct.description}\n`;
+      text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🌼' : 'Chocolat 🍫'}\n`;
+      text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
+      if (cakeText.trim()) {
+        text += `• *Inscription sur le gâteau :* "${cakeText}"\n`;
+      }
+      text += `\n`;
+    }
 
-text += `*DÉTAILS DE MA COMMANDE :*\n`;
-text += `🧑 *Client :* ${clientName}\n`;
-text += `🍰 *Sélection :* ${selectedProduct.name}\n`;
-text += `📂 *Catégorie :* ${selectedProduct.category}\n\n`;
+    text += `• *Mode de récupération :* ${deliveryMethod === 'Livraison' ? 'Livraison à domicile' : 'Retrait à la maison'}\n`;
+    
+    if (clientRemark.trim()) {
+      text += `• *Note spéciale :* ${clientRemark}\n`;
+    }
 
-if (isCake) {
-  text += `🎂 *Spécifications :*\n`;
-  text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🍦' : 'Chocolat 🍫'}\n`;
-  text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
+    text += `\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. ❤️`;
 
-  if (cakeText.trim()) {
-    text += `• *Texte sur le gâteau :* "${cakeText}" ✍️\n`;
-  }
-
-  text += `\n`;
-}
-
-text += `📍 *Mode de récupération :* ${
-  deliveryMethod === 'Livraison'
-    ? 'Livraison à domicile 🚚'
-    : 'Retrait à la maison 🏠'
-}\n`;
-
-if (clientRemark.trim()) {
-  text += `📝 *Note spéciale :* ${clientRemark}\n`;
-}
-
-text += `\n🙏 Merci pour votre attention.\nNous attendons votre retour avec plaisir ! 😊✨`;
     const encodedText = encodeURIComponent(text);
     const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
     
@@ -317,14 +479,17 @@ text += `\n🙏 Merci pour votre attention.\nNous attendons votre retour avec pl
     setThankYouProductName(selectedProduct.name);
     setWhatsappUrl(whatsappURL);
     
-    // Open in window immediately
-    window.open(whatsappURL, '_blank');
-    
-    // Trigger the Thank You modal
+    // Trigger the Thank You modal immediately, and close the order modal
     setShowThankYou(true);
-    
-    // Reset original modal states
     setSelectedProduct(null);
+    
+    // Set a timeout of 2 seconds before opening WhatsApp automatically and hiding the modal
+    setTimeout(() => {
+      window.open(whatsappURL, '_blank');
+      setShowThankYou(false);
+    }, 2000);
+    
+    // Reset original modal inputs
     setClientName('');
     setFillings([]);
     setCakeText('');
@@ -1065,68 +1230,28 @@ text += `\n🙏 Merci pour votre attention.\nNous attendons votre retour avec pl
               {showThankYou && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
                   <motion.div 
-                    className="bg-white rounded-3xl max-w-md w-full p-6 border border-[#ffccd5] shadow-2xl relative overflow-hidden"
+                    className="bg-white rounded-3xl max-w-sm w-full p-8 border border-[#ffccd5] shadow-2xl relative overflow-hidden text-center"
                     initial={{ opacity: 0, scale: 0.92 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.92 }}
                   >
                     {/* Decorative elegant background elements */}
-                    <div className="absolute -right-10 -bottom-10 opacity-[0.08] text-[#b76e79] pointer-events-none select-none">
-                      <Sparkles className="w-40 h-40" />
+                    <div className="absolute -right-10 -bottom-10 opacity-[0.05] text-[#b76e79] pointer-events-none select-none">
+                      <Sparkles className="w-32 h-32" />
                     </div>
 
-                    {/* Close button */}
-                    <button 
-                      onClick={() => setShowThankYou(false)}
-                      className="absolute top-4 right-4 text-[#a38f8f] hover:text-[#5c4a4a] transition-colors p-1 cursor-pointer"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-
                     {/* Content */}
-                    <div className="text-center space-y-4">
-                      {/* Animating sweet pink flower icon */}
-                      <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-pulse">
-                        <span className="text-4xl">🌸</span>
+                    <div className="space-y-4 py-2">
+                      {/* Animating sweet pink heart icon */}
+                      <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-bounce">
+                        <span className="text-4xl">❤️</span>
                       </div>
 
-                      <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci Beaucoup, {thankYouClientName} ! ✨</h3>
+                      <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci, {thankYouClientName} !</h3>
                       
-                      <p className="text-xs text-[#825c61] leading-relaxed">
-                        Votre demande personnalisée pour la création <span className="font-semibold text-[#b76e79]">« {thankYouProductName} »</span> a bien été générée avec le plus grand soin ! 💕
+                      <p className="text-xs font-serif text-pink-600 animate-pulse font-semibold">
+                        Redirection vers WhatsApp en cours...
                       </p>
-
-                      <div className="bg-[#fff5f7] border border-[#ffccd5] rounded-2xl p-4 text-xs text-[#825c61] space-y-2 text-left">
-                        <p className="font-semibold text-[#7d3b45] flex items-center space-x-1.5">
-                          <span>💌</span>
-                          <span>Notre Promesse de Maison :</span>
-                        </p>
-                        <p className="leading-normal font-serif italic text-[#7d5257]">
-                          "Dès réception de votre message récapitulatif sur WhatsApp, notre Maison prendra contact avec vous dans les plus brefs délais pour valider ensemble tous les détails artistiques de votre chef-d'œuvre gustatif."
-                        </p>
-                      </div>
-
-                      <p className="text-[10px] text-[#ae8c91] leading-normal px-2">
-                        Si l'application WhatsApp ne s'est pas ouverte automatiquement sur votre appareil, veuillez cliquer sur le bouton ci-dessous pour transmettre votre message.
-                      </p>
-
-                      <div className="flex flex-col space-y-2 pt-2">
-                        <a 
-                          href={whatsappUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full bg-[#b76e79] hover:bg-[#a05a65] text-white py-3 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer"
-                        >
-                          <Send className="w-3.5 h-3.5" />
-                          <span>Ouvrir WhatsApp Manuellement</span>
-                        </a>
-                        <button 
-                          onClick={() => setShowThankYou(false)}
-                          className="w-full border border-[#ffccd5] hover:bg-pink-50 text-[#7a5c5f] py-2.5 px-6 rounded-full text-xs font-medium transition-all cursor-pointer"
-                        >
-                          Fermer
-                        </button>
-                      </div>
                     </div>
                   </motion.div>
                 </div>
@@ -1138,14 +1263,28 @@ text += `\n🙏 Merci pour votre attention.\nNous attendons votre retour avec pl
             {/* AESTHETIC REUSABLE ROSE BANNER FOOTER */}
             <footer className="mt-12 bg-[#fff5f7] border-t border-[#ffd1dc] py-8 text-center text-[#9b7379] text-xs font-serif tracking-widest">
               <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-                <p>© 2026 {brandName} • L'excellence et le plaisir sur-mesure</p>
+                <div className="flex flex-col items-center sm:items-start space-y-2">
+                  <p>© 2026 {brandName} • L'excellence et le plaisir sur-mesure</p>
+                  <div className="flex items-center space-x-3 justify-center sm:justify-start">
+                    <a href={fbLink} target="_blank" rel="noopener noreferrer" className="text-[#b76e79] hover:text-[#80424b] transition-all" title="Facebook">
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                      </svg>
+                    </a>
+                    <a href={instaLink} target="_blank" rel="noopener noreferrer" className="text-[#b76e79] hover:text-[#80424b] transition-all" title="Instagram">
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
                 <div className="flex flex-col items-center sm:items-end space-y-2">
                   <div className="flex space-x-4">
                     <a href="#" onClick={(e) => { e.preventDefault(); setCurrentTab('landing'); }} className="hover:text-[#b76e79] transition-colors leading-none">Revoir l'introduction</a>
                     <span>•</span>
                     <a href="#" onClick={(e) => { e.preventDefault(); setCurrentTab('contact'); }} className="hover:text-[#b76e79] transition-colors leading-none">Commander un événement</a>
                   </div>
-                  <p className="text-[10px] text-[#b76e79]/80 font-sans tracking-normal pt-1">Designed by <span className="font-semibold">azzi israa</span></p>
+                  <p className="text-[10px] text-[#b76e79]/80 font-sans tracking-normal pt-1">Designed by <span className="font-semibold text-[#80424b]">azzi israa</span></p>
                 </div>
               </div>
             </footer>
