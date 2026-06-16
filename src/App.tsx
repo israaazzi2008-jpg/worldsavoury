@@ -461,13 +461,6 @@ export default function App() {
     const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
     const whatsappURL = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
     
-    // 1. Open immediately synchronously (trusted event, never blocked by popups)
-    try {
-      window.open(whatsappURL, '_blank');
-    } catch (e) {
-      console.warn("Direct window.open failed, falling back to redirect.", e);
-    }
-    
     // Save info for Thank You popup
     setThankYouClientName(clientName);
     setThankYouProductName(selectedProduct.name);
@@ -477,11 +470,11 @@ export default function App() {
     setShowThankYou(true);
     setSelectedProduct(null);
     
-    // 2. Set a timeout of 2 seconds before forcing iframe/top page redirection to WhatsApp
+    // Set a timeout of 1.8 seconds before forcing page redirection to WhatsApp
     setTimeout(() => {
       window.location.href = whatsappURL;
       setShowThankYou(false);
-    }, 2000);
+    }, 1800);
     
     // Reset original modal inputs
     setClientName('');
@@ -1235,7 +1228,7 @@ export default function App() {
                     </div>
 
                     {/* Content */}
-                    <div className="space-y-4 py-2">
+                    <div className="space-y-4 py-4">
                       {/* Animating sweet pink heart icon */}
                       <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-bounce">
                         <span className="text-4xl">{"\uD83D\uDC96"}</span>
@@ -1243,8 +1236,8 @@ export default function App() {
 
                       <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci, {thankYouClientName} !</h3>
                       
-                      <p className="text-xs font-serif text-pink-600 animate-pulse font-semibold">
-                        Redirection vers WhatsApp en cours...
+                      <p className="text-xs text-[#825c61] tracking-wider uppercase font-mono animate-pulse">
+                        Redirection vers WhatsApp...
                       </p>
                     </div>
                   </motion.div>
