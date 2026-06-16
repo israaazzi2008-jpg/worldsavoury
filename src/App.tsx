@@ -466,11 +466,12 @@ export default function App() {
   };
 
   const handleOrderSubmit = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
     if (!selectedProduct) {
+      e.preventDefault();
       return;
     }
     if (!clientName.trim()) {
+      e.preventDefault();
       alert("S'il vous plaît, saisissez votre nom complet.");
       return;
     }
@@ -480,15 +481,11 @@ export default function App() {
     // Save info for Thank You popup
     setThankYouClientName(clientName);
     setThankYouProductName(selectedProduct.name);
+    setWhatsappUrl(whatsappURL);
     
     // Trigger the Thank You modal immediately, and close the order modal
     setShowThankYou(true);
     setSelectedProduct(null);
-
-    // Redirect to WhatsApp after exactly 1.8 seconds (1800ms) to allow the Thank You modal to show
-    setTimeout(() => {
-      window.location.href = whatsappURL;
-    }, 1800);
 
     // Reset original modal inputs shortly in background
     setTimeout(() => {
@@ -1218,6 +1215,8 @@ export default function App() {
                       <a 
                         href={clientName.trim() ? getComputedWhatsappUrl() : undefined}
                         onClick={handleOrderSubmit}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-full bg-[#b76e79] hover:bg-[#a05a65] text-white py-3 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer text-center pt-3 pb-3"
                       >
                         <Send className="w-3.5 h-3.5" />
@@ -1258,20 +1257,30 @@ export default function App() {
                     </div>
 
                     {/* Content */}
-                    <div className="space-y-4 py-4">
+                    <div className="space-y-5 py-2">
                       {/* Animating sweet pink heart icon */}
                       <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-bounce">
                         <span className="text-4xl">{"\uD83D\uDC96"}</span>
                       </div>
 
-                      <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci, {thankYouClientName} !</h3>
+                      <h3 className="font-serif text-2xl font-bold text-[#4d3437] leading-tight">Merci, {thankYouClientName} !</h3>
                       
-                      <div className="space-y-2">
-                        <p className="text-xs text-[#825c61]">
-                          Votre récapitulatif pour <strong>{thankYouProductName}</strong> est prêt !
+                      <div className="space-y-3">
+                        <p className="text-xs text-[#825c61] leading-relaxed">
+                          Votre récapitulatif de commande pour <strong>{thankYouProductName}</strong> est prêt à être envoyé.
                         </p>
-                        <p className="text-[11px] font-serif text-pink-600 animate-pulse font-semibold">
-                          Redirection vers WhatsApp...
+
+                        {/* Action Button that works perfectly, especially on Instagram/Facebook in-app browsers */}
+                        <a
+                          href={whatsappUrl}
+                          className="w-full bg-[#25d366] hover:bg-[#1ebd53] text-white py-3 px-5 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer mt-4"
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          <span>Envoyer sur WhatsApp</span>
+                        </a>
+
+                        <p className="text-[10px] text-[#9b757a] italic mt-2 leading-snug">
+                          * Votre application WhatsApp va s'ouvrir. Si ce n'est pas le cas (notamment sur l'application Instagram ou Facebook), cliquez sur le bouton vert ci-dessus pour envoyer votre commande.
                         </p>
                       </div>
                     </div>
