@@ -40,7 +40,7 @@ interface MenuItem {
 // =========================================================================
 const MAISON_CONFIG = {
   brandName: "World's Savoury",                      // Le nom de votre maison d'art culinaire
-  brandLogo: "logo.jpg",                             // Lien d'image ou nom de fichier pour le logo (ex: "https://...jpg" ou "logo.jpg" dans public/)
+  brandLogo: "/logo.jpg",                             // Lien d'image ou nom de fichier pour le logo (ex: "https://...jpg" ou "logo.jpg" dans public/)
   whatsappNumber: "+213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
   fbLink: "https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr", // Le lien web complet vers votre page Facebook
   fbHandle: "World's Savoury Beni Saf",                 // Le nom instagram/facebook affiché de votre entreprise
@@ -277,31 +277,38 @@ export default function App() {
 
     const isCake = selectedProduct.category === 'Cakes';
 
-    let text = `Bonjour ! ✨🌸\n\n`;
-    text += `Je souhaite passer une commande chez *${brandName}* ! 💕\n\n`;
-    text += `*DÉTAILS DE MA COMMANDE :*\n`;
-    text += `👤 *Client :* ${clientName}\n`;
-    text += `🍰 *Sélection :* ${selectedProduct.name}\n`;
-    text += `🎀 *Catégorie :* ${selectedProduct.category}\n\n`;
+    let text = `Bonjour ! 😊\n\n`;
 
-    if (isCake) {
-      text += `🎂 *Spécifications :*\n`;
-      text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🌼' : 'Chocolat 🍫'}\n`;
-      text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
-      if (cakeText.trim()) {
-        text += `• *Inscription sur le gâteau :* "${cakeText}"\n`;
-      }
-      text += `\n`;
-    }
+text += `Je souhaite passer une commande chez *${brandName}* ! 🎂\n\n`;
 
-    text += `🚗 *Mode de récupération :* ${deliveryMethod === 'Livraison' ? 'Livraison à domicile 🚗' : 'Retrait à la maison 🏡'}\n`;
-    
-    if (clientRemark.trim()) {
-      text += `💌 *Note spéciale :* ${clientRemark}\n`;
-    }
+text += `*DÉTAILS DE MA COMMANDE :*\n`;
+text += `🧑 *Client :* ${clientName}\n`;
+text += `🍰 *Sélection :* ${selectedProduct.name}\n`;
+text += `📂 *Catégorie :* ${selectedProduct.category}\n\n`;
 
-    text += `\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. ✨🌸`;
+if (isCake) {
+  text += `🎂 *Spécifications :*\n`;
+  text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🍦' : 'Chocolat 🍫'}\n`;
+  text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
 
+  if (cakeText.trim()) {
+    text += `• *Texte sur le gâteau :* "${cakeText}" ✍️\n`;
+  }
+
+  text += `\n`;
+}
+
+text += `📍 *Mode de récupération :* ${
+  deliveryMethod === 'Livraison'
+    ? 'Livraison à domicile 🚚'
+    : 'Retrait à la maison 🏠'
+}\n`;
+
+if (clientRemark.trim()) {
+  text += `📝 *Note spéciale :* ${clientRemark}\n`;
+}
+
+text += `\n🙏 Merci pour votre attention.\nNous attendons votre retour avec plaisir ! 😊✨`;
     const encodedText = encodeURIComponent(text);
     const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
     
