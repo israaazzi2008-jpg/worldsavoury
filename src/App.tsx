@@ -460,6 +460,13 @@ export default function App() {
     const encodedText = encodeURIComponent(text);
     const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
     
+    // 1. Open immediately synchronously (trusted event, never blocked by popups)
+    try {
+      window.open(whatsappURL, '_blank');
+    } catch (e) {
+      console.warn("Direct window.open failed, falling back to redirect.", e);
+    }
+    
     // Save info for Thank You popup
     setThankYouClientName(clientName);
     setThankYouProductName(selectedProduct.name);
@@ -469,9 +476,9 @@ export default function App() {
     setShowThankYou(true);
     setSelectedProduct(null);
     
-    // Set a timeout of 2 seconds before opening WhatsApp automatically and hiding the modal
+    // 2. Set a timeout of 2 seconds before forcing iframe/top page redirection to WhatsApp
     setTimeout(() => {
-      window.open(whatsappURL, '_blank');
+      window.location.href = whatsappURL;
       setShowThankYou(false);
     }, 2000);
     
