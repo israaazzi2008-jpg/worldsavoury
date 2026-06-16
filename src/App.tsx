@@ -117,7 +117,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: 'gateau',
     name: "k3ik3at",
     category: "Gâteaux",
-    description: "Emplacement pour votre description personnalisée de gâteau individuel ou d'entremets délicat. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
+    description: "Décoration personnalisée de votre choix. Racontez l'histoire de ses saveurs fraîches ou crémeuses.",
     imagePlaceholder: "/1.jpg"
   },
   {
@@ -254,40 +254,27 @@ const MENU_ITEMS: MenuItem[] = [
     imagePlaceholder: "/20.jpg"
   },
   {
-    id: 'gateau21',
-    name: "Entremets Vanille & Noix Pecan",
+    id: 'gateau',
+    name: "mchewek",
     category: "Gâteaux",
-    description: "Alliance de mousse vanillée de Madagascar et de noix de pécan caramélisées.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/21.jpg"
   },
   {
-    id: 'gateau22',
-    name: "Trianon Pur Chocolat",
+    id: 'gateau',
+    name: "torno",
     category: "Gâteaux",
-    description: "Biscuit dacquoise, croustillant praliné et mousse au chocolat noir intense.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/22.jpg"
   },
   {
-    id: 'gateau23',
-    name: "Dôme Passion & Fruits",
+    id: 'gateau',
+    name: "tartelette au citron",
     category: "Gâteaux",
-    description: "Mousse exotique légère abritant un cœur crémeux de mangue acidulée.",
+    description: "Décoration personnalisée de votre choix",
     imagePlaceholder: "/23.jpg"
   },
-  {
-    id: 'gateau24',
-    name: "Tarte Intense Chocolat",
-    category: "Gâteaux",
-    description: "Ganache soyeuse et intense de chocolat d'origine coulée dans une pâte sablée.",
-    imagePlaceholder: "/24.jpg"
-  },
-  {
-    id: 'gateau25',
-    name: "Merveilleux Meringue Légère",
-    category: "Gâteaux",
-    description: "Meringue enrobée de crème fouettée chocolatée et de copeaux de chocolat noir.",
-    imagePlaceholder: "/25.jpg"
-  },
+  
 
   // --- CATEGORY : Cupcakes (Exactly 1 product) ---
   {
