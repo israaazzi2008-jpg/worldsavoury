@@ -431,34 +431,35 @@ export default function App() {
 
     const isCake = selectedProduct.category === 'Cakes';
 
-    let text = `Bonjour ! ❤️\n\n`;
-    text += `Je souhaite passer une commande chez *${brandName}* ! ✨\n\n`;
-    text += `*DÉTAILS DE MA COMMANDE :*\n`;
-    text += `• *Client :* ${clientName}\n`;
-    text += `• *Sélection :* ${selectedProduct.name}\n`;
-    text += `• *Catégorie :* ${selectedProduct.category}\n\n`;
+    let text = "Bonjour ! \uD83D\uDC96\n\n";
+    text += `Je souhaite passer une commande chez *${brandName}* ! \uD83C\uDF1F\n\n`;
+    text += "*D\u00C9TAILS DE MA COMMANDE :*\n";
+    text += `- *Client :* ${clientName}\n`;
+    text += `- *S\u00E9lection :* ${selectedProduct.name}\n`;
+    text += `- *Cat\u00E9gorie :* ${selectedProduct.category}\n\n`;
 
     if (isCake) {
-      text += `*Spécifications :*\n`;
-      text += `• *Dimension & Parts :* ${selectedProduct.description}\n`;
-      text += `• *Génoise :* ${spongeChoice === 'vanille' ? 'Vanille 🎂' : 'Chocolat 🍫'}\n`;
-      text += `• *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
+      text += "*Sp\u00E9cifications :*\n";
+      text += `- *Dimension & Parts :* ${selectedProduct.description}\n`;
+      text += `- *G\u00E9noise :* ${spongeChoice === 'vanille' ? 'Vanille \uD83C\uDF38' : 'Chocolat \uD83C\uDF6B'}\n`;
+      text += `- *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
       if (cakeText.trim()) {
-        text += `• *Inscription sur le gâteau :* "${cakeText}"\n`;
+        text += `- *Inscription sur le g\u00E2teau :* "${cakeText}"\n`;
       }
-      text += `\n`;
+      text += "\n";
     }
 
-    text += `• *Mode de récupération :* ${deliveryMethod === 'Livraison' ? 'Livraison à domicile' : 'Retrait à la maison'}\n`;
+    text += `- *Mode de r\u00E9cup\u00E9ration :* ${deliveryMethod === 'Livraison' ? 'Livraison \u00E0 domicile' : 'Retrait \u00E0 la maison'}\n`;
     
     if (clientRemark.trim()) {
-      text += `• *Note spéciale :* ${clientRemark}\n`;
+      text += `- *Note sp\u00E9ciale :* ${clientRemark}\n`;
     }
 
-    text += `\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. ❤️`;
+    text += "\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. \uD83D\uDC96";
 
     const encodedText = encodeURIComponent(text);
-    const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodedText}`;
+    const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
     
     // 1. Open immediately synchronously (trusted event, never blocked by popups)
     try {
@@ -839,9 +840,9 @@ export default function App() {
                             />
                             {/* Fallback layout shown when image is missing or loading */}
                             <span className="text-4xl text-center group-hover:scale-110 transition-transform duration-300">
-                              {prod.category === 'Cakes' || prod.category === 'Gâteaux' ? '🎂' : 
-                               prod.category === 'Cupcakes' ? '🧁' : 
-                               prod.category === 'Chocolat personnalisé' ? '🍫' : '🌹'}
+                              {prod.category === 'Cakes' || prod.category === 'Gâteaux' ? "\uD83C\uDF82" : 
+                               prod.category === 'Cupcakes' ? "\uD83E\uDDC1" : 
+                               prod.category === 'Chocolat personnalisé' ? "\uD83C\uDF6B" : "\uD83C\uDF39"}
                             </span>
                             <div className="mt-3 text-[10px] uppercase tracking-wide text-[#b76e79] font-medium">
                               Image: {prod.imagePlaceholder}
@@ -1064,9 +1065,9 @@ export default function App() {
                     {/* Header */}
                     <div className="text-center space-y-1.5 mb-5 select-none">
                       <span className="text-4xl">
-                        {selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux' ? '🎂' : 
-                         selectedProduct.category === 'Cupcakes' ? '🧁' : 
-                         selectedProduct.category === 'Chocolat personnalisé' ? '🍫' : '🌹'}
+                        {selectedProduct.category === 'Cakes' || selectedProduct.category === 'Gâteaux' ? "\uD83C\uDF82" : 
+                         selectedProduct.category === 'Cupcakes' ? "\uD83E\uDDC1" : 
+                         selectedProduct.category === 'Chocolat personnalisé' ? "\uD83C\uDF6B" : "\uD83C\uDF39"}
                       </span>
                       <h3 className="font-serif text-2xl font-bold text-[#4d3437]">{selectedProduct.name}</h3>
                       <p className="text-[10px] font-mono tracking-widest uppercase text-[#b76e79]">{selectedProduct.category}</p>
@@ -1110,7 +1111,7 @@ export default function App() {
                                   onChange={() => setSpongeChoice('vanille')}
                                   className="accent-pink-600" 
                                 />
-                                <span>Génoise Vanille 🌼</span>
+                                <span>G{"\u00E9"}noise Vanille {"\uD83C\uDF3C"}</span>
                               </label>
                               <label className="flex items-center space-x-2 cursor-pointer bg-white py-1.5 px-3 rounded-lg border border-[#ffccd5] text-[#4d3437]">
                                 <input 
@@ -1120,7 +1121,7 @@ export default function App() {
                                   onChange={() => setSpongeChoice('chocolat')}
                                   className="accent-pink-600" 
                                 />
-                                <span>Génoise Chocolat 🍫</span>
+                                <span>G{"\u00E9"}noise Chocolat {"\uD83C\uDF6B"}</span>
                               </label>
                             </div>
                           </div>
@@ -1237,7 +1238,7 @@ export default function App() {
                     <div className="space-y-4 py-2">
                       {/* Animating sweet pink heart icon */}
                       <div className="mx-auto w-16 h-16 bg-[#fff0f3] rounded-full flex items-center justify-center animate-bounce">
-                        <span className="text-4xl">💖</span>
+                        <span className="text-4xl">{"\uD83D\uDC96"}</span>
                       </div>
 
                       <h3 className="font-serif text-2xl font-bold text-[#4d3437]">Merci, {thankYouClientName} !</h3>
