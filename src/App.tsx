@@ -41,7 +41,7 @@ interface MenuItem {
 const MAISON_CONFIG = {
   brandName: "World's Savoury",                      // Le nom de votre maison d'art culinaire
   brandLogo: "/logo.jpg",                             // Lien d'image ou nom de fichier pour le logo (ex: "https://...jpg" ou "logo.jpg" dans public/)
-  whatsappNumber: "213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
+  whatsappNumber: "+213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
   fbLink: "https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr", // Le lien web complet vers votre page Facebook
   fbHandle: "World's Savoury Beni Saf",                 // Le nom instagram/facebook affiché de votre entreprise
   instaLink: "https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4", // Le lien web complet vers votre compte Instagram
@@ -459,7 +459,7 @@ export default function App() {
 
     const encodedText = encodeURIComponent(text);
     const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
-    const whatsappURL = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
+    const whatsappURL = `whatsapp://send?phone=${cleanNumber}&text=${encodedText}`;
     
     // Save info for Thank You popup
     setThankYouClientName(clientName);
