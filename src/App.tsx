@@ -41,7 +41,7 @@ interface MenuItem {
 const MAISON_CONFIG = {
   brandName: "World's Savoury",                      // Le nom de votre maison d'art culinaire
   brandLogo: "/logo.jpg",                             // Lien d'image ou nom de fichier pour le logo (ex: "https://...jpg" ou "logo.jpg" dans public/)
-  whatsappNumber: "213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
+  whatsappNumber: "+213657936584",                    // 📱 Saisissez votre numéro WhatsApp ici avec indicatif (ex: +33600000000)
   fbLink: "https://www.facebook.com/share/1AEWSZQUeR/?mibextid=wwXIfr", // Le lien web complet vers votre page Facebook
   fbHandle: "World's Savoury Beni Saf",                 // Le nom instagram/facebook affiché de votre entreprise
   instaLink: "https://www.instagram.com/worldssavory?igsh=NWNpNGVsamZxYjc4", // Le lien web complet vers votre compte Instagram
@@ -325,6 +325,8 @@ export default function App() {
   // Custom interactive order modal states
   const [selectedProduct, setSelectedProduct] = useState<MenuItem | null>(null);
   const [clientName, setClientName] = useState('');
+  const [clientPhone, setClientPhone] = useState('');
+  const [isSending, setIsSending] = useState(false);
   const [spongeChoice, setSpongeChoice] = useState<'vanille' | 'chocolat'>('vanille');
   const [fillings, setFillings] = useState<string[]>([]);
   const [cakeText, setCakeText] = useState('');
@@ -465,40 +467,72 @@ export default function App() {
     return `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
   };
 
-  const handleOrderSubmit = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!selectedProduct) {
-      e.preventDefault();
       return;
     }
     if (!clientName.trim()) {
-      e.preventDefault();
       alert("S'il vous plaît, saisissez votre nom complet.");
       return;
     }
+    if (!clientPhone.trim()) {
+      alert("S'il vous plaît, saisissez votre numéro de téléphone.");
+      return;
+    }
 
-    const whatsappURL = getComputedWhatsappUrl();
+    setIsSending(true);
 
-    // Save info for Thank You popup
-    setThankYouClientName(clientName);
-    setThankYouProductName(selectedProduct.name);
-    setWhatsappUrl(whatsappURL);
-    
-    // Trigger the Thank You modal immediately to provide instant feedback
-    setShowThankYou(true);
+    const isCake = selectedProduct.category === 'Cakes';
+    const orderDetails = {
+      "Nom Complet": clientName,
+      "Téléphone": clientPhone,
+      "Produit": selectedProduct.name,
+      "Catégorie": selectedProduct.category,
+      "Description principale": selectedProduct.description,
+      ...(isCake ? {
+        "Choix Génoise": spongeChoice === 'vanille' ? 'Vanille 🌸' : 'Chocolat 🍫',
+        "Garnitures": fillings.length > 0 ? fillings.join(', ') : 'Aucune',
+        "Texte sur gâteau": cakeText.trim() ? cakeText : 'Aucun'
+      } : {}),
+      "Mode de récupération": deliveryMethod === 'Livraison' ? 'Livraison à domicile 🚗' : 'Retrait à la maison 🏡',
+      "Remarque ou note": clientRemark.trim() ? clientRemark : 'Aucune'
+    };
 
-    // DELAY unmounting of the Order Modal so the browser has a full second 
-    // to naturally complete the click navigation with the DOM element fully intact.
-    setTimeout(() => {
-      setSelectedProduct(null);
-    }, 1000);
+    try {
+      const response = await fetch("https://formspree.io/f/xgobgaev", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(orderDetails)
+      });
 
-    // Reset original modal inputs shortly in background after the order is completed
-    setTimeout(() => {
-      setClientName('');
-      setFillings([]);
-      setCakeText('');
-      setClientRemark('');
-    }, 1200);
+      if (response.ok) {
+        // Save info for Thank You popup
+        setThankYouClientName(clientName);
+        setThankYouProductName(selectedProduct.name);
+        
+        // Trigger Thank You modal
+        setShowThankYou(true);
+        setSelectedProduct(null);
+
+        // Reset inputs
+        setClientName('');
+        setClientPhone('');
+        setFillings([]);
+        setCakeText('');
+        setClientRemark('');
+      } else {
+        alert("Une erreur est survenue lors de l'envoi de la commande. Veuillez réessayer.");
+      }
+    } catch (error) {
+      console.error("Formspree error:", error);
+      alert("Erreur de connexion. Veuillez vérifier votre réseau.");
+    } finally {
+      setIsSending(false);
+    }
   };
 
   // Filter products directly from static MENU_ITEMS
@@ -1088,17 +1122,32 @@ export default function App() {
                     </div>
 
                     {/* Interactive Custom Order Form */}
-                    <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-xs">
+                    <form onSubmit={handleOrderSubmit} className="space-y-4 text-xs">
                       
                       {/* Name entry (Required) - text-base sur mobile pour empêcher le zoom */}
                       <div>
                         <label className="block font-medium text-[#7d5257] mb-1">Votre Nom &amp; Prénom *</label>
                         <input 
                           type="text" 
+                          name="Nom Complet"
                           required 
                           value={clientName}
                           onChange={(e) => setClientName(e.target.value)}
                           placeholder="Marie Lambert" 
+                          className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 text-base sm:text-xs focus:outline-none focus:ring-1 focus:ring-[#b76e79] focus:border-[#b76e79]"
+                        />
+                      </div>
+
+                      {/* Phone Number entry (Required) - text-base sur mobile pour empêcher le zoom */}
+                      <div>
+                        <label className="block font-medium text-[#7d5257] mb-1">Votre Numéro de Téléphone *</label>
+                        <input 
+                          type="tel" 
+                          name="Téléphone"
+                          required 
+                          value={clientPhone}
+                          onChange={(e) => setClientPhone(e.target.value)}
+                          placeholder="Ex: +213 6 57 93 65 84" 
                           className="w-full bg-[#fffbfb] border border-[#ffccd5] rounded-xl p-3 text-base sm:text-xs focus:outline-none focus:ring-1 focus:ring-[#b76e79] focus:border-[#b76e79]"
                         />
                       </div>
@@ -1117,9 +1166,10 @@ export default function App() {
                               <label className="flex items-center space-x-2 cursor-pointer bg-white py-1.5 px-3 rounded-lg border border-[#ffccd5] text-[#4d3437]">
                                 <input 
                                   type="radio" 
-                                  name="sponge" 
+                                  name="Choix Génoise" 
                                   checked={spongeChoice === 'vanille'}
                                   onChange={() => setSpongeChoice('vanille')}
+                                  value="Vanille"
                                   className="accent-pink-600" 
                                 />
                                 <span>G{"\u00E9"}noise Vanille {"\uD83C\uDF3C"}</span>
@@ -1127,9 +1177,10 @@ export default function App() {
                               <label className="flex items-center space-x-2 cursor-pointer bg-white py-1.5 px-3 rounded-lg border border-[#ffccd5] text-[#4d3437]">
                                 <input 
                                   type="radio" 
-                                  name="sponge" 
+                                  name="Choix Génoise" 
                                   checked={spongeChoice === 'chocolat'}
                                   onChange={() => setSpongeChoice('chocolat')}
+                                  value="Chocolat"
                                   className="accent-pink-600" 
                                 />
                                 <span>G{"\u00E9"}noise Chocolat {"\uD83C\uDF6B"}</span>
@@ -1150,6 +1201,8 @@ export default function App() {
                                 >
                                   <input 
                                     type="checkbox" 
+                                    name="Garnitures"
+                                    value={fill.label}
                                     checked={fillings.includes(fill.label)}
                                     onChange={() => toggleFilling(fill.label)}
                                     className="rounded border-[#ffccd5] text-pink-600 focus:ring-pink-500 accent-pink-600"
@@ -1167,6 +1220,7 @@ export default function App() {
                             </label>
                             <input 
                               type="text" 
+                              name="Texte sur le Gâteau"
                               value={cakeText}
                               onChange={(e) => setCakeText(e.target.value)}
                               placeholder="Ex: 'Joyeux Anniversaire Lucie'" 
@@ -1183,7 +1237,8 @@ export default function App() {
                           <label className="flex items-center space-x-2 cursor-pointer bg-[#fffbfb] py-2 px-4 rounded-xl border border-[#ffccd5] text-[#4d3437] flex-1">
                             <input 
                               type="radio" 
-                              name="delivery" 
+                              name="Mode de Récupération" 
+                              value="Livraison"
                               checked={deliveryMethod === 'Livraison'}
                               onChange={() => setDeliveryMethod('Livraison')}
                               className="accent-pink-600" 
@@ -1193,7 +1248,8 @@ export default function App() {
                           <label className="flex items-center space-x-2 cursor-pointer bg-[#fffbfb] py-2 px-4 rounded-xl border border-[#ffccd5] text-[#4d3437] flex-1">
                             <input 
                               type="radio" 
-                              name="delivery" 
+                              name="Mode de Récupération" 
+                              value="Retrait la maison"
                               checked={deliveryMethod === 'Retrait la maison'}
                               onChange={() => setDeliveryMethod('Retrait la maison')}
                               className="accent-pink-600" 
@@ -1209,6 +1265,7 @@ export default function App() {
                           Remarque spéciale, spécification ou texte de carte :
                         </label>
                         <textarea 
+                          name="Note Spéciale"
                           value={clientRemark}
                           onChange={(e) => setClientRemark(e.target.value)}
                           placeholder="Spécifiez des allergies, vos préférences d'emballage cadeau, ou d'autres souhaits..." 
@@ -1217,16 +1274,14 @@ export default function App() {
                       </div>
 
                       {/* Submit */}
-                      <a 
-                        href={clientName.trim() ? getComputedWhatsappUrl() : undefined}
-                        onClick={handleOrderSubmit}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full bg-[#b76e79] hover:bg-[#a05a65] text-white py-3 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer text-center pt-3 pb-3"
+                      <button 
+                        type="submit"
+                        disabled={isSending}
+                        className="w-full bg-[#b76e79] hover:bg-[#a05a65] disabled:bg-[#d8babc] text-white py-3.5 px-6 rounded-full font-serif uppercase tracking-widest text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer text-center pt-3 pb-3 mt-2"
                       >
                         <Send className="w-3.5 h-3.5" />
-                        <span>Envoyer la commande via WhatsApp</span>
-                      </a>
+                        <span>{isSending ? "Envoi en cours..." : "Commander"}</span>
+                      </button>
                     </form>
                   </motion.div>
                 </div>
@@ -1317,5 +1372,3 @@ export default function App() {
     </div>
   );
 }
-
-
