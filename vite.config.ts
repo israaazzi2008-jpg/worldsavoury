@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   // Ensure this matches your repository name EXACTLY
-  base: '/worldsavoury/', 
+  base: '/', 
   plugins: [
     react(),
     tailwindcss(),
