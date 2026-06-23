@@ -470,7 +470,9 @@ export default function App() {
         delivery: deliveryMethod,
         dimentions_per: selectedProduct.description,
         genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
-        garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
+        garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null,
+        inscription: cakeText || null,
+        remarque: clientRemark || null
       };
 
       const result = await supabase.from('orders').insert([primaryPayload]);
@@ -1388,4 +1390,3 @@ export default function App() {
     </div>
   );
 }
-
