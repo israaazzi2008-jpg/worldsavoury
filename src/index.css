@@ -6,3 +6,114 @@
   --font-vibes: "Great Vibes", cursive;
 }
 
+/* Custom Sparkle and Background Effect Keyframes */
+
+@keyframes fall {
+  0% {
+    transform: translateY(-20px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(105vh) translateX(30px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatSparkle {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-90vh) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes logoIn {
+  0% {
+    transform: scale(0.85) translateY(15px);
+    opacity: 0;
+    filter: blur(5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes drawHeartAndPulse {
+  0% {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transform: scale(0.95);
+  }
+  40% {
+    stroke-dashoffset: 0;
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Animation Utility Classes */
+
+.animate-fall {
+  animation: fall 6s linear infinite;
+}
+
+.animate-floatSparkle {
+  animation: floatSparkle 4s ease-out infinite;
+}
+
+.animate-logoIn {
+  animation: logoIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-drawHeartAndPulse {
+  animation: drawHeartAndPulse 3.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
