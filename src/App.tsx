@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { supabase } from './supabaseClient';
 import { 
   ShoppingBag, 
   Heart, 
@@ -337,7 +338,6 @@ export default function App() {
   const [showThankYou, setShowThankYou] = useState(false);
   const [thankYouClientName, setThankYouClientName] = useState('');
   const [thankYouProductName, setThankYouProductName] = useState('');
-  const [whatsappUrl, setWhatsappUrl] = useState('');
   
   // Configuration read statically from MAISON_CONFIG above (edit there directly to reflect your pages!)
   const {
@@ -429,44 +429,6 @@ export default function App() {
     );
   };
 
-  // Construct the Whatsapp order text dynamically for a pure user-initiated link feel
-  const getComputedWhatsappUrl = () => {
-    if (!selectedProduct) return '';
-
-    const isCake = selectedProduct.category === 'Cakes';
-
-    let text = "Bonjour ! \uD83D\uDC96\n\n";
-    text += `Je souhaite passer une commande chez *${brandName}* ! \uD83C\uDF1F\n\n`;
-    text += "*D\u00C9TAILS DE MA COMMANDE :*\n";
-    text += `- *Client :* ${clientName}\n`;
-    text += `- *S\u00E9lection :* ${selectedProduct.name}\n`;
-    text += `- *Cat\u00E9gorie :* ${selectedProduct.category}\n\n`;
-
-    if (isCake) {
-      text += "*Sp\u00E9cifications :*\n";
-      text += `- *Dimension & Parts :* ${selectedProduct.description}\n`;
-      text += `- *G\u00E9noise :* ${spongeChoice === 'vanille' ? 'Vanille \uD83C\uDF38' : 'Chocolat \uD83C\uDF6B'}\n`;
-      text += `- *Garniture(s) :* ${fillings.length > 0 ? fillings.join(', ') : 'Aucune'}\n`;
-      if (cakeText.trim()) {
-        text += `- *Inscription sur le g\u00E2teau :* "${cakeText}"\n`;
-      }
-      text += "\n";
-    }
-
-    text += `- *Mode de r\u00E9cup\u00E9ration :* ${deliveryMethod === 'Livraison' ? 'Livraison \u00E0 domicile' : 'Retrait \u00E0 la maison'}\n`;
-    
-    if (clientRemark.trim()) {
-      text += `- *Note sp\u00E9ciale :* ${clientRemark}\n`;
-    }
-
-    text += "\nUn grand merci pour votre attention ! J'attends votre retour avec impatience. \uD83D\uDC96";
-
-    const encodedText = encodeURIComponent(text);
-    const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
-    
-    return `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodedText}`;
-  };
-
   const handleOrderSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedProduct) {
@@ -484,52 +446,45 @@ export default function App() {
     setIsSending(true);
 
     const isCake = selectedProduct.category === 'Cakes';
-    const orderDetails = {
-      "Nom Complet": clientName,
-      "Téléphone": clientPhone,
-      "Produit": selectedProduct.name,
-      "Catégorie": selectedProduct.category,
-      "Description principale": selectedProduct.description,
-      ...(isCake ? {
-        "Choix Génoise": spongeChoice === 'vanille' ? 'Vanille 🌸' : 'Chocolat 🍫',
-        "Garnitures": fillings.length > 0 ? fillings.join(', ') : 'Aucune',
-        "Texte sur gâteau": cakeText.trim() ? cakeText : 'Aucun'
-      } : {}),
-      "Mode de récupération": deliveryMethod === 'Livraison' ? 'Livraison à domicile 🚗' : 'Retrait à la maison 🏡',
-      "Remarque ou note": clientRemark.trim() ? clientRemark : 'Aucune'
-    };
 
     try {
-      const response = await fetch("https://formspree.io/f/xgobgaev", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(orderDetails)
-      });
+      // Direct insertion into the 'orders' table in Supabase
+      const { data, error } = await supabase
+        .from('orders')
+        .insert([
+          {
+            costumer_name: clientName,
+            selection: selectedProduct.name,
+            categorie: selectedProduct.category,
+            phone_number: clientPhone,
+            delivery: deliveryMethod,
+            dimentions_per: selectedProduct.description,
+            genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
+            garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
+          }
+        ]);
 
-      if (response.ok) {
-        // Save info for Thank You popup
-        setThankYouClientName(clientName);
-        setThankYouProductName(selectedProduct.name);
-        
-        // Trigger Thank You modal
-        setShowThankYou(true);
-        setSelectedProduct(null);
-
-        // Reset inputs
-        setClientName('');
-        setClientPhone('');
-        setFillings([]);
-        setCakeText('');
-        setClientRemark('');
-      } else {
-        alert("Une erreur est survenue lors de l'envoi de la commande. Veuillez réessayer.");
+      if (error) {
+        throw error;
       }
+
+      // Save info for Thank You popup
+      setThankYouClientName(clientName);
+      setThankYouProductName(selectedProduct.name);
+      
+      // Trigger Thank You modal
+      setShowThankYou(true);
+      setSelectedProduct(null);
+
+      // Reset inputs
+      setClientName('');
+      setClientPhone('');
+      setFillings([]);
+      setCakeText('');
+      setClientRemark('');
     } catch (error) {
-      console.error("Formspree error:", error);
-      alert("Erreur de connexion. Veuillez vérifier votre réseau.");
+      console.error("Supabase order submission error:", error);
+      alert("Une erreur est survenue lors de l'envoi de la commande à notre base de données. Veuillez réessayer.");
     } finally {
       setIsSending(false);
     }
@@ -1089,7 +1044,7 @@ export default function App() {
 
             </main>
 
-            {/* SEAMLESS DIALOG FOR CUSTOM ORDERING (WHATSAPP MODAL POPUP) */}
+            {/* SEAMLESS DIALOG FOR CUSTOM ORDERING (SUPABASE INSERT MODAL POPUP) */}
             <AnimatePresence>
               {selectedProduct && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
@@ -1288,7 +1243,7 @@ export default function App() {
               )}
             </AnimatePresence>
 
-            {/* THANK YOU POPUP MODAL (APPELÉ IMMÉDIATEMENT) */}
+            {/* THANK YOU POPUP MODAL */}
             <AnimatePresence>
               {showThankYou && (
                 <div 
@@ -1327,7 +1282,7 @@ export default function App() {
                       
                       <div className="space-y-3">
                         <p className="text-xs text-[#825c61] leading-relaxed">
-                          Votre récapitulatif de commande pour <strong>{thankYouProductName}</strong> est prêt à être envoyé.
+                          Votre commande de <strong>{thankYouProductName}</strong> a été enregistrée avec succès dans notre base de données.
                         </p>
                       </div>
                     </div>
@@ -1335,8 +1290,6 @@ export default function App() {
                 </div>
               )}
             </AnimatePresence>
-
-
 
             {/* AESTHETIC REUSABLE ROSE BANNER FOOTER */}
             <footer className="mt-12 bg-[#fff5f7] border-t border-[#ffd1dc] py-8 text-center text-[#9b7379] text-xs font-serif tracking-widest">
