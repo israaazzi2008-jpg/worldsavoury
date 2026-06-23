@@ -391,13 +391,13 @@ export default function App() {
       const item = {
         id: sparkleCounter++,
         left: Math.random() * 95,
-        size: 4 + Math.random() * 4
+        size: 2 + Math.random() * 4
       };
       setSparkles(prev => [...prev, item]);
       setTimeout(() => {
         setSparkles(prev => prev.filter(s => s.id !== item.id));
-      }, 3500);
-    }, 220);
+      }, 3000);
+    }, 300);
 
     return () => {
       clearInterval(cInterval);
@@ -429,6 +429,12 @@ export default function App() {
       setCurrentTab('menu');
       setTransitioning(false);
     }, 600);
+  };
+
+  const isSupabasePlaceholder = () => {
+    const url = (import.meta as any).env?.VITE_SUPABASE_URL;
+    const key = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
+    return !url || !key || url.includes('placeholder-url') || key.includes('placeholder-anon-key') || url.includes('your-supabase-project');
   };
 
   const toggleFilling = (label: string) => {
@@ -464,7 +470,7 @@ export default function App() {
     if (code === '42703') {
       return {
         title: "⚠️ Colonne Inexistante (Schema Mismatch)",
-        advice: `Une ou plusieurs colonnes de l'objet d'insertion n'existent pas dans votre table 'orders' actuelle.\n\nMessage de Supabase : "${err.message}"\n\nVeuillez vérifier que les colonnes suivantes existent exactement ainsi dans votre table 'orders' :\n• costumer_name (votre colonne pour le nom du client)\n• phone_number\n• selection\n• categorie\n• delivery\n• dimensions_per\n• genoise\n• garniture`
+        advice: `Une ou plusieurs colonnes de l'objet d'insertion n'existent pas dans votre table 'orders' actuelle.\n\nMessage de Supabase : "${err.message}"\n\nVeuillez vérifier que les colonnes suivantes existent exactement ainsi dans votre table 'orders' :\n• costumer_name (votre colonne pour le nom du client)\n• phone_number\n• selection\n• categorie\n• delivery\n• dimentions (votre colonne pour les dimensions/description)\n• genoise\n• garniture`
       };
     }
     
@@ -507,25 +513,27 @@ export default function App() {
     const isCake = selectedProduct.category === 'Cakes';
 
     try {
-      
-      const payloadCurly = {
+      // Primary payload using exactly "costumer_name" and "dimentions" as requested by the user
+      const primaryPayload = {
         "costumer_name": clientName,
         selection: selectedProduct.name,
         categorie: selectedProduct.category,
         phone_number: clientPhone,
         delivery: deliveryMethod,
-        dimentions_per: selectedProduct.description,
+        dimentions: selectedProduct.description,
         genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
         garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
       };
 
-      let result = await supabase.from('orders').insert([payloadCurly]);
+      let result = await supabase.from('orders').insert([primaryPayload]);
 
-      // If that failed, let's try the straight quote version "costumer's_name":
-      if (result.error && (result.error.code === '42703' || result.error.message?.includes("costumer’s_name"))) {
-        console.warn("Attempt 1 with curly quote failed, trying straight quote...");
-        const payloadStraight = {
-          "costumer's_name": clientName,
+      // If that failed due to a missing column, try fallback spelling options automatically to be safe:
+      if (result.error && result.error.code === '42703') {
+        console.warn("Primary payload failed with 42703, trying other spelling combinations...");
+        
+        // Try costumer_name with dimensions_per
+        const payloadDimensionsPer = {
+          "costumer_name": clientName,
           selection: selectedProduct.name,
           categorie: selectedProduct.category,
           phone_number: clientPhone,
@@ -534,15 +542,30 @@ export default function App() {
           genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
           garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
         };
-        const res2 = await supabase.from('orders').insert([payloadStraight]);
+        const res2 = await supabase.from('orders').insert([payloadDimensionsPer]);
+        
         if (!res2.error) {
           result = res2;
-        } else {
-          // If that also failed, let's try "costumer_name" with "dimensions_per":
-          if (res2.error.code === '42703') {
-            console.warn("Attempt 2 with straight quote failed, trying costumer_name...");
-            const payloadSimple = {
-              "costumer_name": clientName,
+        } else if (res2.error.code === '42703') {
+          // Try costumer_name with dimentions_per (spelled with a 't')
+          const payloadDimentionsPer = {
+            "costumer_name": clientName,
+            selection: selectedProduct.name,
+            categorie: selectedProduct.category,
+            phone_number: clientPhone,
+            delivery: deliveryMethod,
+            dimentions_per: selectedProduct.description,
+            genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
+            garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
+          };
+          const res3 = await supabase.from('orders').insert([payloadDimentionsPer]);
+          
+          if (!res3.error) {
+            result = res3;
+          } else if (res3.error.code === '42703') {
+            // Try costumer's_name with dimensions_per
+            const payloadStraight = {
+              "costumer's_name": clientName,
               selection: selectedProduct.name,
               categorie: selectedProduct.category,
               phone_number: clientPhone,
@@ -551,31 +574,13 @@ export default function App() {
               genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
               garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
             };
-            const res3 = await supabase.from('orders').insert([payloadSimple]);
-            if (!res3.error) {
-              result = res3;
-            } else {
-              // If that also failed, try one last fallback with "dimentions_per" (with a 't'):
-              if (res3.error.code === '42703') {
-                const payloadDimentions = {
-                  "costumer_name": clientName,
-                  selection: selectedProduct.name,
-                  categorie: selectedProduct.category,
-                  phone_number: clientPhone,
-                  delivery: deliveryMethod,
-                  dimentions_per: selectedProduct.description,
-                  genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
-                  garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
-                };
-                const res4 = await supabase.from('orders').insert([payloadDimentions]);
-                result = res4;
-              } else {
-                result = res3;
-              }
-            }
+            const res4 = await supabase.from('orders').insert([payloadStraight]);
+            result = res4;
           } else {
-            result = res2;
+            result = res3;
           }
+        } else {
+          result = res2;
         }
       }
 
@@ -629,7 +634,7 @@ export default function App() {
         <div className="absolute top-[75%] right-[15%] text-[#d4af37]/60 text-2xl">✧</div>
       </div>
 
-      {/* CONTINUOUS FALLING CUPCAKES & SPARKLES IN BACKGROUND */}
+      {/* CONTINUOUS FALLING ELEGANT SPARKLES IN BACKGROUND */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         {cupcakes.map(cup => (
           <div
@@ -873,7 +878,7 @@ export default function App() {
                     </div>
 
                     <h1 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-[#4d3437] max-w-2xl mx-auto leading-tight relative z-10">
-                      Nos Créations de Rêve
+                      nos création de rêve
                     </h1>
 
                     {/* Sophisticated divider line with gold-toned stars */}
@@ -1197,6 +1202,14 @@ export default function App() {
                     </div>
 
                     {/* Interactive Custom Order Form */}
+                    {isSupabasePlaceholder() && (
+                      <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl p-4 text-xs space-y-1 mb-4">
+                        <p className="font-bold flex items-center gap-1">⚠️ Paramétrage Supabase requis</p>
+                        <p className="text-[11px] leading-relaxed opacity-90 font-sans">
+                          Pour que vos commandes soient enregistrées dans votre base de données, n'oubliez pas d'ajouter les clés d'environnement réelles <strong>VITE_SUPABASE_URL</strong> et <strong>VITE_SUPABASE_ANON_KEY</strong> dans les variables d'environnement (Secrets) de votre hébergement ou de l'éditeur de code.
+                        </p>
+                      </div>
+                    )}
                     <form onSubmit={handleOrderSubmit} className="space-y-4 text-xs">
                       
                       {/* Name entry (Required) - text-base sur mobile pour empêcher le zoom */}
