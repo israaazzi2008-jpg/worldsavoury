@@ -482,9 +482,10 @@ export default function App() {
       setFillings([]);
       setCakeText('');
       setClientRemark('');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Supabase order submission error:", error);
-      alert("Une erreur est survenue lors de l'envoi de la commande à notre base de données. Veuillez réessayer.");
+      const detailMessage = error?.message || error?.details || (typeof error === 'object' ? JSON.stringify(error) : String(error));
+      alert(`Une erreur est survenue lors de l'envoi de la commande :\n${detailMessage}\n\nS'il s'agit d'une erreur de sécurité, vérifiez que l'accès anonyme (règle de sécurité RLS) est activé pour l'insertion.`);
     } finally {
       setIsSending(false);
     }
