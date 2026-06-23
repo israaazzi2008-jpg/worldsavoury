@@ -507,15 +507,14 @@ export default function App() {
     const isCake = selectedProduct.category === 'Cakes';
 
     try {
-      // We will try inserting with the exact columns listed by the user first:
-      // "costumer’s_name" (curly), "dimensions_per"
+      
       const payloadCurly = {
-        "costumer’s_name": clientName,
+        "costumer_s_name": clientName,
         selection: selectedProduct.name,
         categorie: selectedProduct.category,
         phone_number: clientPhone,
         delivery: deliveryMethod,
-        dimensions_per: selectedProduct.description,
+        dimentions_per: selectedProduct.description,
         genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
         garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
       };
