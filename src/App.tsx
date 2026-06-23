@@ -339,13 +339,8 @@ export default function App() {
   const [thankYouClientName, setThankYouClientName] = useState('');
   const [thankYouProductName, setThankYouProductName] = useState('');
   
-  // State for order submission error / database diagnostics
-  const [submissionError, setSubmissionError] = useState<{
-    message: string;
-    code?: string;
-    details?: string;
-    hint?: string;
-  } | null>(null);
+  // State for order submission error
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   
   // Configuration read statically from MAISON_CONFIG above (edit there directly to reflect your pages!)
   const {
@@ -445,54 +440,7 @@ export default function App() {
 
 
 
-  // Convert postgrest/supabase errors to simple human explanations
-  const getDiagnosticMessage = (err: any) => {
-    if (!err) return { title: "Erreur de base de données", advice: "Une erreur inattendue est survenue." };
-    
-    const code = err.code || '';
-    const msg = (err.message || '').toLowerCase();
-    
-    // Check if it's a connection failure or placeholder config
-    if (msg.includes('failed to fetch') || msg.includes('networkerror') || msg.includes('api key') || msg.includes('fetch')) {
-      return {
-        title: "🔑 Configuration de Supabase Manquante",
-        advice: "Votre site n'a pas pu se connecter à votre base de données Supabase. Cela se produit généralement lorsque vos clés d'environnement VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY ne sont pas configurées ou sont encore des valeurs fictives (placeholders) dans le fichier .env de votre hébergement."
-      };
-    }
-    
-    if (code === '42P01') {
-      return {
-        title: "📁 Table 'orders' Introuvable",
-        advice: "La table nommée 'orders' n'existe pas dans votre base de données Supabase. Connectez-vous à votre tableau de bord Supabase, allez dans 'Table Editor' et créez une table nommée exactement 'orders'."
-      };
-    }
-    
-    if (code === '42703') {
-      return {
-        title: "⚠️ Colonne Inexistante (Schema Mismatch)",
-        advice: `Une ou plusieurs colonnes de l'objet d'insertion n'existent pas dans votre table 'orders' actuelle.\n\nMessage de Supabase : "${err.message}"\n\nVeuillez vérifier que les colonnes suivantes existent exactement ainsi dans votre table 'orders' :\n• costumer_name (votre colonne pour le nom du client)\n• phone_number\n• selection\n• categorie\n• delivery\n• dimentions_per (votre colonne pour les dimensions/description)\n• genoise\n• garniture`
-      };
-    }
-    
-    if (code === '23502') {
-      return {
-        title: "❗ Valeur Obligatoire Manquante (Constraint Violation)",
-        advice: `Une ou plusieurs colonnes de votre table 'orders' sont marquées comme requises (Not Null) mais l'application n'envoie pas de valeur pour celles-ci (par exemple, un ID automatique ou des métadonnées). Modifiez la structure de votre table dans Supabase pour autoriser la valeur nulle (is nullable) sur les colonnes secondaires.`
-      };
-    }
-    
-    if (code === 'PGRST116' || code === '42501' || msg.includes('row-level security') || msg.includes('policy')) {
-      return {
-        title: "🔒 Bloqué par la RLS (Row Level Security)",
-        advice: "Vos règles de sécurité Supabase (RLS) empêchent l'insertion de commandes par les visiteurs anonymes. Allez dans l'onglet 'Policies' de votre table 'orders' sur Supabase et ajoutez une règle d'insertion publique (Enable INSERT for anonymous/public role) !"
-      };
-    }
-    
-    return {
-      title: `Erreur PostgreSQL/Supabase (${code})`,
-      advice: `Message brut : "${err.message || 'Aucun message brut'}"\n\nDétails : ${err.details || 'Aucun détail'}\n\nIndication : ${err.hint || 'Aucune suggestion'}`
-    };
-  };
+
 
   const handleOrderSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -547,12 +495,7 @@ export default function App() {
       setClientRemark('');
     } catch (error: any) {
       console.error("Supabase order submission error:", error);
-      setSubmissionError({
-        message: error?.message || error?.details || "Une erreur inconnue s'est produite",
-        code: error?.code,
-        details: error?.details,
-        hint: error?.hint
-      });
+      setSubmissionError(error?.message || "Une erreur est survenue lors de l'envoi de votre commande. Veuillez vérifier votre connexion ou réessayer.");
     } finally {
       setIsSending(false);
     }
@@ -1367,63 +1310,45 @@ export default function App() {
               )}
             </AnimatePresence>
 
-            {/* INTERACTIVE SUPABASE DIAGNOSTIC & WHATSAPP FALLBACK MODAL */}
+            {/* SIMPLE AND CUTE PINK ERROR POPUP */}
             <AnimatePresence>
               {submissionError && (
                 <div 
-                  className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center z-[60] p-4"
+                  className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-[60] p-4"
                   onClick={() => setSubmissionError(null)}
                 >
                   <motion.div 
-                    className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-red-100 shadow-2xl relative overflow-hidden cursor-default flex flex-col max-h-[90vh]"
+                    className="bg-white rounded-3xl max-w-sm w-full p-6 border border-[#ffd1dc] shadow-xl relative overflow-hidden text-center cursor-default"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {/* Close action */}
                     <button 
                       onClick={() => setSubmissionError(null)}
-                      className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer p-1 z-10"
+                      className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors p-1"
                     >
-                      <X className="w-5 h-5" />
+                      <X className="w-4 h-4" />
                     </button>
 
-                    {/* Error diagnostics header */}
-                    <div className="flex items-start space-x-3 text-red-600 border-b border-red-100 pb-4 mb-4">
-                      <div className="p-2 bg-red-50 rounded-full shrink-0">
-                        <Info className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <h3 className="font-serif text-lg font-bold text-slate-800">
-                          {getDiagnosticMessage(submissionError).title}
-                        </h3>
-                        <p className="text-[10px] uppercase tracking-wider text-red-500 font-mono mt-0.5">
-                          Code d'erreur : {submissionError.code || "N/A"}
-                        </p>
-                      </div>
+                    <div className="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-4 text-[#b76e79]">
+                      <Info className="w-6 h-6" />
                     </div>
 
-                    {/* Explanations & dynamic guidance */}
-                    <div className="flex-1 overflow-y-auto pr-1 space-y-4 text-xs text-slate-700 font-sans leading-relaxed">
-                      <div className="bg-amber-50/50 border border-amber-200/50 rounded-xl p-4 text-amber-900">
-                        <p className="font-semibold mb-1">💡 Comment résoudre ce problème :</p>
-                        <p className="whitespace-pre-line font-medium leading-relaxed">
-                          {getDiagnosticMessage(submissionError).advice}
-                        </p>
-                      </div>
+                    <h3 className="font-serif text-lg font-bold text-[#4d3437] mb-2">
+                      Oups ! Une erreur est survenue
+                    </h3>
+                    
+                    <p className="text-xs text-[#825c61] leading-relaxed mb-6">
+                      {submissionError}
+                    </p>
 
-                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
-                        <p className="font-mono text-[10px] font-bold text-slate-500 mb-1">RÉCAPITULATIF TECHNIQUE :</p>
-                        <p className="font-mono text-[9px] text-slate-600 bg-white p-2 rounded border border-slate-100 max-h-24 overflow-y-auto select-all">
-                          {submissionError.message}
-                          {submissionError.details && `\nDetails: ${submissionError.details}`}
-                          {submissionError.hint && `\nHint: ${submissionError.hint}`}
-                        </p>
-                      </div>
-
-
-                    </div>
+                    <button
+                      onClick={() => setSubmissionError(null)}
+                      className="w-full bg-[#b76e79] hover:bg-[#80424b] text-white py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all"
+                    >
+                      Fermer
+                    </button>
                   </motion.div>
                 </div>
               )}
