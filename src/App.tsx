@@ -1297,11 +1297,11 @@ export default function App() {
                         <span className="text-4xl">{"\uD83D\uDC96"}</span>
                       </div>
 
-                      <h3 className="font-serif text-2xl font-bold text-[#4d3437] leading-tight">Merci, {thankYouClientName} !</h3>
+                      <h3 className="font-serif text-2xl font-bold text-[#4d3437] leading-tight">Merci, {thankYouClientName}</h3>
                       
                       <div className="space-y-3">
-                        <p className="text-xs text-[#825c61] leading-relaxed">
-                          Votre commande de <strong>{thankYouProductName}</strong> a été enregistrée avec succès dans notre base de données.
+                        <p className="text-sm text-[#825c61] leading-relaxed font-medium">
+                          Nous avons bien reçu votre commande.
                         </p>
                       </div>
                     </div>
@@ -1388,3 +1388,4 @@ export default function App() {
     </div>
   );
 }
+
