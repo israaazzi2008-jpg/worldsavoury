@@ -509,7 +509,7 @@ export default function App() {
     try {
       
       const payloadCurly = {
-        "costumer_s_name": clientName,
+        "costumer_name": clientName,
         selection: selectedProduct.name,
         categorie: selectedProduct.category,
         phone_number: clientPhone,
