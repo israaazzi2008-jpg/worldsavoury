@@ -525,64 +525,7 @@ export default function App() {
         garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
       };
 
-      let result = await supabase.from('orders').insert([primaryPayload]);
-
-      // If that failed due to a missing column, try fallback spelling options automatically to be safe:
-      if (result.error && result.error.code === '42703') {
-        console.warn("Primary payload failed with 42703, trying other spelling combinations...");
-        
-        // Try costumer_name with dimensions_per (spelled with an 's')
-        const payloadDimensionsPer = {
-          "costumer_name": clientName,
-          selection: selectedProduct.name,
-          categorie: selectedProduct.category,
-          phone_number: clientPhone,
-          delivery: deliveryMethod,
-          dimensions_per: selectedProduct.description,
-          genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
-          garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
-        };
-        const res2 = await supabase.from('orders').insert([payloadDimensionsPer]);
-        
-        if (!res2.error) {
-          result = res2;
-        } else if (res2.error.code === '42703') {
-          // Try costumer_name with dimentions (without _per)
-          const payloadDimentions = {
-            "costumer_name": clientName,
-            selection: selectedProduct.name,
-            categorie: selectedProduct.category,
-            phone_number: clientPhone,
-            delivery: deliveryMethod,
-            dimentions: selectedProduct.description,
-            genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
-            garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
-          };
-          const res3 = await supabase.from('orders').insert([payloadDimentions]);
-          
-          if (!res3.error) {
-            result = res3;
-          } else if (res3.error.code === '42703') {
-            // Try costumer's_name with dimensions_per
-            const payloadStraight = {
-              "costumer's_name": clientName,
-              selection: selectedProduct.name,
-              categorie: selectedProduct.category,
-              phone_number: clientPhone,
-              delivery: deliveryMethod,
-              dimensions_per: selectedProduct.description,
-              genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
-              garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
-            };
-            const res4 = await supabase.from('orders').insert([payloadStraight]);
-            result = res4;
-          } else {
-            result = res3;
-          }
-        } else {
-          result = res2;
-        }
-      }
+      const result = await supabase.from('orders').insert([primaryPayload]);
 
       if (result.error) {
         throw result.error;
