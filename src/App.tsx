@@ -464,7 +464,7 @@ export default function App() {
     if (code === '42703') {
       return {
         title: "⚠️ Colonne Inexistante (Schema Mismatch)",
-        advice: `Une ou plusieurs colonnes de l'objet d'insertion n'existent pas dans votre table 'orders' actuelle.\n\nMessage de Supabase : "${err.message}"\n\nVeuillez vérifier que les colonnes suivantes existent exactement ainsi dans votre table 'orders' :\n• costumer's_name (avec une apostrophe et un s, ou vérifiez l'orthographe exacte)\n• phone_number\n• selection\n• categorie\n• delivery\n• dimentions_per\n• genoise\n• garniture`
+        advice: `Une ou plusieurs colonnes de l'objet d'insertion n'existent pas dans votre table 'orders' actuelle.\n\nMessage de Supabase : "${err.message}"\n\nVeuillez vérifier que les colonnes suivantes existent exactement ainsi dans votre table 'orders' :\n• costumer_name (votre colonne pour le nom du client)\n• phone_number\n• selection\n• categorie\n• delivery\n• dimensions_per\n• genoise\n• garniture`
       };
     }
     
@@ -507,24 +507,49 @@ export default function App() {
     const isCake = selectedProduct.category === 'Cakes';
 
     try {
-      // Direct insertion into the 'orders' table in Supabase
-      const { data, error } = await supabase
-        .from('orders')
-        .insert([
-          {
-            "costumer's_name": clientName,
+      // Dynamic combinations of potential database column variations for maximum compatibility
+      const nameKeys = ["costumer_name", "costumer's_name", "costumer’s_name", "customer_name"];
+      const dimensionKeys = ["dimensions_per", "dimentions_per"];
+
+      let lastError: any = null;
+      let success = false;
+
+      for (const nameKey of nameKeys) {
+        for (const dimKey of dimensionKeys) {
+          const insertPayload: any = {
+            [nameKey]: clientName,
             selection: selectedProduct.name,
             categorie: selectedProduct.category,
             phone_number: clientPhone,
             delivery: deliveryMethod,
-            dimentions_per: selectedProduct.description,
+            [dimKey]: selectedProduct.description,
             genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
             garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
-          }
-        ]);
+          };
 
-      if (error) {
-        throw error;
+          const { error } = await supabase
+            .from('orders')
+            .insert([insertPayload]);
+
+          if (!error) {
+            success = true;
+            break;
+          }
+
+          lastError = error;
+          // If the error is NOT a missing column error (Postgres code 42703),
+          // don't bother trying other column spelling variations (e.g. it's RLS or connection error)
+          if (error.code !== '42703') {
+            break;
+          }
+        }
+        if (success) {
+          break;
+        }
+      }
+
+      if (!success && lastError) {
+        throw lastError;
       }
 
       // Save info for Thank You popup
