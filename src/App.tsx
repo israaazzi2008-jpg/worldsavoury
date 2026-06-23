@@ -507,49 +507,81 @@ export default function App() {
     const isCake = selectedProduct.category === 'Cakes';
 
     try {
-      // Dynamic combinations of potential database column variations for maximum compatibility
-      const nameKeys = ["costumer_name", "costumer's_name", "costumer’s_name", "customer_name"];
-      const dimensionKeys = ["dimensions_per", "dimentions_per"];
+      // We will try inserting with the exact columns listed by the user first:
+      // "costumer’s_name" (curly), "dimensions_per"
+      const payloadCurly = {
+        "costumer’s_name": clientName,
+        selection: selectedProduct.name,
+        categorie: selectedProduct.category,
+        phone_number: clientPhone,
+        delivery: deliveryMethod,
+        dimensions_per: selectedProduct.description,
+        genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
+        garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
+      };
 
-      let lastError: any = null;
-      let success = false;
+      let result = await supabase.from('orders').insert([payloadCurly]);
 
-      for (const nameKey of nameKeys) {
-        for (const dimKey of dimensionKeys) {
-          const insertPayload: any = {
-            [nameKey]: clientName,
-            selection: selectedProduct.name,
-            categorie: selectedProduct.category,
-            phone_number: clientPhone,
-            delivery: deliveryMethod,
-            [dimKey]: selectedProduct.description,
-            genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
-            garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
-          };
-
-          const { error } = await supabase
-            .from('orders')
-            .insert([insertPayload]);
-
-          if (!error) {
-            success = true;
-            break;
+      // If that failed, let's try the straight quote version "costumer's_name":
+      if (result.error && (result.error.code === '42703' || result.error.message?.includes("costumer’s_name"))) {
+        console.warn("Attempt 1 with curly quote failed, trying straight quote...");
+        const payloadStraight = {
+          "costumer's_name": clientName,
+          selection: selectedProduct.name,
+          categorie: selectedProduct.category,
+          phone_number: clientPhone,
+          delivery: deliveryMethod,
+          dimensions_per: selectedProduct.description,
+          genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
+          garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
+        };
+        const res2 = await supabase.from('orders').insert([payloadStraight]);
+        if (!res2.error) {
+          result = res2;
+        } else {
+          // If that also failed, let's try "costumer_name" with "dimensions_per":
+          if (res2.error.code === '42703') {
+            console.warn("Attempt 2 with straight quote failed, trying costumer_name...");
+            const payloadSimple = {
+              "costumer_name": clientName,
+              selection: selectedProduct.name,
+              categorie: selectedProduct.category,
+              phone_number: clientPhone,
+              delivery: deliveryMethod,
+              dimensions_per: selectedProduct.description,
+              genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
+              garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
+            };
+            const res3 = await supabase.from('orders').insert([payloadSimple]);
+            if (!res3.error) {
+              result = res3;
+            } else {
+              // If that also failed, try one last fallback with "dimentions_per" (with a 't'):
+              if (res3.error.code === '42703') {
+                const payloadDimentions = {
+                  "costumer_name": clientName,
+                  selection: selectedProduct.name,
+                  categorie: selectedProduct.category,
+                  phone_number: clientPhone,
+                  delivery: deliveryMethod,
+                  dimentions_per: selectedProduct.description,
+                  genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
+                  garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
+                };
+                const res4 = await supabase.from('orders').insert([payloadDimentions]);
+                result = res4;
+              } else {
+                result = res3;
+              }
+            }
+          } else {
+            result = res2;
           }
-
-          lastError = error;
-          // If the error is NOT a missing column error (Postgres code 42703),
-          // don't bother trying other column spelling variations (e.g. it's RLS or connection error)
-          if (error.code !== '42703') {
-            break;
-          }
-        }
-        if (success) {
-          break;
         }
       }
 
-      if (!success && lastError) {
-        throw lastError;
+      if (result.error) {
+        throw result.error;
       }
 
       // Save info for Thank You popup
