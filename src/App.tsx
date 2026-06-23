@@ -470,7 +470,7 @@ export default function App() {
     if (code === '42703') {
       return {
         title: "⚠️ Colonne Inexistante (Schema Mismatch)",
-        advice: `Une ou plusieurs colonnes de l'objet d'insertion n'existent pas dans votre table 'orders' actuelle.\n\nMessage de Supabase : "${err.message}"\n\nVeuillez vérifier que les colonnes suivantes existent exactement ainsi dans votre table 'orders' :\n• costumer_name (votre colonne pour le nom du client)\n• phone_number\n• selection\n• categorie\n• delivery\n• dimentions (votre colonne pour les dimensions/description)\n• genoise\n• garniture`
+        advice: `Une ou plusieurs colonnes de l'objet d'insertion n'existent pas dans votre table 'orders' actuelle.\n\nMessage de Supabase : "${err.message}"\n\nVeuillez vérifier que les colonnes suivantes existent exactement ainsi dans votre table 'orders' :\n• costumer_name (votre colonne pour le nom du client)\n• phone_number\n• selection\n• categorie\n• delivery\n• dimentions_per (votre colonne pour les dimensions/description)\n• genoise\n• garniture`
       };
     }
     
@@ -513,14 +513,14 @@ export default function App() {
     const isCake = selectedProduct.category === 'Cakes';
 
     try {
-      // Primary payload using exactly "costumer_name" and "dimentions" as requested by the user
+      // Primary payload using exactly "costumer_name" and "dimentions_per" as requested by the user
       const primaryPayload = {
         "costumer_name": clientName,
         selection: selectedProduct.name,
         categorie: selectedProduct.category,
         phone_number: clientPhone,
         delivery: deliveryMethod,
-        dimentions: selectedProduct.description,
+        dimentions_per: selectedProduct.description,
         genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
         garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
       };
@@ -531,7 +531,7 @@ export default function App() {
       if (result.error && result.error.code === '42703') {
         console.warn("Primary payload failed with 42703, trying other spelling combinations...");
         
-        // Try costumer_name with dimensions_per
+        // Try costumer_name with dimensions_per (spelled with an 's')
         const payloadDimensionsPer = {
           "costumer_name": clientName,
           selection: selectedProduct.name,
@@ -547,18 +547,18 @@ export default function App() {
         if (!res2.error) {
           result = res2;
         } else if (res2.error.code === '42703') {
-          // Try costumer_name with dimentions_per (spelled with a 't')
-          const payloadDimentionsPer = {
+          // Try costumer_name with dimentions (without _per)
+          const payloadDimentions = {
             "costumer_name": clientName,
             selection: selectedProduct.name,
             categorie: selectedProduct.category,
             phone_number: clientPhone,
             delivery: deliveryMethod,
-            dimentions_per: selectedProduct.description,
+            dimentions: selectedProduct.description,
             genoise: isCake ? (spongeChoice === 'vanille' ? 'Vanille' : 'Chocolat') : null,
             garniture: isCake && fillings.length > 0 ? fillings.join(', ') : null
           };
-          const res3 = await supabase.from('orders').insert([payloadDimentionsPer]);
+          const res3 = await supabase.from('orders').insert([payloadDimentions]);
           
           if (!res3.error) {
             result = res3;
