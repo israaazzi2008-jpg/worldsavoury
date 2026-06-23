@@ -453,7 +453,7 @@ export default function App() {
         .from('orders')
         .insert([
           {
-            costumer_name: clientName,
+            "costumer's_name": clientName,
             selection: selectedProduct.name,
             categorie: selectedProduct.category,
             phone_number: clientPhone,
